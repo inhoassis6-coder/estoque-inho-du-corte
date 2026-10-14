@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -13,24 +12,18 @@
  --red:#ff727c;--green:#65dda0;--border:#303035;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--white);
- font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+body{margin:0;background:var(--bg);color:var(--white);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
 button,input,select,textarea{font:inherit}
-header{padding:20px 16px 16px;background:linear-gradient(135deg,#18181b,#09090b);
- border-bottom:1px solid #38332a;position:sticky;top:0;z-index:20}
+header{padding:20px 16px 16px;background:linear-gradient(135deg,#18181b,#09090b);border-bottom:1px solid #38332a;position:sticky;top:0;z-index:20}
 .brand{font-size:21px;font-weight:900;letter-spacing:.8px;color:var(--gold2)}
 .subtitle{color:var(--muted);font-size:12px;margin-top:7px}
 .brandline{display:flex;align-items:center;gap:11px}
-.brandmark{width:44px;height:44px;border:1px solid #8d7125;border-radius:13px;
- display:grid;place-items:center;background:#211d12;color:var(--gold2);font-size:23px}
-nav{display:flex;gap:8px;padding:11px 12px;background:#101012;
- border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:thin}
-button{border:1px solid #39393f;border-radius:10px;background:#232327;color:var(--white);
- padding:11px 14px;font-weight:700;cursor:pointer;transition:.15s}
+.brandmark{width:44px;height:44px;border:1px solid #8d7125;border-radius:13px;display:grid;place-items:center;background:#211d12;color:var(--gold2);font-size:23px}
+nav{display:flex;gap:8px;padding:11px 12px;background:#101012;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:thin}
+button{border:1px solid #39393f;border-radius:10px;background:#232327;color:var(--white);padding:11px 14px;font-weight:700;cursor:pointer;transition:.15s}
 button:hover{border-color:#a58a3d}
 button:active{transform:scale(.98)}
-button.primary{background:linear-gradient(135deg,var(--gold2),var(--gold));
- color:#15120a;border-color:var(--gold);box-shadow:0 4px 18px #d4af3718}
+button.primary{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#15120a;border-color:var(--gold);box-shadow:0 4px 18px #d4af3718}
 button.danger{border-color:#67383c;color:#ff9ca2}
 button.success{border-color:#285d43;color:var(--green)}
 button:disabled{opacity:.4;cursor:not-allowed}
@@ -44,16 +37,13 @@ h2{font-size:23px;margin:8px 0 7px;letter-spacing:-.5px}
 h3{font-size:16px;margin:4px 0 12px}
 .intro{color:var(--muted);font-size:13px;margin:0 0 18px;line-height:1.5}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:15px}
-.stat,.panel,.item{background:linear-gradient(145deg,#19191c,#121214);
- border:1px solid var(--border);border-radius:15px;padding:15px;margin-bottom:12px;min-width:0}
+.stat,.panel,.item{background:linear-gradient(145deg,#19191c,#121214);border:1px solid var(--border);border-radius:15px;padding:15px;margin-bottom:12px;min-width:0}
 .stat{position:relative;overflow:hidden}
-.stat:after{content:"";position:absolute;right:-24px;top:-34px;width:80px;height:80px;
- border-radius:50%;border:1px solid #d4af3718}
+.stat:after{content:"";position:absolute;right:-24px;top:-34px;width:80px;height:80px;border-radius:50%;border:1px solid #d4af3718}
 .stat small{display:block;color:var(--muted);font-size:12px;margin-bottom:9px}
 .stat strong{font-size:clamp(18px,4vw,25px);color:var(--gold2);overflow-wrap:anywhere}
 label{display:block;font-size:12px;color:var(--muted);margin:11px 0 6px}
-input,select,textarea{width:100%;min-width:0;background:#0c0c0e;color:var(--white);
- border:1px solid #3b3b41;border-radius:10px;padding:12px;font-size:15px;outline:none}
+input,select,textarea{width:100%;min-width:0;background:#0c0c0e;color:var(--white);border:1px solid #3b3b41;border-radius:10px;padding:12px;font-size:15px;outline:none}
 input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px #d4af3715}
 textarea{min-height:82px;resize:vertical}
 input[type=checkbox]{width:auto}
@@ -66,28 +56,21 @@ input[type=file]{font-size:12px}
 .item{display:flex;justify-content:space-between;gap:10px;align-items:center}
 .item p{margin:5px 0;color:var(--muted);font-size:12px}
 .item .right{text-align:right;min-width:78px;overflow-wrap:anywhere}
-.pill{font-size:10px;padding:4px 8px;border:1px solid var(--border);
- border-radius:30px;display:inline-block;margin-top:5px}
-.empty{padding:22px 12px;text-align:center;color:var(--muted);
- background:#151517;border:1px dashed #38383d;border-radius:12px;font-size:13px}
+.pill{font-size:10px;padding:4px 8px;border:1px solid var(--border);border-radius:30px;display:inline-block;margin-top:5px}
+.empty{padding:22px 12px;text-align:center;color:var(--muted);background:#151517;border:1px dashed #38383d;border-radius:12px;font-size:13px}
 hr{border:0;border-top:1px solid var(--border);margin:16px 0}
-img.product-photo{width:54px;height:54px;object-fit:cover;border-radius:10px;
- border:1px solid var(--border)}
+img.product-photo{width:54px;height:54px;object-fit:cover;border-radius:10px;border:1px solid var(--border)}
 table{width:100%;border-collapse:collapse;font-size:12px}
 th,td{text-align:left;padding:10px 7px;border-bottom:1px solid var(--border)}
 th{color:var(--gold2)}
 .tablewrap{overflow-x:auto}
-#toast{position:fixed;bottom:18px;left:12px;right:12px;max-width:500px;margin:auto;
- background:#222225;border:1px solid var(--gold);padding:14px;border-radius:12px;
- display:none;z-index:100;box-shadow:0 8px 40px #0009;font-size:14px}
+#toast{position:fixed;bottom:18px;left:12px;right:12px;max-width:500px;margin:auto;background:#222225;border:1px solid var(--gold);padding:14px;border-radius:12px;display:none;z-index:100;box-shadow:0 8px 40px #0009;font-size:14px}
 footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
-.hero{border:1px solid #55451f;background:radial-gradient(ellipse at top right,#3b3018 0%,#1b1914 32%,#141416 76%);
- border-radius:17px;padding:19px;margin-bottom:14px}
+.hero{border:1px solid #55451f;background:radial-gradient(ellipse at top right,#3b3018 0%,#1b1914 32%,#141416 76%);border-radius:17px;padding:19px;margin-bottom:14px}
 .hero .eyebrow{color:var(--gold2);font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
 .hero h2{margin:9px 0}
 .hero p{font-size:13px;color:#c0bdaf;line-height:1.55;margin:0}
-.quick-total{display:flex;justify-content:space-between;align-items:center;
- padding:15px;border-radius:12px;background:#0b0b0d;border:1px solid #49402a;margin-top:14px}
+.quick-total{display:flex;justify-content:space-between;align-items:center;padding:15px;border-radius:12px;background:#0b0b0d;border:1px solid #49402a;margin-top:14px}
 .quick-total strong{font-size:25px;color:var(--gold2)}
 .qty-control{display:grid;grid-template-columns:54px 1fr 54px;gap:8px;align-items:center}
 .qty-control button{height:47px;font-size:21px;padding:0}
@@ -96,24 +79,10 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
 .method-option{padding:12px 4px;font-size:12px;min-width:0}
 .method-option.selected{border-color:var(--gold);background:#302714;color:var(--gold2)}
 .quick-submit{width:100%;padding:15px;font-size:15px;margin-top:14px}
-.tip{padding:12px;border-radius:10px;background:#211d12;border:1px solid #514321;
- color:#dfd0a1;font-size:12px;line-height:1.5;margin-bottom:12px}
+.tip{padding:12px;border-radius:10px;background:#211d12;border:1px solid #514321;color:#dfd0a1;font-size:12px;line-height:1.5;margin-bottom:12px}
 .section-label{font-size:10px;color:var(--gold2);letter-spacing:1.6px;font-weight:800;text-transform:uppercase;margin:19px 0 8px}
-@media(min-width:600px){
- main{padding:24px}
- .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
- .row{grid-template-columns:repeat(2,minmax(0,1fr))}
- .brand{font-size:24px}
- .panel{padding:19px}
-}
-@media(max-width:420px){
- header{padding:14px 12px}
- .brand{font-size:17px}
- .brandmark{width:39px;height:39px}
- main{padding:12px}
- .item .actions{gap:5px}
- .item .actions button{padding:8px;font-size:11px}
-}
+@media(min-width:600px){main{padding:24px}.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.row{grid-template-columns:repeat(2,minmax(0,1fr))}.brand{font-size:24px}.panel{padding:19px}}
+@media(max-width:420px){header{padding:14px 12px}.brand{font-size:17px}.brandmark{width:39px;height:39px}main{padding:12px}.item .actions{gap:5px}.item .actions button{padding:8px;font-size:11px}}
 </style>
 </head>
 <body>
@@ -126,7 +95,6 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
   </div>
  </div>
 </header>
-
 <nav id="navigation">
  <button data-page="assistente" class="primary">✦ Assistente</button>
  <button data-page="inicio">Painel</button>
@@ -137,7 +105,6 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
  <button data-page="relatorios">Relatórios</button>
  <button data-page="dados">Backup</button>
 </nav>
-
 <main>
 <section id="assistente" class="page active">
  <div class="hero">
@@ -152,21 +119,14 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
  <div class="panel">
   <h3>⚡ Venda rápida</h3>
   <p class="muted">Preencha apenas o necessário. O cliente é opcional para vendas pagas.</p>
-  <label for="quickProduct">Qual produto você vendeu?</label>
-  <select id="quickProduct"></select>
+  <label for="quickProduct">Qual produto você vendeu?</label><select id="quickProduct"></select>
   <div class="row">
-   <div>
-    <label for="quickQty">Quantidade</label>
-    <div class="qty-control">
-     <button type="button" id="qtyMinus" aria-label="Diminuir quantidade">−</button>
-     <input id="quickQty" type="number" min="1" step="1" value="1">
-     <button type="button" id="qtyPlus" aria-label="Aumentar quantidade">+</button>
-    </div>
-   </div>
-   <div>
-    <label for="quickCustomer">Nome do cliente (opcional)</label>
-    <input id="quickCustomer" placeholder="Ex.: João">
-   </div>
+   <div><label for="quickQty">Quantidade</label><div class="qty-control">
+    <button type="button" id="qtyMinus" aria-label="Diminuir quantidade">−</button>
+    <input id="quickQty" type="number" min="1" step="1" value="1">
+    <button type="button" id="qtyPlus" aria-label="Aumentar quantidade">+</button>
+   </div></div>
+   <div><label for="quickCustomer">Nome do cliente (opcional)</label><input id="quickCustomer" placeholder="Ex.: João"></div>
   </div>
   <label>Como foi o pagamento?</label>
   <div class="method-grid" id="paymentMethods">
@@ -175,10 +135,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
    <button type="button" class="method-option" data-method="Cartão">▤ Cartão</button>
   </div>
   <label for="quickMode">Situação da venda</label>
-  <select id="quickMode">
-   <option value="paid">Venda paga — registrar recebimento</option>
-   <option value="account">Anotar na conta — cliente pagará depois</option>
-  </select>
+  <select id="quickMode"><option value="paid">Venda paga — registrar recebimento</option><option value="account">Anotar na conta — cliente pagará depois</option></select>
   <div class="quick-total"><div><span class="muted">Total da venda</span><br><strong id="quickTotal">R$ 0,00</strong></div><div class="muted" id="quickStock">Estoque: —</div></div>
   <button type="button" class="primary quick-submit" id="quickSell">✓ Confirmar venda</button>
   <div class="actions"><button type="button" id="quickClear">Limpar campos</button></div>
@@ -186,24 +143,15 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
  <div class="panel">
   <h3>Ou fale com o assistente por texto</h3>
   <p class="muted">Exemplo: “João pegou duas águas”. Para registrar uma venda paga com mais opções, use a venda rápida acima.</p>
-  <label for="assistantText">Descreva o consumo</label>
-  <textarea id="assistantText" placeholder="Ex.: João pegou duas águas"></textarea>
-  <div class="actions">
-   <button class="primary" id="processText">Registrar consumo</button>
-   <button id="clearText">Limpar texto</button>
-  </div>
-  <hr>
-  <h3>Lançamento manual para conta de cliente</h3>
-  <label for="manualCustomer">Nome do cliente</label>
-  <input id="manualCustomer" placeholder="Nome do cliente">
-  <label for="manualProduct">Produto</label>
-  <select id="manualProduct"></select>
-  <label for="manualQty">Quantidade</label>
-  <input id="manualQty" type="number" min="1" step="1" value="1">
+  <label for="assistantText">Descreva o consumo</label><textarea id="assistantText" placeholder="Ex.: João pegou duas águas"></textarea>
+  <div class="actions"><button class="primary" id="processText">Registrar consumo</button><button id="clearText">Limpar texto</button></div>
+  <hr><h3>Lançamento manual para conta de cliente</h3>
+  <label for="manualCustomer">Nome do cliente</label><input id="manualCustomer" placeholder="Nome do cliente">
+  <label for="manualProduct">Produto</label><select id="manualProduct"></select>
+  <label for="manualQty">Quantidade</label><input id="manualQty" type="number" min="1" step="1" value="1">
   <div class="actions"><button class="primary" id="manualAdd">Adicionar à conta</button></div>
  </div>
 </section>
-
 <section id="inicio" class="page">
  <h2>Painel da barbearia</h2><p class="intro">Resumo da operação e indicadores.</p>
  <div class="grid">
@@ -212,54 +160,34 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
   <div class="stat"><small>Contas em aberto</small><strong id="homeOpen">0</strong></div>
   <div class="stat"><small>Produtos cadastrados</small><strong id="homeProducts">0</strong></div>
  </div>
- <div class="panel"><h3>Acesso rápido</h3><div class="actions">
-  <button class="primary" data-go="assistente">Registrar venda</button><button data-go="estoque">Cadastrar produto</button>
-  <button data-go="contas">Receber pagamento</button><button data-go="relatorios">Ver relatórios</button>
- </div></div>
+ <div class="panel"><h3>Acesso rápido</h3><div class="actions"><button class="primary" data-go="assistente">Registrar venda</button><button data-go="estoque">Cadastrar produto</button><button data-go="contas">Receber pagamento</button><button data-go="relatorios">Ver relatórios</button></div></div>
  <div class="panel"><h3>Estoque baixo</h3><div id="lowStock"></div></div>
  <div class="panel"><h3>Contas pendentes recentes</h3><div id="homeAccounts"></div></div>
 </section>
-
 <section id="contas" class="page">
  <h2>Contas dos clientes</h2><p class="intro">Acompanhe consumos, pendências e recebimentos.</p>
- <div class="panel"><label for="newCustomer">Abrir conta para cliente</label><input id="newCustomer" placeholder="Nome do cliente">
- <div class="actions"><button class="primary" id="openAccount">Abrir conta</button></div></div>
- <div class="row">
-  <div><label for="accountFilter">Buscar cliente</label><input id="accountFilter" placeholder="Nome do cliente"></div>
-  <div><label for="accountStatus">Situação</label><select id="accountStatus"><option value="all">Todas</option><option value="open">Em aberto</option><option value="paid">Pagas</option></select></div>
- </div>
+ <div class="panel"><label for="newCustomer">Abrir conta para cliente</label><input id="newCustomer" placeholder="Nome do cliente"><div class="actions"><button class="primary" id="openAccount">Abrir conta</button></div></div>
+ <div class="row"><div><label for="accountFilter">Buscar cliente</label><input id="accountFilter" placeholder="Nome do cliente"></div><div><label for="accountStatus">Situação</label><select id="accountStatus"><option value="all">Todas</option><option value="open">Em aberto</option><option value="paid">Pagas</option></select></div></div>
  <div id="accountList"></div>
 </section>
-
 <section id="estoque" class="page">
  <h2>Estoque e produtos</h2><p class="intro">Cadastro, custo, preço de venda e fotos.</p>
  <div class="panel">
   <h3 id="productFormTitle">Cadastrar produto</h3><input id="productId" type="hidden">
   <label for="productName">Nome do produto</label><input id="productName" placeholder="Ex.: Água mineral">
-  <div class="row">
-   <div><label for="productPrice">Preço de venda (R$)</label><input id="productPrice" type="number" min="0" step=".01" placeholder="3,00"></div>
-   <div><label for="productCost">Custo por unidade (R$)</label><input id="productCost" type="number" min="0" step=".01" placeholder="1,50"></div>
-  </div>
-  <div class="row">
-   <div><label for="productStock">Quantidade em estoque</label><input id="productStock" type="number" min="0" step="1" placeholder="10"></div>
-   <div><label for="productMin">Estoque mínimo</label><input id="productMin" type="number" min="0" step="1" value="2"></div>
-  </div>
-  <label for="productPhoto">Foto do produto (opcional, até 700 KB)</label><input id="productPhoto" type="file" accept="image/*">
-  <div id="photoPreview"></div>
+  <div class="row"><div><label for="productPrice">Preço de venda (R$)</label><input id="productPrice" type="number" min="0" step=".01" placeholder="3,00"></div><div><label for="productCost">Custo por unidade (R$)</label><input id="productCost" type="number" min="0" step=".01" placeholder="1,50"></div></div>
+  <div class="row"><div><label for="productStock">Quantidade em estoque</label><input id="productStock" type="number" min="0" step="1" placeholder="10"></div><div><label for="productMin">Estoque mínimo</label><input id="productMin" type="number" min="0" step="1" value="2"></div></div>
+  <label for="productPhoto">Foto do produto (opcional, até 700 KB)</label><input id="productPhoto" type="file" accept="image/*"><div id="photoPreview"></div>
   <div class="actions"><button class="primary" id="saveProduct">Salvar produto</button><button id="cancelEdit" hidden>Cancelar edição</button></div>
  </div>
- <label for="stockSearch">Buscar produto</label><input id="stockSearch" placeholder="Digite o nome">
- <div id="productList"></div>
+ <label for="stockSearch">Buscar produto</label><input id="stockSearch" placeholder="Digite o nome"><div id="productList"></div>
 </section>
-
 <section id="vendas" class="page">
  <h2>Histórico de vendas</h2>
  <div class="row"><div><label for="salesStart">Data inicial</label><input id="salesStart" type="date"></div><div><label for="salesEnd">Data final</label><input id="salesEnd" type="date"></div></div>
  <div class="actions"><button class="primary" id="filterSales">Filtrar vendas</button><button id="resetSalesFilter">Hoje</button><button id="exportSales">Exportar CSV</button></div>
- <div class="grid"><div class="stat"><small>Total vendido</small><strong id="salesTotal">R$ 0,00</strong></div><div class="stat"><small>Registros</small><strong id="salesCount">0</strong></div></div>
- <div id="salesList"></div>
+ <div class="grid"><div class="stat"><small>Total vendido</small><strong id="salesTotal">R$ 0,00</strong></div><div class="stat"><small>Registros</small><strong id="salesCount">0</strong></div></div><div id="salesList"></div>
 </section>
-
 <section id="caixa" class="page">
  <h2>Caixa e saldo disponível</h2><p class="intro">Ajuste o dinheiro disponível e registre entradas e retiradas manuais.</p>
  <div class="grid">
@@ -268,52 +196,22 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
   <div class="stat"><small>Entradas de todas as formas</small><strong id="cashIn">R$ 0,00</strong></div>
   <div class="stat"><small>Despesas totais</small><strong id="cashOut">R$ 0,00</strong></div>
  </div>
- <div class="panel">
-  <h3>✦ Ajustar saldo disponível</h3>
-  <p class="muted">Digite quanto dinheiro existe agora no caixa físico. O sistema registra a diferença como ajuste, sem apagar vendas ou despesas anteriores.</p>
-  <label for="cashTarget">Saldo disponível atual (R$)</label><input id="cashTarget" type="number" min="0" step=".01" placeholder="Ex.: 150,00">
-  <div class="actions"><button class="primary" id="setCashTarget">Salvar saldo disponível</button></div>
- </div>
- <div class="panel">
-  <h3>Registrar movimentação manual</h3>
-  <label for="cashMoveDesc">Descrição</label><input id="cashMoveDesc" placeholder="Ex.: Troco inicial, retirada pessoal">
-  <div class="row">
-   <div><label for="cashMoveType">Tipo</label><select id="cashMoveType"><option value="in">Entrada no caixa</option><option value="out">Retirada do caixa</option></select></div>
-   <div><label for="cashMoveAmount">Valor (R$)</label><input id="cashMoveAmount" type="number" min=".01" step=".01" placeholder="20,00"></div>
-  </div>
-  <div class="actions"><button class="primary" id="saveCashMove">Registrar movimentação</button></div>
-  <p class="muted">Use entradas para adicionar dinheiro que não veio de uma venda e retiradas para saídas que não são despesas comerciais.</p>
- </div>
- <div class="panel">
-  <h3>Registrar despesa</h3>
-  <label for="expenseDesc">Descrição</label><input id="expenseDesc" placeholder="Ex.: Compra de produtos">
-  <div class="row">
-   <div><label for="expenseAmount">Valor (R$)</label><input id="expenseAmount" type="number" min=".01" step=".01" placeholder="25,00"></div>
-   <div><label for="expenseMethod">Forma de pagamento</label><select id="expenseMethod"><option>Dinheiro</option><option>Pix</option><option>Cartão</option><option>Outro</option></select></div>
-  </div>
-  <div class="actions"><button class="primary" id="saveExpense">Registrar despesa</button></div>
- </div>
- <h3>Movimentações do caixa</h3><div id="cashMovementList"></div>
- <h3>Despesas registradas</h3><div id="expenseList"></div>
+ <div class="panel"><h3>✦ Ajustar saldo disponível</h3><p class="muted">Digite quanto dinheiro existe agora no caixa físico. O sistema registra a diferença como ajuste, sem apagar vendas ou despesas anteriores.</p><label for="cashTarget">Saldo disponível atual (R$)</label><input id="cashTarget" type="number" min="0" step=".01" placeholder="Ex.: 150,00"><div class="actions"><button class="primary" id="setCashTarget">Salvar saldo disponível</button></div></div>
+ <div class="panel"><h3>Registrar movimentação manual</h3><label for="cashMoveDesc">Descrição</label><input id="cashMoveDesc" placeholder="Ex.: Troco inicial, retirada pessoal"><div class="row"><div><label for="cashMoveType">Tipo</label><select id="cashMoveType"><option value="in">Entrada no caixa</option><option value="out">Retirada do caixa</option></select></div><div><label for="cashMoveAmount">Valor (R$)</label><input id="cashMoveAmount" type="number" min=".01" step=".01" placeholder="20,00"></div></div><div class="actions"><button class="primary" id="saveCashMove">Registrar movimentação</button></div><p class="muted">Use entradas para adicionar dinheiro que não veio de uma venda e retiradas para saídas que não são despesas comerciais.</p></div>
+ <div class="panel"><h3>Registrar despesa</h3><label for="expenseDesc">Descrição</label><input id="expenseDesc" placeholder="Ex.: Compra de produtos"><div class="row"><div><label for="expenseAmount">Valor (R$)</label><input id="expenseAmount" type="number" min=".01" step=".01" placeholder="25,00"></div><div><label for="expenseMethod">Forma de pagamento</label><select id="expenseMethod"><option>Dinheiro</option><option>Pix</option><option>Cartão</option><option>Outro</option></select></div></div><div class="actions"><button class="primary" id="saveExpense">Registrar despesa</button></div></div>
+ <h3>Movimentações do caixa</h3><div id="cashMovementList"></div><h3>Despesas registradas</h3><div id="expenseList"></div>
  <p class="muted">O saldo disponível é uma estimativa do caixa físico: saldo ajustado + vendas pagas em dinheiro − despesas pagas em dinheiro + movimentações manuais. Pix e cartão são contabilizados separadamente nas entradas totais.</p>
 </section>
-
 <section id="relatorios" class="page">
  <h2>Relatórios</h2>
- <div class="panel"><div class="row"><div><label for="reportStart">Data inicial</label><input id="reportStart" type="date"></div><div><label for="reportEnd">Data final</label><input id="reportEnd" type="date"></div></div>
- <div class="actions"><button class="primary" id="makeReport">Gerar relatório</button><button id="reportMonth">Mês atual</button></div></div>
+ <div class="panel"><div class="row"><div><label for="reportStart">Data inicial</label><input id="reportStart" type="date"></div><div><label for="reportEnd">Data final</label><input id="reportEnd" type="date"></div></div><div class="actions"><button class="primary" id="makeReport">Gerar relatório</button><button id="reportMonth">Mês atual</button></div></div>
  <div class="grid"><div class="stat"><small>Vendas pagas</small><strong id="reportSales">R$ 0,00</strong></div><div class="stat"><small>Despesas</small><strong id="reportExpenses">R$ 0,00</strong></div><div class="stat"><small>Resultado</small><strong id="reportResult">R$ 0,00</strong></div></div>
- <div class="panel"><h3>Vendas por forma de pagamento</h3><div id="paymentReport"></div></div>
- <div class="panel"><h3>Vendas por dia</h3><div id="dailyReport"></div></div>
- <div class="panel"><h3>Vendas por mês</h3><div id="monthlyReport"></div></div>
+ <div class="panel"><h3>Vendas por forma de pagamento</h3><div id="paymentReport"></div></div><div class="panel"><h3>Vendas por dia</h3><div id="dailyReport"></div></div><div class="panel"><h3>Vendas por mês</h3><div id="monthlyReport"></div></div>
 </section>
-
 <section id="dados" class="page">
  <h2>Backup e dados</h2>
  <div class="panel"><h3>Salvar backup</h3><p class="muted">Baixe uma cópia dos dados salvos neste navegador.</p><button class="primary" id="backupBtn">Baixar backup JSON</button></div>
- <div class="panel"><h3>Restaurar backup</h3><p class="muted">A restauração substitui os dados correspondentes. Faça um backup atual antes de restaurar.</p>
- <label for="restoreFile">Selecionar arquivo JSON</label><input id="restoreFile" type="file" accept=".json,application/json">
- <button class="danger" id="restoreBtn">Restaurar backup selecionado</button></div>
+ <div class="panel"><h3>Restaurar backup</h3><p class="muted">A restauração substitui os dados correspondentes. Faça um backup atual antes de restaurar.</p><label for="restoreFile">Selecionar arquivo JSON</label><input id="restoreFile" type="file" accept=".json,application/json"><button class="danger" id="restoreBtn">Restaurar backup selecionado</button></div>
  <div class="panel"><h3>Integridade dos dados</h3><p id="dataStatus" class="muted"></p><button id="refreshAll">Atualizar telas</button></div>
 </section>
 </main>
@@ -323,6 +221,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
 <script>
 (function(){
 "use strict";
+
 const KEYS={
  stock:"inho_du_corte_estoque_v1",
  history:"inho_du_corte_historico_v1",
@@ -331,6 +230,7 @@ const KEYS={
  config:"inho_du_corte_config_v1",
  accounts:"inho_du_corte_contas_v1"
 };
+
 const $=id=>document.getElementById(id);
 const money=n=>(Number(n)||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 const num=v=>{const n=Number(String(v??0).replace(",","."));return Number.isFinite(n)?n:0};
@@ -341,10 +241,18 @@ const dateKey=v=>dateISO(v).slice(0,10);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const arr=v=>Array.isArray(v)?v:[];
 const getFirst=(o,keys,def)=>{for(const k of keys){if(o&&o[k]!==undefined&&o[k]!==null)return o[k]}return def};
-function read(key,def){try{const raw=localStorage.getItem(key);if(raw===null)return def;return JSON.parse(raw)??def}catch(e){console.error("Erro ao ler",key,e);return def}}
+
+function read(key,def){
+ try{const raw=localStorage.getItem(key);if(raw===null)return def;return JSON.parse(raw)??def}
+ catch(e){console.error("Erro ao ler",key,e);return def}
+}
 function save(key,value){localStorage.setItem(key,JSON.stringify(value))}
-function toast(msg){const el=$("toast");el.textContent=msg;el.style.display="block";clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.style.display="none",3200)}
+function toast(msg){
+ const el=$("toast");el.textContent=msg;el.style.display="block";
+ clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.style.display="none",3200);
+}
 function norm(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim()}
+
 function normalizeProduct(p){
  if(typeof p==="string")p={name:p};
  return {...p,id:String(getFirst(p,["id","productId"],uid())),
@@ -376,6 +284,7 @@ function normalizeAccount(a){
  items,total:items.reduce((s,i)=>s+i.total,0),
  paidAmount:num(getFirst(a,["paidAmount"],0)),payment:String(getFirst(a,["payment"],""))};
 }
+
 let products=arr(read(KEYS.stock,[])).map(normalizeProduct);
 let sales=arr(read(KEYS.sales,[]));
 let history=arr(read(KEYS.history,[]));
@@ -388,8 +297,12 @@ let currentPhoto="";
 let selectedPayment="Dinheiro";
 
 function persist(){
- save(KEYS.stock,products);save(KEYS.sales,sales);save(KEYS.history,history);
- save(KEYS.expenses,expenses);save(KEYS.accounts,accounts);save(KEYS.config,config);
+ save(KEYS.stock,products);
+ save(KEYS.sales,sales);
+ save(KEYS.history,history);
+ save(KEYS.expenses,expenses);
+ save(KEYS.accounts,accounts);
+ save(KEYS.config,config);
 }
 function logEvent(type,details){
  history.push({id:uid(),type,details:String(details),date:new Date().toISOString()});
@@ -399,7 +312,8 @@ function logEvent(type,details){
 function download(filename,content,type){
  const blob=new Blob([content],{type}),url=URL.createObjectURL(blob);
  const a=document.createElement("a");a.href=url;a.download=filename;
- document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+ document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 function navigate(id){
  document.querySelectorAll("section.page").forEach(s=>s.classList.toggle("active",s.id===id));
@@ -419,7 +333,10 @@ function getAccount(customer){const q=norm(customer);return openAccounts().find(
 function openOrGetAccount(customer){
  const name=String(customer||"").trim();if(!name)throw new Error("Informe o nome do cliente.");
  let a=getAccount(name);
- if(!a){a=normalizeAccount({id:uid(),customer:name,status:"open",items:[],createdAt:new Date().toISOString()});accounts.unshift(a);logEvent("conta_aberta","Conta aberta para "+name)}
+ if(!a){
+  a=normalizeAccount({id:uid(),customer:name,status:"open",items:[],createdAt:new Date().toISOString()});
+  accounts.unshift(a);logEvent("conta_aberta","Conta aberta para "+name);
+ }
  return a;
 }
 function addToAccount(customer,productId,qty){
@@ -454,23 +371,24 @@ function payAccount(id){
  const method=prompt("Valor a receber: "+money(total)+"\nDigite: Dinheiro, Pix ou Cartão","Pix");
  if(method===null)return;
  const normalized=norm(method);
- const allowed=["pix","dinheiro","cartao","cartão","outro"];
- if(!allowed.includes(normalized)){toast("Forma inválida.");return}
- const payment=normalized==="cartao"||normalized==="cartão"?"Cartão":normalized==="pix"?"Pix":normalized==="dinheiro"?"Dinheiro":"Outro";
+ const allowed=["pix","dinheiro","cartao","outro"];
+ if(!allowed.includes(normalized)){toast("Forma inválida. Digite Dinheiro, Pix, Cartão ou Outro.");return}
+ const payment=normalized==="cartao"?"Cartão":normalized==="pix"?"Pix":normalized==="dinheiro"?"Dinheiro":"Outro";
  if(!confirm("Confirmar recebimento de "+money(total)+" de "+a.customer+" por "+payment+"?"))return;
  const now=new Date().toISOString();a.status="paid";a.paidAmount=total;a.payment=payment;a.paidAt=now;a.updatedAt=now;
- sales.push({id:uid(),accountId:a.id,customer:a.customer,items:a.items.map(i=>({...i})),total,amount:total,payment,date:now,createdAt:now,type:"account"});
+ sales.push({id:uid(),accountId:a.id,customer:a.customer,items:a.items.map(i=>({...i})),total,amount:total,payment,date:now,createdAt:now,type:"account",status:"paid"});
  logEvent("pagamento","Recebido "+money(total)+" de "+a.customer+" via "+payment);
  persist();renderAll();toast("Pagamento confirmado. Venda registrada.");
 }
+
 function renderAccounts(){
  const filter=norm($("accountFilter").value),status=$("accountStatus").value;
  const list=accounts.filter(a=>(status==="all"||(status==="open"?a.status!=="paid":a.status==="paid"))&&norm(a.customer).includes(filter));
  $("accountList").innerHTML=list.length?list.map(a=>{
  const total=accountTotal(a);
  return `<div class="panel"><div class="item"><div><strong>${esc(a.customer)}</strong><div class="muted">${new Date(a.createdAt).toLocaleString("pt-BR")}</div><span class="pill ${a.status==="paid"?"green":"gold"}">${a.status==="paid"?"PAGA":"EM ABERTO"}</span></div><div class="right"><strong class="gold">${money(total)}</strong></div></div>
- ${a.items.length?a.items.map(i=>`<div class="item"><div>${esc(i.productName)}<p>${i.qty} × ${money(i.unitPrice)}</p></div><div class="right">${money(i.total)}${a.status!=="paid"?`<div><button class="danger" data-remove-item="${a.id}|${i.id}">Remover</button></div>`:""}</div></div>`).join(""):'<p class="muted">Nenhum consumo lançado.</p>'}
- ${a.status!=="paid"?`<div class="actions"><button class="primary" data-pay="${a.id}">Confirmar pagamento</button><button data-add-more="${a.id}">Adicionar consumo</button><button class="danger" data-cancel-account="${a.id}">Cancelar conta</button></div>`:`<p class="muted">Pagamento: ${esc(a.payment||"Não informado")}</p>`}</div>`;
+ ${a.items.length?a.items.map(i=>`<div class="item"><div>${esc(i.productName)}<p>${i.qty} × ${money(i.unitPrice)}</p></div><div class="right">${money(i.total)}${a.status!=="paid"?`<div><button class="danger" data-remove-item="${esc(a.id)}|${esc(i.id)}">Remover</button></div>`:""}</div></div>`).join(""):'<p class="muted">Nenhum consumo lançado.</p>'}
+ ${a.status!=="paid"?`<div class="actions"><button class="primary" data-pay="${esc(a.id)}">Confirmar pagamento</button><button data-add-more="${esc(a.id)}">Adicionar consumo</button><button class="danger" data-cancel-account="${esc(a.id)}">Cancelar conta</button></div>`:`<p class="muted">Pagamento: ${esc(a.payment||"Não informado")}</p>`}</div>`;
  }).join(""):'<div class="empty">Nenhuma conta encontrada.</div>';
  $("homeAccounts").innerHTML=openAccounts().slice(0,5).map(a=>`<div class="item"><div>${esc(a.customer)}<p>${a.items.length} item(ns)</p></div><strong class="gold">${money(accountTotal(a))}</strong></div>`).join("")||'<div class="empty">Nenhuma conta pendente.</div>';
 }
@@ -482,8 +400,10 @@ $("accountList").addEventListener("click",e=>{
  if(b.dataset.addMore){const a=accounts.find(x=>x.id===b.dataset.addMore);if(!a)return;$("manualCustomer").value=a.customer;navigate("assistente");$("manualProduct").focus()}
 });
 $("openAccount").addEventListener("click",()=>{
- try{const name=$("newCustomer").value.trim();if(!name)throw new Error("Digite o nome do cliente.");openOrGetAccount(name);persist();$("newCustomer").value="";renderAll();toast("Conta aberta.")}
- catch(e){toast(e.message)}
+ try{
+  const name=$("newCustomer").value.trim();if(!name)throw new Error("Digite o nome do cliente.");
+  openOrGetAccount(name);persist();$("newCustomer").value="";renderAll();toast("Conta aberta.");
+ }catch(e){toast(e.message)}
 });
 $("accountFilter").addEventListener("input",renderAccounts);
 $("accountStatus").addEventListener("change",renderAccounts);
@@ -511,8 +431,17 @@ function updateQuickTotal(){
 }
 $("quickProduct").addEventListener("change",updateQuickTotal);
 $("quickQty").addEventListener("input",updateQuickTotal);
-$("qtyMinus").addEventListener("click",()=>{$("quickQty").value=Math.max(1,Math.floor(num($("quickQty").value))-1);updateQuickTotal()});
-$("qtyPlus").addEventListener("click",()=>{$("quickQty").value=Math.max(1,Math.floor(num($("quickQty").value))+1;updateQuickTotal()});
+$("qtyMinus").addEventListener("click",()=>{
+ $("quickQty").value=Math.max(1,Math.floor(num($("quickQty").value))-1);
+ updateQuickTotal();
+});
+
+/* CORREÇÃO DO ERRO DE SINTAXE: o botão + agora funciona normalmente. */
+$("qtyPlus").addEventListener("click",()=>{
+ $("quickQty").value=Math.max(1,Math.floor(num($("quickQty").value))+1);
+ updateQuickTotal();
+});
+
 $("paymentMethods").addEventListener("click",e=>{
  const b=e.target.closest("[data-method]");if(!b)return;
  selectedPayment=b.dataset.method;
@@ -570,22 +499,25 @@ function resetProductForm(){
 }
 $("productPhoto").addEventListener("change",()=>{
  const f=$("productPhoto").files[0];if(!f)return;
+ if(!f.type.startsWith("image/")){toast("Selecione um arquivo de imagem válido.");$("productPhoto").value="";return}
  if(f.size>700*1024){toast("A imagem deve ter até 700 KB.");$("productPhoto").value="";return}
  const reader=new FileReader();
- reader.onload=()=>{currentPhoto=String(reader.result);$("photoPreview").innerHTML=`<img class="product-photo" alt="Prévia do produto" src="${currentPhoto}">`};
- reader.onerror=()=>toast("Não foi possível ler a imagem.");reader.readAsDataURL(f);
+ reader.onload=()=>{currentPhoto=String(reader.result);$("photoPreview").innerHTML=`<img class="product-photo" alt="Prévia do produto" src="${esc(currentPhoto)}">`};
+ reader.onerror=()=>toast("Não foi possível ler a imagem.");
+ reader.readAsDataURL(f);
 });
 $("saveProduct").addEventListener("click",()=>{
  const name=$("productName").value.trim();if(!name){toast("Informe o nome do produto.");return}
  const price=num($("productPrice").value),cost=num($("productCost").value),stock=num($("productStock").value),min=num($("productMin").value);
  if(price<0||cost<0||stock<0||min<0){toast("Os valores não podem ser negativos.");return}
+ if(!Number.isFinite(stock)||!Number.isInteger(stock)||!Number.isFinite(min)||!Number.isInteger(min)){toast("Estoque e estoque mínimo devem ser números inteiros.");return}
  const id=$("productId").value;
  if(id){
   const p=products.find(x=>x.id===id);if(!p)return;
-  p.name=name;p.price=price;p.cost=cost;p.stock=Math.floor(stock);p.min=Math.floor(min);if(currentPhoto)p.photo=currentPhoto;
+  p.name=name;p.price=price;p.cost=cost;p.stock=stock;p.min=min;if(currentPhoto)p.photo=currentPhoto;
   logEvent("produto_editado",name);
  }else{
-  products.push({id:uid(),name,price,cost,stock:Math.floor(stock),min:Math.floor(min),photo:currentPhoto});
+  products.push({id:uid(),name,price,cost,stock,min,photo:currentPhoto});
   logEvent("produto_cadastrado",name);
  }
  persist();resetProductForm();renderAll();toast("Produto salvo com sucesso.");
@@ -595,7 +527,7 @@ function editProduct(id){
  const p=products.find(x=>x.id===id);if(!p)return;
  $("productId").value=p.id;$("productName").value=p.name;$("productPrice").value=p.price;
  $("productCost").value=p.cost;$("productStock").value=p.stock;$("productMin").value=p.min;currentPhoto=p.photo||"";
- $("photoPreview").innerHTML=currentPhoto?`<img class="product-photo" alt="Foto do produto" src="${currentPhoto}">`:"";
+ $("photoPreview").innerHTML=currentPhoto?`<img class="product-photo" alt="Foto do produto" src="${esc(currentPhoto)}">`:"";
  $("productFormTitle").textContent="Editar produto";$("cancelEdit").hidden=false;window.scrollTo({top:0,behavior:"smooth"});
 }
 function deleteProduct(id){
@@ -607,13 +539,13 @@ function deleteProduct(id){
 function adjustStock(id){
  const p=products.find(x=>x.id===id);if(!p)return;
  const raw=prompt("Quantas unidades deseja adicionar ao estoque de "+p.name+"?","1");
- if(raw===null)return;const n=Math.floor(num(raw));
- if(!Number.isFinite(n)||n<1){toast("Quantidade inválida.");return}
+ if(raw===null)return;const n=Number(raw);
+ if(!Number.isInteger(n)||n<1){toast("Quantidade inválida. Digite um número inteiro maior que zero.");return}
  p.stock+=n;logEvent("estoque_adicionado",n+" unidades de "+p.name);persist();renderAll();toast("Estoque atualizado.");
 }
 function renderProducts(){
  const q=norm($("stockSearch").value),list=products.filter(p=>norm(p.name).includes(q));
- $("productList").innerHTML=list.length?list.map(p=>`<div class="item"><div style="display:flex;gap:10px;align-items:center;min-width:0">${p.photo?`<img class="product-photo" alt="" src="${p.photo}">`:""}<div><strong>${esc(p.name)}</strong><p>Venda: ${money(p.price)} · Custo: ${money(p.cost)}</p><p class="${p.stock<=p.min?"red":"muted"}">Estoque: ${p.stock} · Mínimo: ${p.min}</p></div></div><div class="right"><div class="actions"><button data-edit-product="${p.id}">Editar</button><button data-stock-product="${p.id}">+ Estoque</button><button class="danger" data-delete-product="${p.id}">Excluir</button></div></div></div>`).join(""):'<div class="empty">Nenhum produto cadastrado.</div>';
+ $("productList").innerHTML=list.length?list.map(p=>`<div class="item"><div style="display:flex;gap:10px;align-items:center;min-width:0">${p.photo?`<img class="product-photo" alt="" src="${esc(p.photo)}">`:""}<div><strong>${esc(p.name)}</strong><p>Venda: ${money(p.price)} · Custo: ${money(p.cost)}</p><p class="${p.stock<=p.min?"red":"muted"}">Estoque: ${p.stock} · Mínimo: ${p.min}</p></div></div><div class="right"><div class="actions"><button data-edit-product="${esc(p.id)}">Editar</button><button data-stock-product="${esc(p.id)}">+ Estoque</button><button class="danger" data-delete-product="${esc(p.id)}">Excluir</button></div></div></div>`).join(""):'<div class="empty">Nenhum produto cadastrado.</div>';
  renderProductOptions();
 }
 $("productList").addEventListener("click",e=>{
@@ -636,10 +568,9 @@ function totalExpenses(start="0000-01-01",end="9999-12-31"){return expenses.filt
 function paymentIsCash(v){return norm(v)==="dinheiro"}
 function cashSalesTotal(){return paidSales().filter(s=>paymentIsCash(salePayment(s))).reduce((s,x)=>s+saleAmount(x),0)}
 function cashExpensesTotal(){return expenses.filter(e=>paymentIsCash(getFirst(e,["payment","method"],"Outro"))).reduce((s,e)=>s+expenseAmount(e),0)}
-function movementBalance(){
- return arr(config.cashMovements).reduce((s,m)=>s+(m.type==="out"?-num(m.amount):num(m.amount)),0);
-}
+function movementBalance(){return arr(config.cashMovements).reduce((s,m)=>s+(m.type==="out"?-num(m.amount):num(m.amount)),0)}
 function cashBalance(){return num(config.cashOpeningBalance)+cashSalesTotal()-cashExpensesTotal()+movementBalance()}
+
 function renderSales(){
  const start=$("salesStart").value||today(),end=$("salesEnd").value||today();
  const list=paidSales().filter(s=>inRange(saleDate(s),start,end)).sort((a,b)=>new Date(getFirst(b,["date","createdAt"],0))-new Date(getFirst(a,["date","createdAt"],0)));
@@ -656,13 +587,11 @@ $("exportSales").addEventListener("click",()=>{
 });
 
 function renderCash(){
- const inc=paidSales().reduce((s,x)=>s+saleAmount(x),0),out=totalExpenses();
- const balance=cashBalance();
+ const inc=paidSales().reduce((s,x)=>s+saleAmount(x),0),out=totalExpenses(),balance=cashBalance();
  $("cashIn").textContent=money(inc);$("cashOut").textContent=money(out);
  $("cashPhysicalIn").textContent=money(cashSalesTotal());$("cashBalance").textContent=money(balance);
  $("homeCash").textContent=money(balance);$("quickCash").textContent=money(balance);
- $("quickTodaySales").textContent=money(todaySales());
- $("cashTarget").placeholder=balance.toFixed(2);
+ $("quickTodaySales").textContent=money(todaySales());$("cashTarget").placeholder=balance.toFixed(2);
  const movements=arr(config.cashMovements).slice().sort((a,b)=>new Date(b.date)-new Date(a.date));
  $("cashMovementList").innerHTML=movements.length?movements.map(m=>`<div class="item"><div><strong>${esc(m.description||"Movimentação manual")}</strong><p>${new Date(m.date).toLocaleString("pt-BR")} · ${m.type==="out"?"Retirada":"Entrada"}</p></div><div class="right"><strong class="${m.type==="out"?"red":"green"}">${m.type==="out"?"−":"+"}${money(m.amount)}</strong><div><button class="danger" data-delete-move="${esc(m.id)}">Excluir</button></div></div></div>`).join(""):'<div class="empty">Nenhuma movimentação manual registrada.</div>';
  $("expenseList").innerHTML=expenses.slice().sort((a,b)=>new Date(getFirst(b,["date","createdAt"],0))-new Date(getFirst(a,["date","createdAt"],0))).map(e=>`<div class="item"><div><strong>${esc(getFirst(e,["description","name","descricao"],"Despesa"))}</strong><p>${expenseDate(e)} · ${esc(getFirst(e,["payment","method"],"Outro"))}</p></div><div class="right"><strong class="red">${money(expenseAmount(e))}</strong><div><button class="danger" data-delete-expense="${esc(e.id)}">Excluir</button></div></div></div>`).join("")||'<div class="empty">Nenhuma despesa registrada.</div>';
@@ -671,6 +600,7 @@ $("setCashTarget").addEventListener("click",()=>{
  const raw=$("cashTarget").value,target=num(raw);
  if(raw.trim()===""||target<0){toast("Informe um saldo igual ou maior que zero.");return}
  const current=cashBalance(),delta=target-current;
+ if(Math.abs(delta)<0.005){toast("O saldo já está igual ao valor informado.");return}
  config.cashMovements.push({id:uid(),type:delta>=0?"in":"out",amount:Math.abs(delta),description:"Ajuste manual do saldo disponível",date:new Date().toISOString(),adjustment:true});
  logEvent("ajuste_caixa","Saldo ajustado de "+money(current)+" para "+money(target));
  persist();$("cashTarget").value="";renderAll();toast("Saldo disponível atualizado.");
@@ -733,6 +663,7 @@ function renderAll(){
  renderHome();renderAccounts();renderProducts();renderSales();renderCash();renderReport();
  $("dataStatus").textContent="Produtos: "+products.length+" · Vendas: "+sales.length+" · Despesas: "+expenses.length+" · Contas: "+accounts.length+" · Última atualização: "+new Date().toLocaleString("pt-BR");
 }
+
 $("backupBtn").addEventListener("click",()=>{
  const data={version:3,createdAt:new Date().toISOString(),
  [KEYS.stock]:products,[KEYS.history]:history,[KEYS.sales]:sales,
@@ -759,7 +690,8 @@ $("restoreBtn").addEventListener("click",()=>{
    persist();renderAll();toast("Backup restaurado.");
   }catch(e){console.error(e);toast("Arquivo inválido ou incompatível. Confira o backup e tente novamente.")}
  };
- reader.onerror=()=>toast("Não foi possível ler o arquivo.");reader.readAsText(file);
+ reader.onerror=()=>toast("Não foi possível ler o arquivo.");
+ reader.readAsText(file);
 });
 $("refreshAll").addEventListener("click",()=>{renderAll();toast("Telas atualizadas.")});
 
@@ -768,7 +700,12 @@ function initialize(){
  $("reportStart").value=today();$("reportEnd").value=today();
  persist();renderAll();
 }
-try{initialize()}catch(e){console.error("Erro ao iniciar Gestão Inho Dú Corte:",e);toast("Erro ao iniciar. Faça um backup e confira o código.");}
+try{
+ initialize();
+}catch(e){
+ console.error("Erro ao iniciar Gestão Inho Dú Corte:",e);
+ toast("Erro ao iniciar. Faça um backup e confira o código.");
+}
 })();
 </script>
 </body>
