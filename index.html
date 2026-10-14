@@ -2,687 +2,727 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0b0b0c">
 <title>Gestão Inho Dú Corte</title>
 <style>
-:root{--bg:#0b0b0c;--panel:#171719;--gold:#d4af37;--gold2:#f0d779;--white:#f7f7f7;--muted:#a5a5ad;--red:#ff7373;--green:#63d69a;--border:#303034}
+:root{
+  --bg:#0b0b0c;--panel:#171719;--panel2:#202024;
+  --gold:#d4af37;--gold2:#f0d779;--white:#f7f7f7;
+  --muted:#a5a5ad;--border:#333338;--red:#ff7777;
+  --green:#63d69a;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif}
-header{background:#111113;border-bottom:1px solid var(--border);padding:16px;position:sticky;top:0;z-index:5}
-.brand{color:var(--gold);font-size:22px;font-weight:900}
-.subtitle{color:var(--muted);font-size:12px;margin-top:5px}
-nav{display:flex;gap:8px;overflow-x:auto;padding:12px;background:#111113;border-bottom:1px solid var(--border)}
-button,.navbtn{background:#242426;color:var(--white);border:1px solid #3b3b3e;border-radius:9px;padding:11px 13px;font-weight:700;cursor:pointer}
-button:active{transform:scale(.98)}
-button.primary{background:var(--gold);color:#111;border-color:var(--gold)}
-button.danger{border-color:#713737;color:#ff9292}
-button.success{border-color:#285e45;color:var(--green)}
+body{margin:0;background:var(--bg);color:var(--white);
+font:15px Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{max-width:1450px;margin:auto;padding:16px}
+header{display:flex;align-items:center;justify-content:space-between;
+gap:12px;flex-wrap:wrap;padding:15px 0 22px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:48px;height:48px;border:2px solid var(--gold);
+border-radius:12px;display:grid;place-items:center;color:var(--gold);
+font-size:25px;font-weight:bold}
+h1{font-size:21px;margin:0}
+h2{font-size:19px;margin:0 0 15px}
+h3{font-size:16px;margin:0 0 10px}
+small,.muted{color:var(--muted)}
+.layout{display:grid;grid-template-columns:205px minmax(0,1fr);gap:18px}
+nav,.panel,.stat{background:var(--panel);border:1px solid var(--border);
+border-radius:14px}
+nav{padding:10px;height:max-content;position:sticky;top:12px}
+nav button{display:block;width:100%;text-align:left;padding:12px;
+margin:3px 0;background:transparent;color:var(--white);
+border:0;border-radius:9px}
+nav button.active,nav button:hover{background:#302916;color:var(--gold2)}
+main{min-width:0}
+.page{display:none}
+.page.active{display:block}
+.panel{padding:17px;margin-bottom:16px;min-width:0}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+gap:12px;margin-bottom:16px}
+.stat{padding:15px;min-width:0}
+.stat span{display:block;color:var(--muted);font-size:12px;margin-bottom:9px}
+.stat strong{font-size:clamp(17px,2.3vw,25px);color:var(--gold2);
+overflow-wrap:anywhere}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+label{display:block;color:var(--muted);font-size:13px;margin-bottom:5px}
+input,select,textarea{width:100%;padding:11px;background:#101012;
+color:var(--white);border:1px solid var(--border);border-radius:8px;
+outline:none;min-width:0}
+input:focus,select:focus,textarea:focus{border-color:var(--gold)}
+.field{margin-bottom:12px}
+button.primary{background:var(--gold);color:#15130a;border:0;
+font-weight:bold;padding:11px 15px;border-radius:8px}
+button.secondary{background:var(--panel2);color:var(--white);
+border:1px solid var(--border);padding:10px 13px;border-radius:8px}
+button.danger{background:#401d20;color:#ffb2b2;border:1px solid #733238;
+padding:8px 10px;border-radius:7px}
 button:disabled{opacity:.45;cursor:not-allowed}
-main{max-width:1100px;margin:auto;padding:16px}
-section.page{display:none}
-section.page.active{display:block}
-h2{font-size:21px;margin:8px 0 16px}
-h3{font-size:16px;margin:5px 0 12px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin-bottom:16px}
-.stat,.panel,.item{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:12px}
-.stat small{display:block;color:var(--muted);margin-bottom:9px}
-.stat strong{font-size:22px;color:var(--gold)}
-label{display:block;font-size:13px;color:var(--muted);margin:10px 0 6px}
-input,select,textarea{width:100%;background:#0e0e10;color:var(--white);border:1px solid #3c3c40;border-radius:8px;padding:12px;font-size:16px}
-textarea{min-height:80px;resize:vertical}
-.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.muted{color:var(--muted);font-size:13px}
-.gold{color:var(--gold)}
-.green{color:var(--green)}
-.red{color:var(--red)}
-.item{display:flex;justify-content:space-between;gap:12px;align-items:center}
-.item p{margin:5px 0;color:var(--muted);font-size:13px}
-.item .right{text-align:right;min-width:90px}
-.pill{font-size:11px;padding:4px 7px;border:1px solid var(--border);border-radius:20px;display:inline-block;margin-top:4px}
-.empty{padding:18px;text-align:center;color:var(--muted);background:var(--panel);border-radius:10px}
-hr{border:0;border-top:1px solid var(--border);margin:15px 0}
-img.product-photo{width:56px;height:56px;object-fit:cover;border-radius:8px}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{text-align:left;padding:10px 6px;border-bottom:1px solid var(--border)}
-th{color:var(--gold)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+table{width:100%;border-collapse:collapse;min-width:560px}
+th,td{text-align:left;padding:11px 9px;border-bottom:1px solid var(--border);
+font-size:13px;vertical-align:middle}
+th{color:var(--gold2);font-weight:bold}
 .tablewrap{overflow-x:auto}
-#toast{position:fixed;bottom:20px;left:12px;right:12px;max-width:500px;margin:auto;background:#292929;border:1px solid var(--gold);padding:14px;border-radius:10px;display:none;z-index:20}
+.product-img{width:44px;height:44px;object-fit:cover;border-radius:8px;
+background:#29292d}
+.empty{padding:22px;text-align:center;color:var(--muted)}
+.tag{font-size:11px;border:1px solid var(--border);border-radius:20px;
+padding:4px 8px;color:var(--muted)}
+.gold{color:var(--gold2)}.green{color:var(--green)}.red{color:var(--red)}
+.chat{background:#101012;border:1px solid var(--border);border-radius:10px;
+padding:12px;min-height:170px;max-height:320px;overflow:auto;margin:12px 0}
+.msg{padding:10px 12px;border-radius:10px;margin:8px 0;
+white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}
+.msg.bot{background:#282315;border:1px solid #51451f}
+.msg.user{background:#25252a;margin-left:12%}
+hr{border:0;border-top:1px solid var(--border);margin:17px 0}
 footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
-@media(min-width:750px){nav{flex-wrap:wrap}main{padding:24px}.row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:850px){
+ .layout{grid-template-columns:1fr}
+ nav{position:static;display:flex;gap:5px;overflow-x:auto}
+ nav button{width:auto;min-width:max-content;margin:0}
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .grid3{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:520px){
+ .app{padding:10px}
+ .grid2,.grid3{grid-template-columns:1fr}
+ .panel{padding:13px}
+ h1{font-size:18px}
+ nav{margin-bottom:4px}
+}
 </style>
 </head>
 <body>
+<div class="app">
 <header>
-  <div class="brand">✂ GESTÃO INHO DÚ CORTE</div>
-  <div class="subtitle">Controle profissional • Estoque • Contas • Vendas • Caixa</div>
+  <div class="brand">
+    <div class="logo">I</div>
+    <div>
+      <h1>GESTÃO INHO DÚ CORTE</h1>
+      <small>Controle inteligente da barbearia</small>
+    </div>
+  </div>
+  <span class="tag">VERSÃO 2.0 • PRETO E DOURADO</span>
 </header>
 
-<nav id="navigation">
-  <button data-page="inicio" class="primary">Início</button>
-  <button data-page="assistente">Assistente</button>
-  <button data-page="contas">Contas dos clientes</button>
-  <button data-page="estoque">Estoque</button>
-  <button data-page="vendas">Vendas</button>
-  <button data-page="caixa">Caixa e despesas</button>
-  <button data-page="relatorios">Relatórios</button>
-  <button data-page="dados">Backup e dados</button>
+<div class="layout">
+<nav id="nav">
+  <button class="active" data-page="inicio">▦ Visão geral</button>
+  <button data-page="estoque">▤ Estoque</button>
+  <button data-page="vendas">▣ Vendas</button>
+  <button data-page="caixa">◉ Caixa e despesas</button>
+  <button data-page="relatorios">▥ Relatórios</button>
+  <button data-page="assistente">✦ Assistente Inho</button>
+  <button data-page="backup">⇅ Backup</button>
 </nav>
 
 <main>
-<section id="inicio" class="page active">
-  <h2>Painel da barbearia</h2>
-  <div class="grid">
-    <div class="stat"><small>Vendas de hoje</small><strong id="homeSales">R$ 0,00</strong></div>
-    <div class="stat"><small>Dinheiro em caixa</small><strong id="homeCash">R$ 0,00</strong></div>
-    <div class="stat"><small>Contas em aberto</small><strong id="homeOpen">0</strong></div>
-    <div class="stat"><small>Produtos cadastrados</small><strong id="homeProducts">0</strong></div>
+<section class="page active" id="inicio">
+  <div class="stats">
+    <div class="stat"><span>VENDAS DE HOJE</span><strong id="sVendas">R$ 0,00</strong></div>
+    <div class="stat"><span>SALDO DO CAIXA</span><strong id="sCaixa">R$ 0,00</strong></div>
+    <div class="stat"><span>ITENS EM ESTOQUE</span><strong id="sItens">0</strong></div>
+    <div class="stat"><span>DESPESAS DE HOJE</span><strong id="sDespesas">R$ 0,00</strong></div>
   </div>
   <div class="panel">
-    <h3>Acesso rápido</h3>
+    <h2>Bem-vindo à sua gestão</h2>
+    <p class="muted">Registre vendas, acompanhe os produtos e controle o caixa em um só lugar.</p>
     <div class="actions">
-      <button class="primary" data-go="assistente">Lançar consumo</button>
-      <button data-go="estoque">Cadastrar produto</button>
-      <button data-go="contas">Receber pagamento</button>
-      <button data-go="relatorios">Ver relatórios</button>
+      <button class="primary" onclick="showPage('vendas')">＋ Nova venda</button>
+      <button class="secondary" onclick="showPage('estoque')">＋ Produto</button>
+      <button class="secondary" onclick="showPage('assistente')">✦ Falar com Assistente Inho</button>
     </div>
   </div>
   <div class="panel">
-    <h3>Atenção ao estoque</h3>
-    <div id="lowStock"></div>
+    <h2>Estoque baixo</h2>
+    <div id="baixoEstoque" class="empty">Nenhum alerta.</div>
   </div>
   <div class="panel">
-    <h3>Contas pendentes recentes</h3>
-    <div id="homeAccounts"></div>
+    <h2>Últimas vendas</h2>
+    <div id="ultimasVendas" class="empty">Nenhuma venda registrada.</div>
   </div>
 </section>
 
-<section id="assistente" class="page">
-  <h2>Assistente da barbearia</h2>
+<section class="page" id="estoque">
   <div class="panel">
-    <p>Digite o consumo do cliente como se estivesse falando com um ajudante. Exemplos:</p>
-    <p class="gold">“João pegou duas águas”</p>
-    <p class="gold">“Pedro pegou 1 refrigerante”</p>
-    <label for="assistantText">O que o cliente consumiu?</label>
-    <textarea id="assistantText" placeholder="Ex.: João pegou duas águas"></textarea>
-    <div class="actions">
-      <button class="primary" id="processText">Registrar consumo</button>
-      <button id="clearText">Limpar</button>
-    </div>
-    <p class="muted">O estoque é descontado imediatamente. O pagamento só é registrado quando você confirmar que recebeu.</p>
-  </div>
-  <div class="panel">
-    <h3>Ou registre manualmente</h3>
-    <label for="manualCustomer">Nome do cliente</label>
-    <input id="manualCustomer" placeholder="Nome do cliente">
-    <label for="manualProduct">Produto</label>
-    <select id="manualProduct"></select>
-    <label for="manualQty">Quantidade</label>
-    <input id="manualQty" type="number" min="1" step="1" value="1">
-    <div class="actions"><button class="primary" id="manualAdd">Adicionar à conta</button></div>
-  </div>
-</section>
-
-<section id="contas" class="page">
-  <h2>Contas dos clientes</h2>
-  <div class="panel">
-    <label for="newCustomer">Abrir conta para cliente</label>
-    <input id="newCustomer" placeholder="Nome do cliente">
-    <div class="actions"><button class="primary" id="openAccount">Abrir conta</button></div>
-  </div>
-  <div class="row">
-    <div><label for="accountFilter">Filtrar contas</label><input id="accountFilter" placeholder="Buscar cliente"></div>
-    <div><label for="accountStatus">Situação</label>
-      <select id="accountStatus"><option value="all">Todas</option><option value="open">Em aberto</option><option value="paid">Pagas</option></select>
-    </div>
-  </div>
-  <div id="accountList"></div>
-</section>
-
-<section id="estoque" class="page">
-  <h2>Estoque e produtos</h2>
-  <div class="panel">
-    <h3 id="productFormTitle">Cadastrar produto</h3>
-    <input id="productId" type="hidden">
-    <label for="productName">Nome do produto</label>
-    <input id="productName" placeholder="Ex.: Água mineral">
-    <div class="row">
-      <div><label for="productPrice">Preço de venda (R$)</label><input id="productPrice" type="number" min="0" step=".01" placeholder="3,00"></div>
-      <div><label for="productCost">Custo por unidade (R$)</label><input id="productCost" type="number" min="0" step=".01" placeholder="1,50"></div>
-    </div>
-    <div class="row">
-      <div><label for="productStock">Quantidade em estoque</label><input id="productStock" type="number" min="0" step="1" placeholder="10"></div>
-      <div><label for="productMin">Estoque mínimo</label><input id="productMin" type="number" min="0" step="1" value="2"></div>
-    </div>
-    <label for="productPhoto">Foto do produto (opcional)</label>
-    <input id="productPhoto" type="file" accept="image/*">
-    <div id="photoPreview"></div>
-    <div class="actions">
-      <button class="primary" id="saveProduct">Salvar produto</button>
-      <button id="cancelEdit" hidden>Cancelar edição</button>
-    </div>
-  </div>
-  <label for="stockSearch">Buscar produto</label>
-  <input id="stockSearch" placeholder="Digite o nome">
-  <div id="productList"></div>
-</section>
-
-<section id="vendas" class="page">
-  <h2>Histórico de vendas</h2>
-  <div class="row">
-    <div><label for="salesStart">Data inicial</label><input id="salesStart" type="date"></div>
-    <div><label for="salesEnd">Data final</label><input id="salesEnd" type="date"></div>
-  </div>
-  <div class="actions"><button class="primary" id="filterSales">Filtrar vendas</button><button id="resetSalesFilter">Hoje</button><button id="exportSales">Exportar CSV</button></div>
-  <div class="grid">
-    <div class="stat"><small>Total vendido</small><strong id="salesTotal">R$ 0,00</strong></div>
-    <div class="stat"><small>Quantidade de registros</small><strong id="salesCount">0</strong></div>
-  </div>
-  <div id="salesList"></div>
-</section>
-
-<section id="caixa" class="page">
-  <h2>Caixa e despesas</h2>
-  <div class="grid">
-    <div class="stat"><small>Entradas registradas</small><strong id="cashIn">R$ 0,00</strong></div>
-    <div class="stat"><small>Despesas</small><strong id="cashOut">R$ 0,00</strong></div>
-    <div class="stat"><small>Saldo calculado</small><strong id="cashBalance">R$ 0,00</strong></div>
-  </div>
-  <div class="panel">
-    <h3>Registrar despesa</h3>
-    <label for="expenseDesc">Descrição</label>
-    <input id="expenseDesc" placeholder="Ex.: Compra de produtos">
-    <div class="row">
-      <div><label for="expenseAmount">Valor (R$)</label><input id="expenseAmount" type="number" min=".01" step=".01" placeholder="25,00"></div>
-      <div><label for="expenseMethod">Forma de pagamento</label>
-        <select id="expenseMethod"><option>Dinheiro</option><option>Pix</option><option>Cartão</option><option>Outro</option></select>
+    <h2>Cadastrar produto</h2>
+    <form id="formProduto">
+      <input type="hidden" id="pId">
+      <div class="grid2">
+        <div class="field"><label>Nome do produto *</label>
+          <input id="pNome" required placeholder="Ex.: Pomada modeladora"></div>
+        <div class="field"><label>Código (opcional)</label>
+          <input id="pCodigo" placeholder="Ex.: P001"></div>
+        <div class="field"><label>Preço de custo (R$) *</label>
+          <input id="pCusto" type="number" min="0" step=".01" required></div>
+        <div class="field"><label>Preço de venda (R$) *</label>
+          <input id="pPreco" type="number" min="0" step=".01" required></div>
+        <div class="field"><label>Quantidade em estoque *</label>
+          <input id="pQtd" type="number" min="0" step="1" required></div>
+        <div class="field"><label>Alerta de estoque mínimo</label>
+          <input id="pMin" type="number" min="0" step="1" value="2"></div>
       </div>
-    </div>
-    <div class="actions"><button class="primary" id="saveExpense">Registrar despesa</button></div>
+      <div class="field"><label>Foto do produto</label>
+        <input id="pFoto" type="file" accept="image/*">
+        <small>A foto é salva no navegador. Prefira imagens pequenas.</small>
+        <div id="previewFoto"></div>
+      </div>
+      <div class="actions">
+        <button class="primary" type="submit">Salvar produto</button>
+        <button class="secondary" type="button" onclick="limparProduto()">Limpar</button>
+      </div>
+    </form>
   </div>
-  <h3>Despesas registradas</h3>
-  <div id="expenseList"></div>
-  <p class="muted">O saldo calculado é a soma das vendas pagas menos as despesas registradas. Confira também o dinheiro físico e os valores de cada conta bancária ou carteira.</p>
+  <div class="panel">
+    <h2>Produtos cadastrados</h2>
+    <div class="field"><input id="buscaProduto" placeholder="Buscar produto..."
+      oninput="renderEstoque()"></div>
+    <div id="listaEstoque" class="empty">Nenhum produto cadastrado.</div>
+  </div>
 </section>
 
-<section id="relatorios" class="page">
-  <h2>Relatórios</h2>
+<section class="page" id="vendas">
   <div class="panel">
-    <div class="row">
-      <div><label for="reportStart">Data inicial</label><input id="reportStart" type="date"></div>
-      <div><label for="reportEnd">Data final</label><input id="reportEnd" type="date"></div>
-    </div>
-    <div class="actions"><button class="primary" id="makeReport">Gerar relatório</button><button id="reportMonth">Mês atual</button></div>
+    <h2>Registrar venda</h2>
+    <form id="formVenda">
+      <div class="field"><label>Produto ou serviço *</label>
+        <select id="vItem" required></select></div>
+      <div class="grid2">
+        <div class="field"><label>Quantidade *</label>
+          <input id="vQtd" type="number" min="1" step="1" value="1" required></div>
+        <div class="field"><label>Preço unitário (R$)</label>
+          <input id="vPreco" type="number" min="0" step=".01" required></div>
+        <div class="field"><label>Forma de pagamento *</label>
+          <select id="vPagamento">
+            <option>Pix</option><option>Dinheiro</option>
+            <option>Cartão</option><option>Outros</option>
+          </select></div>
+        <div class="field"><label>Tipo de item</label>
+          <select id="vTipo"><option value="produto">Produto do estoque</option>
+          <option value="servico">Serviço</option></select></div>
+      </div>
+      <div class="field"><label>Observação (opcional)</label>
+        <input id="vObs" placeholder="Ex.: cliente ou detalhe"></div>
+      <p>Total da venda: <strong class="gold" id="vTotal">R$ 0,00</strong></p>
+      <button class="primary" type="submit">Confirmar venda</button>
+    </form>
   </div>
-  <div class="grid">
-    <div class="stat"><small>Vendas pagas</small><strong id="reportSales">R$ 0,00</strong></div>
-    <div class="stat"><small>Despesas</small><strong id="reportExpenses">R$ 0,00</strong></div>
-    <div class="stat"><small>Resultado</small><strong id="reportResult">R$ 0,00</strong></div>
+  <div class="panel">
+    <h2>Histórico de vendas</h2>
+    <div id="historicoVendas" class="empty">Nenhuma venda registrada.</div>
   </div>
-  <div class="panel"><h3>Vendas por forma de pagamento</h3><div id="paymentReport"></div></div>
-  <div class="panel"><h3>Vendas por dia</h3><div id="dailyReport"></div></div>
-  <div class="panel"><h3>Vendas por mês</h3><div id="monthlyReport"></div></div>
 </section>
 
-<section id="dados" class="page">
-  <h2>Backup e dados</h2>
-  <div class="panel">
-    <h3>Salvar backup</h3>
-    <p class="muted">Baixe uma cópia dos dados salvos neste navegador.</p>
-    <button class="primary" id="backupBtn">Baixar backup JSON</button>
+<section class="page" id="caixa">
+  <div class="stats">
+    <div class="stat"><span>SALDO ATUAL</span><strong id="cSaldo">R$ 0,00</strong></div>
+    <div class="stat"><span>VENDAS EM DINHEIRO</span><strong id="cDinheiro">R$ 0,00</strong></div>
   </div>
   <div class="panel">
+    <h2>Abertura e fechamento</h2>
+    <p class="muted">Informe o dinheiro que já existe na gaveta ao iniciar o controle.</p>
+    <div class="grid2">
+      <div class="field"><label>Saldo inicial (R$)</label>
+        <input id="saldoInicial" type="number" min="0" step=".01"></div>
+      <div class="field"><label>Saldo contado no fechamento (R$)</label>
+        <input id="saldoContado" type="number" min="0" step=".01"></div>
+    </div>
+    <div class="actions">
+      <button class="primary" onclick="abrirCaixa()">Registrar abertura</button>
+      <button class="secondary" onclick="fecharCaixa()">Conferir fechamento</button>
+    </div>
+    <div id="resultadoFechamento"></div>
+  </div>
+  <div class="panel">
+    <h2>Lançar despesa ou retirada</h2>
+    <form id="formDespesa">
+      <div class="grid2">
+        <div class="field"><label>Descrição *</label>
+          <input id="dNome" required placeholder="Ex.: compra de material"></div>
+        <div class="field"><label>Valor (R$) *</label>
+          <input id="dValor" type="number" min=".01" step=".01" required></div>
+        <div class="field"><label>Categoria</label>
+          <select id="dCategoria"><option>Despesa</option><option>Retirada</option></select></div>
+        <div class="field"><label>Forma de pagamento</label>
+          <select id="dPagamento"><option>Dinheiro</option><option>Pix</option>
+          <option>Cartão</option><option>Outros</option></select></div>
+      </div>
+      <button class="primary" type="submit">Registrar lançamento</button>
+    </form>
+  </div>
+  <div class="panel">
+    <h2>Despesas e retiradas</h2>
+    <div id="listaDespesas" class="empty">Nenhum lançamento.</div>
+  </div>
+</section>
+
+<section class="page" id="relatorios">
+  <div class="panel">
+    <h2>Relatórios</h2>
+    <div class="grid2">
+      <div class="field"><label>Data inicial</label><input id="rInicio" type="date"></div>
+      <div class="field"><label>Data final</label><input id="rFim" type="date"></div>
+    </div>
+    <button class="primary" onclick="renderRelatorios()">Atualizar relatório</button>
+    <div class="stats" style="margin-top:15px">
+      <div class="stat"><span>VENDAS</span><strong id="rVendas">R$ 0,00</strong></div>
+      <div class="stat"><span>DESPESAS</span><strong id="rDespesas">R$ 0,00</strong></div>
+      <div class="stat"><span>LUCRO ESTIMADO*</span><strong id="rLucro">R$ 0,00</strong></div>
+      <div class="stat"><span>TRANSAÇÕES</span><strong id="rQtd">0</strong></div>
+    </div>
+    <p class="muted">*Estimativa: vendas menos custo dos produtos vendidos e despesas registradas. Não substitui a contabilidade.</p>
+  </div>
+  <div class="panel">
+    <h2>Vendas por forma de pagamento</h2>
+    <div id="rPagamentos" class="empty"></div>
+  </div>
+  <div class="panel">
+    <h2>Vendas detalhadas</h2>
+    <div id="rDetalhes" class="empty"></div>
+  </div>
+</section>
+
+<section class="page" id="assistente">
+  <div class="panel">
+    <h2>✦ Assistente Inho</h2>
+    <p class="muted">Escreva um comando. Para registrar alterações, confira os dados e confirme quando solicitado.</p>
+    <div class="chat" id="chat">
+      <div class="msg bot">Salve, patrão! Sou a Assistente Inho.
+Posso consultar o estoque, mostrar o caixa, informar as vendas e ajudar a cadastrar produtos.
+
+Exemplos:
+• quanto tenho no caixa?
+• mostrar estoque
+• quanto vendi hoje?
+• cadastrar produto pomada quantidade 10 custo 12 venda 20
+• vender 2 pomadas no pix</div>
+    </div>
+    <form id="formChat">
+      <div class="field"><label>Seu comando</label>
+        <textarea id="chatTexto" rows="3" required
+          placeholder="Digite aqui o que você precisa..."></textarea></div>
+      <div class="actions">
+        <button class="primary" type="submit">Enviar comando</button>
+        <button class="secondary" type="button" onclick="limparChat()">Limpar conversa</button>
+      </div>
+    </form>
+  </div>
+  <div class="panel">
+    <h3>Comandos que você pode experimentar</h3>
+    <div class="actions">
+      <button class="secondary" onclick="atalho('quanto tenho no caixa?')">Consultar caixa</button>
+      <button class="secondary" onclick="atalho('mostrar estoque')">Ver estoque</button>
+      <button class="secondary" onclick="atalho('quanto vendi hoje?')">Vendas de hoje</button>
+      <button class="secondary" onclick="atalho('quais produtos estão acabando?')">Estoque baixo</button>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="backup">
+  <div class="panel">
+    <h2>Backup e restauração</h2>
+    <p>Baixe uma cópia dos produtos, vendas, caixa e despesas. Guarde o arquivo em local seguro.</p>
+    <div class="actions">
+      <button class="primary" onclick="exportarBackup()">Baixar backup JSON</button>
+      <button class="secondary" onclick="exportarCSV()">Exportar vendas CSV</button>
+    </div>
+    <hr>
     <h3>Restaurar backup</h3>
-    <p class="muted">A restauração substitui os dados correspondentes. Faça um backup atual antes de restaurar.</p>
-    <label for="restoreFile">Selecionar arquivo JSON</label>
-    <input id="restoreFile" type="file" accept=".json,application/json">
-    <button class="danger" id="restoreBtn">Restaurar backup selecionado</button>
+    <div class="field"><label>Arquivo JSON criado por esta gestão</label>
+      <input id="arquivoBackup" type="file" accept=".json,application/json"></div>
+    <button class="secondary" onclick="importarBackup()">Restaurar backup</button>
+    <p class="muted">A restauração substitui os dados atuais. Faça um backup antes de continuar.</p>
+    <hr>
+    <h3>Apagar todos os dados</h3>
+    <button class="danger" onclick="apagarTudo()">Apagar todos os dados deste navegador</button>
   </div>
   <div class="panel">
-    <h3>Integridade dos dados</h3>
-    <p id="dataStatus" class="muted"></p>
-    <button id="refreshAll">Atualizar telas</button>
+    <h2>Sobre o armazenamento</h2>
+    <p class="muted">Os dados ficam no armazenamento local deste navegador. Limpar os dados do site, trocar de navegador ou aparelho pode fazê-los desaparecer. Faça backups frequentes.</p>
   </div>
 </section>
 </main>
-
-<footer>Gestão Inho Dú Corte • Sistema de controle da barbearia</footer>
-<div id="toast" role="status"></div>
+</div>
+<footer>Gestão Inho Dú Corte • Controle local da barbearia</footer>
+</div>
 
 <script>
-(function(){
 "use strict";
+const CHAVE = "gestao_inho_du_corte_v2";
+const $ = id => document.getElementById(id);
+const dinheiro = n => (Number(n)||0).toLocaleString("pt-BR",
+  {style:"currency",currency:"BRL"});
+const hoje = () => new Date().toLocaleDateString("en-CA");
+const idNovo = () => Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 
-const KEYS={
- stock:"inho_du_corte_estoque_v1",
- history:"inho_du_corte_historico_v1",
- sales:"inho_du_corte_vendas_v1",
- expenses:"inho_du_corte_despesas_v1",
- config:"inho_du_corte_config_v1",
- accounts:"inho_du_corte_contas_v1"
-};
-const $=id=>document.getElementById(id);
-const money=n=>(Number(n)||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
-const num=v=>{const n=Number(String(v??0).replace(",","."));return Number.isFinite(n)?n:0};
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
-const dateISO=d=>{const x=d instanceof Date?d:new Date(d||Date.now());return Number.isNaN(x.getTime())?new Date().toISOString():x.toISOString()};
-const today=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
-const dateKey=v=>dateISO(v).slice(0,10);
-const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const arr=v=>Array.isArray(v)?v:[];
-const getFirst=(o,keys,def)=>{for(const k of keys){if(o&&o[k]!==undefined&&o[k]!==null)return o[k]}return def};
-function read(key,def){try{const raw=localStorage.getItem(key);if(raw===null)return def;const value=JSON.parse(raw);return value??def}catch(e){console.error("Erro ao ler",key,e);return def}}
-function save(key,value){localStorage.setItem(key,JSON.stringify(value))}
-function toast(msg){const el=$("toast");el.textContent=msg;el.style.display="block";clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.style.display="none",3200)}
-function normalizeProduct(p){
- if(typeof p==="string")p={name:p};
- return {
-  ...p,id:String(getFirst(p,["id","productId"],uid())),
-  name:String(getFirst(p,["name","nome","productName","produto"],"Produto")),
-  price:num(getFirst(p,["price","preco","salePrice","valor"],0)),
-  cost:num(getFirst(p,["cost","custo","purchasePrice"],0)),
-  stock:Math.max(0,num(getFirst(p,["stock","quantity","qty","estoque","quantidade"],0))),
-  min:Math.max(0,num(getFirst(p,["min","minimum","minStock"],2))),
-  photo:String(getFirst(p,["photo","image","imageUrl"],""))
- };
+function estadoInicial(){
+ return {produtos:[],vendas:[],despesas:[],caixa:{aberto:false,
+ saldoInicial:0,dataAbertura:"",historicoFechamentos:[]}};
 }
-function normalizeItem(i){
- return {
-  ...i,id:String(getFirst(i,["id"],uid())),
-  productId:String(getFirst(i,["productId","product_id"],"")),
-  productName:String(getFirst(i,["productName","name","produto"],"Produto")),
-  qty:Math.max(0,num(getFirst(i,["qty","quantity","quantidade"],0))),
-  unitPrice:num(getFirst(i,["unitPrice","price","preco"],0)),
-  unitCost:num(getFirst(i,["unitCost","cost","custo"],0)),
-  total:num(getFirst(i,["total","subtotal"],num(getFirst(i,["qty","quantity","quantidade"],0))*num(getFirst(i,["unitPrice","price","preco"],0))))
- };
+function carregar(){
+ try{
+  const raw=localStorage.getItem(CHAVE);
+  if(!raw)return estadoInicial();
+  const d=JSON.parse(raw), base=estadoInicial();
+  return {...base,...d,caixa:{...base.caixa,...(d.caixa||{})},
+   produtos:Array.isArray(d.produtos)?d.produtos:[],
+   vendas:Array.isArray(d.vendas)?d.vendas:[],
+   despesas:Array.isArray(d.despesas)?d.despesas:[]};
+ }catch(e){alert("Não foi possível ler os dados salvos. Faça a restauração de um backup, se tiver.");return estadoInicial();}
 }
-function normalizeAccount(a){
- a=a&&typeof a==="object"?a:{};
- const items=arr(a.items||a.itens).map(normalizeItem);
- return {
-  ...a,id:String(getFirst(a,["id"],uid())),
-  customer:String(getFirst(a,["customer","name","cliente"],"Cliente")),
-  status:String(getFirst(a,["status"],"open"))==="paid"?"paid":"open",
-  createdAt:dateISO(getFirst(a,["createdAt","date"],Date.now())),
-  updatedAt:dateISO(getFirst(a,["updatedAt"],Date.now())),
-  items,total:items.reduce((s,i)=>s+i.total,0),
-  paidAmount:num(getFirst(a,["paidAmount"],0)),
-  payment:String(getFirst(a,["payment"],""))
- };
+let db=carregar();
+function salvar(){
+ try{localStorage.setItem(CHAVE,JSON.stringify(db));renderTudo();return true;}
+ catch(e){alert("Não foi possível salvar. O armazenamento pode estar cheio, talvez por causa das fotos. Exporte um backup e use imagens menores.");return false;}
 }
-let products=arr(read(KEYS.stock,[])).map(normalizeProduct);
-let sales=arr(read(KEYS.sales,[]));
-let history=arr(read(KEYS.history,[]));
-let expenses=arr(read(KEYS.expenses,[]));
-let accounts=arr(read(KEYS.accounts,[])).map(normalizeAccount);
-let config=read(KEYS.config,{});
-let currentPhoto="";
-let reportStart=today(),reportEnd=today();
-
-function persist(){
- save(KEYS.stock,products);
- save(KEYS.sales,sales);
- save(KEYS.history,history);
- save(KEYS.expenses,expenses);
- save(KEYS.accounts,accounts);
- save(KEYS.config,config);
+function esc(s){
+ return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
-function logEvent(type,details){
- history.push({id:uid(),type,details:String(details),date:new Date().toISOString()});
- if(history.length>5000)history=history.slice(-5000);
- save(KEYS.history,history);
+function dataLegivel(s){
+ if(!s)return "—";
+ const d=new Date(s);return isNaN(d)?s:d.toLocaleString("pt-BR");
 }
-function navigate(id){
- document.querySelectorAll("section.page").forEach(s=>s.classList.toggle("active",s.id===id));
- document.querySelectorAll("[data-page]").forEach(b=>b.classList.toggle("primary",b.dataset.page===id));
- renderAll();
- window.scrollTo({top:0,behavior:"smooth"});
+function dataDoRegistro(s){return String(s||"").slice(0,10);}
+function showPage(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===id));
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));
+ if(id==="vendas")atualizarOpcoesVenda();
+ if(id==="relatorios")renderRelatorios();
 }
-document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>navigate(b.dataset.page)));
-document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>navigate(b.dataset.go)));
-
-function accountTotal(a){return arr(a.items).reduce((s,i)=>s+num(i.qty)*num(i.unitPrice),0)}
-function openAccounts(){return accounts.filter(a=>a.status!=="paid")}
-function findProduct(text){
- const q=norm(text);
- if(!q)return null;
- return products.find(p=>norm(p.name)===q)||products.find(p=>norm(p.name).includes(q)||q.includes(norm(p.name)))||null;
-}
-function norm(s){
- return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();
-}
-function getAccount(customer){
- const q=norm(customer);
- return openAccounts().find(a=>norm(a.customer)===q)||null;
-}
-function openOrGetAccount(customer){
- const name=String(customer||"").trim();
- if(!name)throw new Error("Informe o nome do cliente.");
- let a=getAccount(name);
- if(!a){
-  a=normalizeAccount({id:uid(),customer:name,status:"open",items:[],createdAt:new Date().toISOString()});
-  accounts.unshift(a);
-  logEvent("conta_aberta","Conta aberta para "+name);
- }
- return a;
-}
-function addToAccount(customer,productId,qty){
- qty=Math.floor(num(qty));
- if(qty<1)throw new Error("Informe uma quantidade válida.");
- const p=products.find(x=>x.id===String(productId));
- if(!p)throw new Error("Produto não encontrado.");
- if(p.stock<qty)throw new Error("Estoque insuficiente. Disponível: "+p.stock+".");
- const a=openOrGetAccount(customer);
- p.stock-=qty;
- let item=a.items.find(i=>i.productId===p.id);
- if(item){
-  item.qty+=qty;
-  item.total=item.qty*item.unitPrice;
- }else{
-  a.items.push(normalizeItem({id:uid(),productId:p.id,productName:p.name,qty,unitPrice:p.price,unitCost:p.cost,total:qty*p.price}));
- }
- a.total=accountTotal(a);a.updatedAt=new Date().toISOString();
- logEvent("consumo",customer+" consumiu "+qty+" x "+p.name);
- persist();renderAll();
- toast(qty+" x "+p.name+" adicionado à conta de "+customer+".");
-}
-function removeAccountItem(accountId,itemId){
- const a=accounts.find(x=>x.id===accountId);
- if(!a||a.status==="paid")return;
- const idx=a.items.findIndex(i=>i.id===itemId);
- if(idx<0)return;
- const item=a.items[idx];
- const p=products.find(x=>x.id===item.productId);
- if(p)p.stock+=item.qty;
- a.items.splice(idx,1);a.total=accountTotal(a);a.updatedAt=new Date().toISOString();
- logEvent("consumo_cancelado","Devolvido ao estoque: "+item.qty+" x "+item.productName+"; cliente "+a.customer);
- persist();renderAll();toast("Item removido e estoque devolvido.");
-}
-function deleteOpenAccount(id){
- const a=accounts.find(x=>x.id===id);
- if(!a||a.status==="paid")return;
- if(!confirm("Cancelar a conta de "+a.customer+" e devolver os itens ao estoque?"))return;
- a.items.forEach(i=>{const p=products.find(x=>x.id===i.productId);if(p)p.stock+=i.qty});
- accounts=accounts.filter(x=>x.id!==id);
- logEvent("conta_cancelada","Conta cancelada: "+a.customer);
- persist();renderAll();toast("Conta cancelada e estoque ajustado.");
-}
-function payAccount(id){
- const a=accounts.find(x=>x.id===id);
- if(!a||a.status==="paid")return;
- if(!a.items.length){toast("Essa conta ainda não tem itens.");return}
- const total=accountTotal(a);
- const method=prompt("Valor a receber: "+money(total)+"\nDigite a forma de pagamento: Pix, Dinheiro, Cartão ou Outro","Pix");
- if(method===null)return;
- const allowed=["pix","dinheiro","cartao","cartão","outro"];
- const normalized=norm(method);
- if(!allowed.includes(normalized)){toast("Forma inválida. Use Pix, Dinheiro, Cartão ou Outro.");return}
- const payment=normalized==="cartao"?"Cartão":normalized==="pix"?"Pix":normalized==="dinheiro"?"Dinheiro":"Outro";
- if(!confirm("Confirmar recebimento de "+money(total)+" de "+a.customer+" por "+payment+"?"))return;
- const now=new Date().toISOString();
- a.status="paid";a.paidAmount=total;a.payment=payment;a.paidAt=now;a.updatedAt=now;
- sales.push({id:uid(),accountId:a.id,customer:a.customer,items:a.items.map(i=>({...i})),total,amount:total,payment,date:now,createdAt:now,type:"account"});
- logEvent("pagamento","Recebido "+money(total)+" de "+a.customer+" via "+payment);
- persist();renderAll();toast("Pagamento confirmado. Venda registrada.");
-}
-function renderAccounts(){
- const filter=norm($("accountFilter").value);
- const status=$("accountStatus").value;
- const list=accounts.filter(a=>(status==="all"||(status==="open"?a.status!=="paid":a.status==="paid"))&&norm(a.customer).includes(filter));
- $("accountList").innerHTML=list.length?list.map(a=>{
-  const total=accountTotal(a);
-  return `<div class="panel">
-   <div class="item"><div><strong>${esc(a.customer)}</strong><div class="muted">${new Date(a.createdAt).toLocaleString("pt-BR")}</div><span class="pill ${a.status==="paid"?"green":"gold"}">${a.status==="paid"?"PAGA":"EM ABERTO"}</span></div>
-   <div class="right"><strong class="gold">${money(total)}</strong></div></div>
-   ${a.items.length?a.items.map(i=>`<div class="item"><div>${esc(i.productName)}<p>${i.qty} × ${money(i.unitPrice)}</p></div><div class="right">${money(i.total)}${a.status!=="paid"?`<div><button class="danger" data-remove-item="${a.id}|${i.id}">Remover</button></div>`:""}</div></div>`).join(""):'<p class="muted">Nenhum consumo lançado.</p>'}
-   ${a.status!=="paid"?`<div class="actions"><button class="primary" data-pay="${a.id}">Confirmar pagamento</button><button data-add-more="${a.id}">Adicionar consumo</button><button class="danger" data-cancel-account="${a.id}">Cancelar conta</button></div>`:`<p class="muted">Pagamento: ${esc(a.payment||"Não informado")}</p>`}
-  </div>`;
- }).join(""):'<div class="empty">Nenhuma conta encontrada.</div>';
- $("homeAccounts").innerHTML=openAccounts().slice(0,5).map(a=>`<div class="item"><div>${esc(a.customer)}<p>${a.items.length} item(ns)</p></div><strong class="gold">${money(accountTotal(a))}</strong></div>`).join("")||'<div class="empty">Nenhuma conta pendente.</div>';
-}
-$("accountList").addEventListener("click",e=>{
- const b=e.target.closest("button");if(!b)return;
- if(b.dataset.pay)payAccount(b.dataset.pay);
- if(b.dataset.removeItem){const [a,i]=b.dataset.removeItem.split("|");removeAccountItem(a,i)}
- if(b.dataset.cancelAccount)deleteOpenAccount(b.dataset.cancelAccount);
- if(b.dataset.addMore){
-  const a=accounts.find(x=>x.id===b.dataset.addMore);if(!a)return;
-  $("manualCustomer").value=a.customer;navigate("assistente");$("manualProduct").focus();
- }
+$("nav").addEventListener("click",e=>{
+ const b=e.target.closest("button[data-page]");if(b)showPage(b.dataset.page);
 });
-$("openAccount").addEventListener("click",()=>{
- try{const name=$("newCustomer").value.trim();if(!name)throw new Error("Digite o nome do cliente.");openOrGetAccount(name);persist();$("newCustomer").value="";renderAll();toast("Conta aberta.");}
- catch(e){toast(e.message)}
-});
-$("accountFilter").addEventListener("input",renderAccounts);
-$("accountStatus").addEventListener("change",renderAccounts);
 
-function renderProductOptions(){
- const old=$("manualProduct").value;
- $("manualProduct").innerHTML=products.map(p=>`<option value="${esc(p.id)}">${esc(p.name)} — ${money(p.price)} (estoque: ${p.stock})</option>`).join("");
- if(products.some(p=>p.id===old))$("manualProduct").value=old;
- if(!products.length)$("manualProduct").innerHTML='<option value="">Cadastre um produto primeiro</option>';
-}
-$("manualAdd").addEventListener("click",()=>{
- try{addToAccount($("manualCustomer").value,$("manualProduct").value,$("manualQty").value);$("manualQty").value="1";}
- catch(e){toast(e.message)}
-});
-$("processText").addEventListener("click",()=>{
- const text=$("assistantText").value.trim();
- if(!text){toast("Digite o que o cliente consumiu.");return}
- const product=products.slice().sort((a,b)=>b.name.length-a.name.length).find(p=>norm(text).includes(norm(p.name)));
- if(!product){toast("Não encontrei esse produto. Confira o nome ou use o lançamento manual.");return}
- const quantityWords={"um":1,"uma":1,"dois":2,"duas":2,"tres":3,"quatro":4,"cinco":5,"seis":6,"sete":7,"oito":8,"nove":9,"dez":10};
- const q=norm(text);
- const match=q.match(/\b(\d+)\b/);
- let qty=match?parseInt(match[1],10):1;
- if(!match){
-  for(const [word,value] of Object.entries(quantityWords)){
-   if(new RegExp("\\b"+word+"\\b").test(q)){qty=value;break}
-  }
- }
- let customer=text;
- const productPos=norm(text).indexOf(norm(product.name));
- customer=text.slice(0,productPos).trim();
- customer=customer.replace(/^(o cliente|a cliente|cliente|por favor)\s*/i,"");
- customer=customer.replace(/\b(pegou|comprou|consumiu|levou|tomou|bebeu|quer|quero|adicionar|adiciona|lancar|lance|para|pro|pra|uma|um|dois|duas|tres|quatro|cinco|seis|sete|oito|nove|dez|\d+)\b/gi," ").replace(/\s+/g," ").trim();
- if(!customer)customer=$("manualCustomer").value.trim();
- if(!customer){toast("Não consegui identificar o nome do cliente. Digite o nome no campo manual.");return}
- try{addToAccount(customer,product.id,qty);$("assistantText").value="";}
- catch(e){toast(e.message)}
-});
-$("clearText").addEventListener("click",()=>{$("assistantText").value=""});
-
-function resetProductForm(){
- ["productId","productName","productPrice","productCost","productStock","productMin"].forEach(id=>$(id).value="");
- $("productMin").value="2";$("productPhoto").value="";currentPhoto="";
- $("photoPreview").innerHTML="";$("productFormTitle").textContent="Cadastrar produto";$("cancelEdit").hidden=true;
-}
-$("productPhoto").addEventListener("change",()=>{
- const f=$("productPhoto").files[0];if(!f)return;
- if(f.size>700*1024){toast("A imagem deve ter até 700 KB.");$("productPhoto").value="";return}
+let fotoTemporaria="";
+$("pFoto").addEventListener("change",e=>{
+ const f=e.target.files[0];if(!f)return;
+ if(!f.type.startsWith("image/")){alert("Selecione uma imagem.");return;}
+ if(f.size>1200000){alert("A imagem deve ter até 1,2 MB. Reduza o tamanho antes de enviar.");e.target.value="";return;}
  const reader=new FileReader();
- reader.onload=()=>{currentPhoto=String(reader.result);$("photoPreview").innerHTML=`<img class="product-photo" alt="Prévia do produto" src="${currentPhoto}">`};
- reader.onerror=()=>toast("Não foi possível ler a imagem.");
+ reader.onload=()=>{fotoTemporaria=reader.result;$("previewFoto").innerHTML=
+  '<img class="product-img" style="width:90px;height:90px" src="'+fotoTemporaria+'" alt="Prévia">';};
  reader.readAsDataURL(f);
 });
-$("saveProduct").addEventListener("click",()=>{
- const name=$("productName").value.trim();
- if(!name){toast("Informe o nome do produto.");return}
- const price=num($("productPrice").value),cost=num($("productCost").value);
- const stock=num($("productStock").value),min=num($("productMin").value);
- if(price<0||cost<0||stock<0||min<0){toast("Os valores não podem ser negativos.");return}
- const id=$("productId").value;
- if(id){
-  const p=products.find(x=>x.id===id);if(!p)return;
-  p.name=name;p.price=price;p.cost=cost;p.stock=Math.floor(stock);p.min=Math.floor(min);
-  if(currentPhoto)p.photo=currentPhoto;
-  logEvent("produto_editado",name);
- }else{
-  products.push({id:uid(),name,price,cost,stock:Math.floor(stock),min:Math.floor(min),photo:currentPhoto});
-  logEvent("produto_cadastrado",name);
+function limparProduto(){
+ $("formProduto").reset();$("pId").value="";$("pMin").value=2;
+ fotoTemporaria="";$("previewFoto").innerHTML="";
+}
+$("formProduto").addEventListener("submit",e=>{
+ e.preventDefault();
+ const id=$("pId").value;
+ const nome=$("pNome").value.trim();
+ const custo=Number($("pCusto").value),preco=Number($("pPreco").value);
+ const qtd=Number($("pQtd").value),min=Number($("pMin").value||0);
+ if(!nome||custo<0||preco<0||qtd<0||!Number.isInteger(qtd)||min<0){
+  alert("Confira nome, preços e quantidades.");return;
  }
- persist();resetProductForm();renderAll();toast("Produto salvo com sucesso.");
+ const antigo=db.produtos.find(p=>p.id===id);
+ const p={id:id||idNovo(),nome,codigo:$("pCodigo").value.trim(),
+  custo,preco,qtd,min,foto:fotoTemporaria||(antigo&&antigo.foto)||""};
+ if(antigo)db.produtos=db.produtos.map(x=>x.id===id?p:x);
+ else db.produtos.push(p);
+ if(salvar()){limparProduto();alert("Produto salvo com sucesso.");}
 });
-$("cancelEdit").addEventListener("click",resetProductForm);
-function editProduct(id){
- const p=products.find(x=>x.id===id);if(!p)return;
- $("productId").value=p.id;$("productName").value=p.name;$("productPrice").value=p.price;
- $("productCost").value=p.cost;$("productStock").value=p.stock;$("productMin").value=p.min;
- currentPhoto=p.photo||"";
- $("photoPreview").innerHTML=currentPhoto?`<img class="product-photo" alt="Foto do produto" src="${currentPhoto}">`:"";
- $("productFormTitle").textContent="Editar produto";$("cancelEdit").hidden=false;
- window.scrollTo({top:0,behavior:"smooth"});
+function editarProduto(id){
+ const p=db.produtos.find(x=>x.id===id);if(!p)return;
+ $("pId").value=p.id;$("pNome").value=p.nome;$("pCodigo").value=p.codigo||"";
+ $("pCusto").value=p.custo;$("pPreco").value=p.preco;$("pQtd").value=p.qtd;
+ $("pMin").value=p.min??2;fotoTemporaria=p.foto||"";
+ $("previewFoto").innerHTML=p.foto?'<img class="product-img" style="width:90px;height:90px" src="'+p.foto+'" alt="">':"";
+ showPage("estoque");window.scrollTo({top:0,behavior:"smooth"});
 }
-function deleteProduct(id){
- const p=products.find(x=>x.id===id);if(!p)return;
- if(accounts.some(a=>a.status!=="paid"&&a.items.some(i=>i.productId===id))){toast("Esse produto está em uma conta aberta. Remova o consumo antes de excluir.");return}
- if(!confirm("Excluir o produto "+p.name+"?"))return;
- products=products.filter(x=>x.id!==id);persist();renderAll();toast("Produto excluído.");
+function excluirProduto(id){
+ const p=db.produtos.find(x=>x.id===id);if(!p)return;
+ if(!confirm("Excluir "+p.nome+" do cadastro? O histórico de vendas será mantido."))return;
+ db.produtos=db.produtos.filter(x=>x.id!==id);salvar();
 }
-function adjustStock(id,delta){
- const p=products.find(x=>x.id===id);if(!p)return;
- const n=Math.floor(num(prompt("Informe a quantidade para adicionar ao estoque de "+p.name, "1")));
- if(!Number.isFinite(n)||n<1){toast("Quantidade inválida.");return}
- p.stock+=n;logEvent("estoque_adicionado",n+" unidades de "+p.name);persist();renderAll();toast("Estoque atualizado.");
+function renderEstoque(){
+ const termo=($("buscaProduto").value||"").toLowerCase();
+ const ps=db.produtos.filter(p=>(p.nome+" "+(p.codigo||"")).toLowerCase().includes(termo));
+ if(!ps.length){$("listaEstoque").innerHTML='<div class="empty">Nenhum produto encontrado.</div>';return;}
+ $("listaEstoque").innerHTML='<div class="tablewrap"><table><thead><tr><th>Foto</th><th>Produto</th><th>Estoque</th><th>Custo</th><th>Venda</th><th>Ações</th></tr></thead><tbody>'+
+ ps.map(p=>'<tr><td>'+(p.foto?'<img class="product-img" src="'+p.foto+'" alt="">':'—')+
+ '</td><td><b>'+esc(p.nome)+'</b><br><small>'+esc(p.codigo||"Sem código")+'</small>'+
+ (p.qtd<=p.min?' <span class="red">Estoque baixo</span>':'')+
+ '</td><td>'+p.qtd+'</td><td>'+dinheiro(p.custo)+'</td><td>'+dinheiro(p.preco)+'</td><td>'+
+ '<div class="actions"><button class="secondary" onclick="editarProduto(\''+p.id+'\')">Editar</button>'+
+ '<button class="danger" onclick="excluirProduto(\''+p.id+'\')">Excluir</button></div></td></tr>').join("")+
+ '</tbody></table></div>';
 }
-function renderProducts(){
- const q=norm($("stockSearch").value);
- const list=products.filter(p=>norm(p.name).includes(q));
- $("productList").innerHTML=list.length?list.map(p=>`<div class="item">
-  <div style="display:flex;gap:10px;align-items:center;min-width:0">${p.photo?`<img class="product-photo" alt="" src="${p.photo}">`:""}
-   <div><strong>${esc(p.name)}</strong><p>Venda: ${money(p.price)} • Custo: ${money(p.cost)}</p><p class="${p.stock<=p.min?"red":"muted"}">Estoque: ${p.stock} • Mínimo: ${p.min}</p></div>
-  </div><div class="right"><div class="actions"><button data-edit-product="${p.id}">Editar</button><button data-stock-product="${p.id}">+ Estoque</button><button class="danger" data-delete-product="${p.id}">Excluir</button></div></div>
- </div>`).join(""):'<div class="empty">Nenhum produto cadastrado.</div>';
- renderProductOptions();
-}
-$("productList").addEventListener("click",e=>{
- const b=e.target.closest("button");if(!b)return;
- if(b.dataset.editProduct)editProduct(b.dataset.editProduct);
- if(b.dataset.stockProduct)adjustStock(b.dataset.stockProduct,1);
- if(b.dataset.deleteProduct)deleteProduct(b.dataset.deleteProduct);
-});
-$("stockSearch").addEventListener("input",renderProducts);
 
-function paidSales(){
- return sales.filter(s=>s.status!=="cancelled"&&s.cancelled!==true);
+$("vTipo").addEventListener("change",atualizarOpcoesVenda);
+function atualizarOpcoesVenda(){
+ const tipo=$("vTipo").value,atual=$("vItem").value;
+ if(tipo==="produto"){
+  $("vItem").innerHTML=db.produtos.map(p=>'<option value="'+p.id+'">'+esc(p.nome)+' ('+p.qtd+' un.)</option>').join("");
+  if(!db.produtos.length)$("vItem").innerHTML='<option value="">Cadastre um produto primeiro</option>';
+  const p=db.produtos.find(x=>x.id===atual)||db.produtos[0];
+  $("vPreco").value=p?p.preco:"";
+ }else{
+  $("vItem").innerHTML='<option value="corte">Corte de cabelo</option><option value="barba">Barba</option><option value="combo">Corte + barba</option><option value="outro">Outro serviço</option>';
+  if(atual)$("vItem").value=atual;
+  $("vPreco").value="";
+ }
+ atualizarTotal();
 }
-function saleDate(s){return dateKey(getFirst(s,["date","createdAt","paidAt"],Date.now()))}
-function saleAmount(s){return num(getFirst(s,["total","amount","value"],0))}
-function salePayment(s){return String(getFirst(s,["payment","method","formaPagamento"],"Outro"))}
-function expenseDate(e){return dateKey(getFirst(e,["date","createdAt"],Date.now()))}
-function expenseAmount(e){return num(getFirst(e,["amount","value","valor"],0))}
-function inRange(d,start,end){return d>=start&&d<=end}
-function todaySales(){return paidSales().filter(s=>saleDate(s)===today()).reduce((sum,s)=>sum+saleAmount(s),0)}
-function totalExpenses(start="0000-01-01",end="9999-12-31"){return expenses.filter(e=>inRange(expenseDate(e),start,end)).reduce((s,e)=>s+expenseAmount(e),0)}
-function renderSales(){
- const start=$("salesStart").value||today(),end=$("salesEnd").value||today();
- const list=paidSales().filter(s=>inRange(saleDate(s),start,end)).sort((a,b)=>new Date(getFirst(b,["date","createdAt"],0))-new Date(getFirst(a,["date","createdAt"],0)));
- $("salesTotal").textContent=money(list.reduce((s,x)=>s+saleAmount(x),0));$("salesCount").textContent=list.length;
- $("salesList").innerHTML=list.length?list.map(s=>`<div class="item"><div><strong>${esc(getFirst(s,["customer","client","cliente"],"Venda"))}</strong><p>${new Date(getFirst(s,["date","createdAt"],Date.now())).toLocaleString("pt-BR")} • ${esc(salePayment(s))}</p></div><div class="right"><strong class="gold">${money(saleAmount(s))}</strong></div></div>`).join(""):'<div class="empty">Nenhuma venda nesse período.</div>';
+$("vItem").addEventListener("change",()=>{
+ if($("vTipo").value==="produto"){
+  const p=db.produtos.find(x=>x.id===$("vItem").value);if(p)$("vPreco").value=p.preco;
+ }
+ atualizarTotal();
+});
+["vQtd","vPreco"].forEach(id=>$(id).addEventListener("input",atualizarTotal));
+function atualizarTotal(){$("vTotal").textContent=dinheiro(Number($("vQtd").value||0)*Number($("vPreco").value||0));}
+$("vTipo").addEventListener("change",()=>{$("vObs").value=$("vObs").value;});
+$("formVenda").addEventListener("submit",e=>{
+ e.preventDefault();
+ const tipo=$("vTipo").value,itemId=$("vItem").value;
+ const qtd=Number($("vQtd").value),preco=Number($("vPreco").value);
+ if(!qtd||!Number.isInteger(qtd)||qtd<1||preco<0||!Number.isFinite(preco)){
+  alert("Confira quantidade e preço.");return;
+ }
+ let nome,custo=0;
+ if(tipo==="produto"){
+  const p=db.produtos.find(x=>x.id===itemId);
+  if(!p){alert("Cadastre ou selecione um produto.");return;}
+  if(p.qtd<qtd){alert("Estoque insuficiente. Disponível: "+p.qtd);return;}
+  nome=p.nome;custo=p.custo;
+  if(!confirm("Confirmar venda de "+qtd+" × "+nome+" por "+dinheiro(qtd*preco)+"?"))return;
+  p.qtd-=qtd;
+ }else{
+  nome=$("vItem").selectedOptions[0]?.textContent||"Serviço";
+  if(!confirm("Confirmar serviço "+nome+" por "+dinheiro(qtd*preco)+"?"))return;
+ }
+ db.vendas.unshift({id:idNovo(),data:new Date().toISOString(),tipo,itemId,
+  nome,qtd,preco,custoUnitario:custo,total:qtd*preco,
+  pagamento:$("vPagamento").value,obs:$("vObs").value.trim()});
+ if(salvar()){ $("vQtd").value=1;$("vObs").value="";atualizarTotal();alert("Venda registrada e estoque atualizado.");}
+});
+function excluirVenda(id){
+ if(!confirm("Cancelar esta venda? O estoque do produto será devolvido."))return;
+ const v=db.vendas.find(x=>x.id===id);if(!v)return;
+ if(v.tipo==="produto"){const p=db.produtos.find(x=>x.id===v.itemId);if(p)p.qtd+=v.qtd;}
+ db.vendas=db.vendas.filter(x=>x.id!==id);salvar();
 }
-$("filterSales").addEventListener("click",renderSales);
-$("resetSalesFilter").addEventListener("click",()=>{$("salesStart").value=today();$("salesEnd").value=today();renderSales()});
-$("exportSales").addEventListener("click",()=>{
- const start=$("salesStart").value||today(),end=$("salesEnd").value||today();
- const rows=[["Data","Cliente","Forma de pagamento","Valor"]];
- paidSales().filter(s=>inRange(saleDate(s),start,end)).forEach(s=>rows.push([saleDate(s),getFirst(s,["customer","client","cliente"],"Venda"),salePayment(s),saleAmount(s).toFixed(2)]));
- download("vendas-inho-du-corte.csv","\uFEFF"+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(";")).join("\n"),"text/csv;charset=utf-8");
-});
-function renderCash(){
- const start="0000-01-01",end="9999-12-31";
- const inc=paidSales().reduce((s,x)=>s+saleAmount(x),0),out=totalExpenses(start,end);
- $("cashIn").textContent=money(inc);$("cashOut").textContent=money(out);$("cashBalance").textContent=money(inc-out);
- $("homeCash").textContent=money(inc-out);
- $("expenseList").innerHTML=expenses.slice().sort((a,b)=>new Date(getFirst(b,["date","createdAt"],0))-new Date(getFirst(a,["date","createdAt"],0))).map(e=>`<div class="item"><div><strong>${esc(getFirst(e,["description","name","descricao"],"Despesa"))}</strong><p>${expenseDate(e)} • ${esc(getFirst(e,["payment","method"],"Outro"))}</p></div><div class="right"><strong class="red">${money(expenseAmount(e))}</strong><div><button class="danger" data-delete-expense="${e.id}">Excluir</button></div></div></div>`).join("")||'<div class="empty">Nenhuma despesa registrada.</div>';
+function tabelaVendas(vendas){
+ if(!vendas.length)return '<div class="empty">Nenhuma venda registrada.</div>';
+ return '<div class="tablewrap"><table><thead><tr><th>Data</th><th>Item</th><th>Qtd.</th><th>Total</th><th>Pagamento</th><th>Ação</th></tr></thead><tbody>'+
+ vendas.map(v=>'<tr><td>'+dataLegivel(v.data)+'</td><td>'+esc(v.nome)+'</td><td>'+v.qtd+'</td><td>'+dinheiro(v.total)+'</td><td>'+esc(v.pagamento)+'</td><td><button class="danger" onclick="excluirVenda(\''+v.id+'\')">Cancelar</button></td></tr>').join("")+
+ '</tbody></table></div>';
 }
-$("saveExpense").addEventListener("click",()=>{
- const desc=$("expenseDesc").value.trim(),amount=num($("expenseAmount").value);
- if(!desc){toast("Informe a descrição da despesa.");return}
- if(amount<=0){toast("Informe um valor válido.");return}
- expenses.push({id:uid(),description:desc,amount,payment:$("expenseMethod").value,date:new Date().toISOString()});
- logEvent("despesa",desc+" — "+money(amount));persist();$("expenseDesc").value="";$("expenseAmount").value="";renderAll();toast("Despesa registrada.");
-});
-$("expenseList").addEventListener("click",e=>{
- const b=e.target.closest("[data-delete-expense]");if(!b)return;
- if(!confirm("Excluir esta despesa do cálculo do caixa?"))return;
- expenses=expenses.filter(x=>String(x.id)!==b.dataset.deleteExpense);persist();renderAll();toast("Despesa excluída.");
-});
+function renderVendas(){
+ $("historicoVendas").innerHTML=tabelaVendas(db.vendas);
+ $("ultimasVendas").innerHTML=tabelaVendas(db.vendas.slice(0,5));
+}
 
-function groupTotals(items,keyFn,valueFn){
- const map={};items.forEach(x=>{const k=keyFn(x);map[k]=(map[k]||0)+valueFn(x)});
- return Object.entries(map).sort((a,b)=>a[0].localeCompare(b[0]));
-}
-function reportTable(rows,labelName){
- if(!rows.length)return '<div class="empty">Sem registros no período.</div>';
- return '<div class="tablewrap"><table><thead><tr><th>'+labelName+'</th><th>Total</th></tr></thead><tbody>'+rows.map(([k,v])=>`<tr><td>${esc(k)}</td><td>${money(v)}</td></tr>`).join("")+'</tbody></table></div>';
-}
-function renderReport(){
- const start=$("reportStart").value||today(),end=$("reportEnd").value||today();
- const ss=paidSales().filter(s=>inRange(saleDate(s),start,end));
- const ee=expenses.filter(e=>inRange(expenseDate(e),start,end));
- const total=ss.reduce((s,x)=>s+saleAmount(x),0),out=ee.reduce((s,x)=>s+expenseAmount(x),0);
- $("reportSales").textContent=money(total);$("reportExpenses").textContent=money(out);$("reportResult").textContent=money(total-out);
- $("paymentReport").innerHTML=reportTable(groupTotals(ss,salePayment,saleAmount),"Forma de pagamento");
- $("dailyReport").innerHTML=reportTable(groupTotals(ss,saleDate,saleAmount),"Dia");
- $("monthlyReport").innerHTML=reportTable(groupTotals(ss,s=>saleDate(s).slice(0,7),saleAmount),"Mês");
-}
-$("makeReport").addEventListener("click",renderReport);
-$("reportMonth").addEventListener("click",()=>{
- const d=new Date(),start=new Date(d.getFullYear(),d.getMonth(),1);
- $("reportStart").value=dateKey(start);$("reportEnd").value=today();renderReport();
+$("formDespesa").addEventListener("submit",e=>{
+ e.preventDefault();
+ const nome=$("dNome").value.trim(),valor=Number($("dValor").value);
+ if(!nome||!Number.isFinite(valor)||valor<=0){alert("Informe descrição e valor válido.");return;}
+ if($("dCategoria").value==="Retirada"&&$("dPagamento").value!=="Dinheiro"){
+  if(!confirm("Retirada costuma sair do dinheiro físico. Deseja registrar mesmo assim?"))return;
+ }
+ db.despesas.unshift({id:idNovo(),data:new Date().toISOString(),nome,valor,
+  categoria:$("dCategoria").value,pagamento:$("dPagamento").value});
+ if(salvar()){ $("formDespesa").reset();alert("Lançamento registrado.");}
 });
+function excluirDespesa(id){
+ if(!confirm("Excluir este lançamento?"))return;
+ db.despesas=db.despesas.filter(d=>d.id!==id);salvar();
+}
+function renderDespesas(){
+ if(!db.despesas.length){$("listaDespesas").innerHTML='<div class="empty">Nenhum lançamento.</div>';return;}
+ $("listaDespesas").innerHTML='<div class="tablewrap"><table><thead><tr><th>Data</th><th>Descrição</th><th>Categoria</th><th>Pagamento</th><th>Valor</th><th>Ação</th></tr></thead><tbody>'+
+ db.despesas.map(d=>'<tr><td>'+dataLegivel(d.data)+'</td><td>'+esc(d.nome)+'</td><td>'+esc(d.categoria)+'</td><td>'+esc(d.pagamento)+'</td><td>'+dinheiro(d.valor)+'</td><td><button class="danger" onclick="excluirDespesa(\''+d.id+'\')">Excluir</button></td></tr>').join("")+
+ '</tbody></table></div>';
+}
+function saldoCaixa(){
+ const vendasDinheiro=db.vendas.filter(v=>v.pagamento==="Dinheiro")
+  .reduce((s,v)=>s+v.total,0);
+ const saidasDinheiro=db.despesas.filter(d=>d.pagamento==="Dinheiro")
+  .reduce((s,d)=>s+d.valor,0);
+ return Number(db.caixa.saldoInicial||0)+vendasDinheiro-saidasDinheiro;
+}
+function abrirCaixa(){
+ const n=Number($("saldoInicial").value);
+ if(!Number.isFinite(n)||n<0){alert("Informe um saldo inicial válido.");return;}
+ if(db.caixa.aberto&&!confirm("O caixa já está marcado como aberto. Deseja atualizar o saldo inicial?"))return;
+ db.caixa.aberto=true;db.caixa.saldoInicial=n;db.caixa.dataAbertura=new Date().toISOString();
+ if(salvar())alert("Abertura registrada.");
+}
+function fecharCaixa(){
+ const contado=Number($("saldoContado").value);
+ if(!Number.isFinite(contado)||contado<0){alert("Informe o valor contado.");return;}
+ const esperado=saldoCaixa();
+ const registro={data:new Date().toISOString(),esperado,contado,diferenca:contado-esperado};
+ db.caixa.historicoFechamentos=db.caixa.historicoFechamentos||[];
+ db.caixa.historicoFechamentos.unshift(registro);
+ db.caixa.aberto=false;
+ $("resultadoFechamento").innerHTML='<p>Saldo esperado: <b>'+dinheiro(esperado)+
+ '</b><br>Saldo contado: <b>'+dinheiro(contado)+'</b><br>Diferença: <b class="'+
+ (Math.abs(registro.diferenca)<.005?'green':'red')+'">'+dinheiro(registro.diferenca)+'</b></p>';
+ salvar();
+}
+function renderCaixa(){
+ $("cSaldo").textContent=dinheiro(saldoCaixa());
+ $("cDinheiro").textContent=dinheiro(db.vendas.filter(v=>v.pagamento==="Dinheiro").reduce((s,v)=>s+v.total,0));
+ $("saldoInicial").value=db.caixa.saldoInicial||0;
+ renderDespesas();
+}
 
-function renderHome(){
- $("homeSales").textContent=money(todaySales());
- $("homeOpen").textContent=openAccounts().length;
- $("homeProducts").textContent=products.length;
- $("lowStock").innerHTML=products.filter(p=>p.stock<=p.min).map(p=>`<div class="item"><div>${esc(p.name)}<p>Estoque mínimo: ${p.min}</p></div><strong class="red">${p.stock}</strong></div>`).join("")||'<div class="empty">Todos os produtos estão acima do estoque mínimo.</div>';
+function renderRelatorios(){
+ const ini=$("rInicio").value||"0000-01-01",fim=$("rFim").value||"9999-12-31";
+ const vs=db.vendas.filter(v=>dataDoRegistro(v.data)>=ini&&dataDoRegistro(v.data)<=fim);
+ const ds=db.despesas.filter(d=>dataDoRegistro(d.data)>=ini&&dataDoRegistro(d.data)<=fim);
+ const total=vs.reduce((s,v)=>s+v.total,0);
+ const despesas=ds.reduce((s,d)=>s+d.valor,0);
+ const custo=vs.reduce((s,v)=>s+(v.tipo==="produto"?(v.custoUnitario||0)*v.qtd:0),0);
+ $("rVendas").textContent=dinheiro(total);$("rDespesas").textContent=dinheiro(despesas);
+ $("rLucro").textContent=dinheiro(total-custo-despesas);$("rQtd").textContent=vs.length;
+ const formas=["Pix","Dinheiro","Cartão","Outros"];
+ $("rPagamentos").innerHTML='<div class="tablewrap"><table><thead><tr><th>Forma</th><th>Quantidade</th><th>Total</th></tr></thead><tbody>'+
+ formas.map(f=>{const xs=vs.filter(v=>v.pagamento===f);return '<tr><td>'+f+'</td><td>'+xs.length+'</td><td>'+dinheiro(xs.reduce((s,v)=>s+v.total,0))+'</td></tr>';}).join("")+
+ '</tbody></table></div>';
+ $("rDetalhes").innerHTML=tabelaVendas(vs);
 }
-function renderAll(){
- renderHome();renderAccounts();renderProducts();renderSales();renderCash();renderReport();
- $("dataStatus").textContent="Produtos: "+products.length+" • Vendas: "+sales.length+" • Despesas: "+expenses.length+" • Contas: "+accounts.length+" • Última atualização: "+new Date().toLocaleString("pt-BR");
+function renderInicio(){
+ const dia=hoje();
+ $("sVendas").textContent=dinheiro(db.vendas.filter(v=>dataDoRegistro(v.data)===dia).reduce((s,v)=>s+v.total,0));
+ $("sCaixa").textContent=dinheiro(saldoCaixa());
+ $("sItens").textContent=db.produtos.reduce((s,p)=>s+p.qtd,0);
+ $("sDespesas").textContent=dinheiro(db.despesas.filter(d=>dataDoRegistro(d.data)===dia).reduce((s,d)=>s+d.valor,0));
+ const baixos=db.produtos.filter(p=>p.qtd<=p.min);
+ $("baixoEstoque").innerHTML=baixos.length?baixos.map(p=>'<p>'+esc(p.nome)+': <b class="red">'+p.qtd+' unidade(s)</b></p>').join(""):'<div class="empty">Nenhum produto abaixo do mínimo.</div>';
 }
-function download(filename,content,type){
- const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);
- const a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+function renderTudo(){
+ renderInicio();renderEstoque();renderVendas();renderCaixa();renderRelatorios();
+ atualizarOpcoesVenda();atualizarTotal();
 }
-$("backupBtn").addEventListener("click",()=>{
- const data={version:2,createdAt:new Date().toISOString(),[KEYS.stock]:products,[KEYS.history]:history,[KEYS.sales]:sales,[KEYS.expenses]:expenses,[KEYS.config]:config,[KEYS.accounts]:accounts};
- download("backup-gestao-inho-du-corte-"+today()+".json",JSON.stringify(data,null,2),"application/json");
+
+function adicionarMensagem(texto,tipo){
+ const el=document.createElement("div");el.className="msg "+tipo;
+ el.textContent=texto;$("chat").appendChild(el);$("chat").scrollTop=$("chat").scrollHeight;
+}
+function limparChat(){
+ $("chat").innerHTML='<div class="msg bot">Conversa limpa. Sou a Assistente Inho. Como posso ajudar?</div>';
+}
+function atalho(texto){$("chatTexto").value=texto;processarComando(texto);}
+$("formChat").addEventListener("submit",e=>{
+ e.preventDefault();const t=$("chatTexto").value.trim();if(!t)return;
+ $("chatTexto").value="";processarComando(t);
 });
-$("restoreBtn").addEventListener("click",()=>{
- const file=$("restoreFile").files[0];if(!file){toast("Selecione um arquivo de backup.");return}
- if(!confirm("Restaurar este backup? Faça uma cópia dos dados atuais antes de continuar."))return;
+function normalizar(t){
+ return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+}
+function responder(t){adicionarMensagem(t,"bot");}
+function processarComando(texto){
+ adicionarMensagem(texto,"user");
+ const t=normalizar(texto);
+ if(t.includes("caixa")&&(t.includes("quanto")||t.includes("saldo")||t.includes("dinheiro"))){
+  responder("O saldo estimado do dinheiro físico é "+dinheiro(saldoCaixa())+
+   ". Ele considera o saldo inicial, vendas pagas em dinheiro e saídas lançadas como dinheiro. Confira o valor contado na gaveta.");
+  return;
+ }
+ if(t.includes("estoque baixo")||t.includes("acabando")||t.includes("acabando")){
+  const xs=db.produtos.filter(p=>p.qtd<=p.min);
+  responder(xs.length?"Produtos no nível mínimo ou abaixo:\n"+xs.map(p=>p.nome+": "+p.qtd+" unidade(s)").join("\n"):"Todos os produtos estão acima do mínimo cadastrado.");
+  return;
+ }
+ if(t.includes("estoque")||t.includes("produtos cadastrados")){
+  responder(db.produtos.length?"Produtos cadastrados:\n"+db.produtos.map(p=>p.nome+" — "+p.qtd+" un. — "+dinheiro(p.preco)).join("\n"):"Ainda não há produtos. Cadastre o primeiro na tela Estoque.");
+  return;
+ }
+ if(t.includes("vendi hoje")||t.includes("vendas de hoje")||t.includes("quanto vendi")||t.includes("faturei hoje")){
+  const xs=db.vendas.filter(v=>dataDoRegistro(v.data)===hoje());
+  responder("Hoje você registrou "+xs.length+" venda(s), totalizando "+dinheiro(xs.reduce((s,v)=>s+v.total,0))+".");
+  return;
+ }
+ if(t.startsWith("cadastrar produto")){
+  const nomeM=texto.match(/cadastrar produto\s+(.+?)\s+quantidade\s+(\d+)\s+custo\s+([\d,.]+)\s+venda\s+([\d,.]+)/i);
+  if(!nomeM){
+   responder("Para cadastrar por comando, use este formato:\ncadastrar produto pomada quantidade 10 custo 12 venda 20\nDepois confira os dados na tela Estoque. Se preferir, use o formulário de cadastro.");
+   return;
+  }
+  const nome=nomeM[1].trim();
+  const qtd=Number(nomeM[2]);
+  const custo=Number(nomeM[3].replace(",","."));
+  const preco=Number(nomeM[4].replace(",","."));
+  if(!nome||qtd<0||custo<0||preco<0){responder("Não consegui interpretar os dados. Confira o comando.");return;}
+  if(!confirm("Assistente Inho:\nCadastrar "+nome+"\nQuantidade: "+qtd+"\nCusto: "+dinheiro(custo)+"\nVenda: "+dinheiro(preco)+"?"))return;
+  const existente=db.produtos.find(p=>normalizar(p.nome)===normalizar(nome));
+  if(existente){
+   responder("Já existe um produto com esse nome. Para evitar duplicidade, edite o cadastro existente na tela Estoque.");
+   return;
+  }
+  db.produtos.push({id:idNovo(),nome,codigo:"",qtd,custo,preco,min:2,foto:""});
+  if(salvar())responder("Produto "+nome+" cadastrado com "+qtd+" unidade(s).");
+  return;
+ }
+ if(t.startsWith("vender ")||t.startsWith("vendi ")){
+  const m=texto.match(/(?:vender|vendi)\s+(\d+)\s+(.+?)\s+(?:no|na|em)\s+(pix|dinheiro|cart[aã]o|outros)\s*$/i);
+  if(!m){
+   responder("Use este formato para venda por comando:\nvender 2 pomadas no pix\nO produto precisa estar cadastrado. Se o comando não for reconhecido, registre pela tela Vendas.");
+   return;
+  }
+  const qtd=Number(m[1]),nome=m[2].trim(),pag=m[3].toLowerCase();
+  const p=db.produtos.find(x=>normalizar(x.nome)===normalizar(nome)||normalizar(x.nome).includes(normalizar(nome)));
+  if(!p){responder("Não encontrei esse produto no estoque. Confira o nome ou cadastre-o primeiro.");return;}
+  if(p.qtd<qtd){responder("Estoque insuficiente. Há "+p.qtd+" unidade(s) de "+p.nome+".");return;}
+  if(!Number.isInteger(qtd)||qtd<1){responder("Informe uma quantidade inteira maior que zero.");return;}
+  const pagamento=pag.startsWith("pix")?"Pix":pag.startsWith("din")?"Dinheiro":pag.startsWith("cart")?"Cartão":"Outros";
+  if(!confirm("Confirmar venda?\n"+qtd+" × "+p.nome+"\nTotal: "+dinheiro(qtd*p.preco)+"\nPagamento: "+pagamento)){
+   responder("Venda não registrada.");return;
+  }
+  p.qtd-=qtd;
+  db.vendas.unshift({id:idNovo(),data:new Date().toISOString(),tipo:"produto",
+   itemId:p.id,nome:p.nome,qtd,preco:p.preco,custoUnitario:p.custo,
+   total:qtd*p.preco,pagamento,obs:"Registrada pela Assistente Inho"});
+  if(salvar())responder("Venda registrada! "+qtd+" × "+p.nome+" = "+dinheiro(qtd*p.preco)+
+   ". Pagamento: "+pagamento+". Estoque atualizado.");
+  return;
+ }
+ responder("Ainda não reconheço esse comando. Posso consultar o caixa, listar o estoque, mostrar as vendas de hoje, apontar produtos acabando e cadastrar ou vender produtos usando os formatos indicados.");
+}
+
+function exportarBackup(){
+ const blob=new Blob([JSON.stringify({versao:2,exportadoEm:new Date().toISOString(),dados:db},null,2)],{type:"application/json"});
+ baixar(blob,"backup-inho-du-corte-"+hoje()+".json");
+}
+function exportarCSV(){
+ const linhas=[["Data","Item","Tipo","Quantidade","Preço unitário","Total","Pagamento","Observação"]];
+ db.vendas.forEach(v=>linhas.push([v.data,v.nome,v.tipo,v.qtd,v.preco,v.total,v.pagamento,v.obs||""]));
+ const csv=linhas.map(l=>l.map(x=>'"'+String(x??"").replace(/"/g,'""')+'"').join(";")).join("\r\n");
+ baixar(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8"}),"vendas-inho-du-corte.csv");
+}
+function baixar(blob,nome){
+ const url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download=nome;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function importarBackup(){
+ const f=$("arquivoBackup").files[0];if(!f){alert("Selecione um arquivo JSON.");return;}
  const reader=new FileReader();
  reader.onload=()=>{
   try{
-   const d=JSON.parse(String(reader.result));
-   const pick=(key,aliases,def)=>getFirst(d,[key,...aliases],def);
-   products=arr(pick(KEYS.stock,["stock","products","estoque"],[])).map(normalizeProduct);
-   sales=arr(pick(KEYS.sales,["sales","vendas"],[]));
-   history=arr(pick(KEYS.history,["history","historico"],[]));
-   expenses=arr(pick(KEYS.expenses,["expenses","despesas"],[]));
-   accounts=arr(pick(KEYS.accounts,["accounts","contas"],[])).map(normalizeAccount);
-   config=pick(KEYS.config,["config"],{});
-   persist();renderAll();toast("Backup restaurado.");
-  }catch(e){console.error(e);toast("Arquivo inválido ou incompatível. Os dados não foram restaurados.");}
+   const x=JSON.parse(reader.result),dados=x.dados||x;
+   if(!Array.isArray(dados.produtos)||!Array.isArray(dados.vendas)||!Array.isArray(dados.despesas))throw Error("Formato inválido");
+   if(!confirm("Isso substituirá os dados atuais pelos dados do backup. Deseja continuar?"))return;
+   db={...estadoInicial(),...dados,caixa:{...estadoInicial().caixa,...(dados.caixa||{})}};
+   if(salvar())alert("Backup restaurado.");
+  }catch(e){alert("Arquivo inválido ou incompatível. Nenhum backup foi restaurado.");}
  };
- reader.onerror=()=>toast("Não foi possível ler o arquivo.");
- reader.readAsText(file);
-});
-$("refreshAll").addEventListener("click",()=>{renderAll();toast("Telas atualizadas.");});
-
-function initialize(){
- $("salesStart").value=today();$("salesEnd").value=today();
- $("reportStart").value=today();$("reportEnd").value=today();
- persist();
- renderAll();
+ reader.readAsText(f);
 }
-try{initialize()}catch(e){console.error("Erro ao iniciar Gestão Inho Dú Corte:",e);toast("Erro ao iniciar. Confira o console do navegador.");}
-})();
+function apagarTudo(){
+ if(!confirm("ATENÇÃO: apagar todos os produtos, vendas, despesas e dados do caixa deste navegador?"))return;
+ if(!confirm("Confirme novamente. Você já fez backup?"))return;
+ db=estadoInicial();salvar();limparProduto();alert("Dados locais apagados.");
+}
+renderTudo();
 </script>
 </body>
 </html>
