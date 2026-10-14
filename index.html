@@ -3,482 +3,364 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#111111">
-<title>Estoque | Inho Dú Corte</title>
+<title>Gestão Inho Dú Corte</title>
 <style>
-:root {
-  --bg:#101010;
-  --panel:#1c1c1c;
-  --gold:#d4af37;
-  --white:#f7f7f7;
-  --muted:#aaa;
-  --red:#ff6868;
-  --green:#63d69a;
-}
-* { box-sizing:border-box; }
-body {
-  margin:0;
-  background:var(--bg);
-  color:var(--white);
-  font-family:Arial,sans-serif;
-}
-header {
-  padding:22px 16px;
-  background:#171717;
-  border-bottom:1px solid #383020;
-}
-.brand {
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.logo {
-  display:grid;
-  place-items:center;
-  width:48px;
-  height:48px;
-  border:2px solid var(--gold);
-  border-radius:12px;
-  color:var(--gold);
-  font-size:23px;
-  font-weight:bold;
-}
-h1 { font-size:19px; margin:0 0 5px; }
-header p { margin:0; color:var(--gold); font-size:11px; }
-main { padding:16px; max-width:850px; margin:auto; }
-h2 { font-size:17px; margin:0 0 14px; }
-.stats {
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:10px;
-  margin-bottom:22px;
-}
-.stat,.panel {
-  background:var(--panel);
-  border:1px solid #333;
-  border-radius:12px;
-  padding:15px;
-}
-.stat small { color:var(--muted); }
-.stat strong {
-  display:block;
-  font-size:24px;
-  margin-top:9px;
-  overflow-wrap:anywhere;
-}
-.gold { color:var(--gold); }
-.panel { margin-bottom:18px; }
-label {
-  display:block;
-  font-size:13px;
-  color:#ddd;
-  margin:12px 0 6px;
-}
-input,select {
-  width:100%;
-  padding:12px;
-  border:1px solid #444;
-  border-radius:8px;
-  background:#111;
-  color:white;
-  font-size:16px;
-}
-button {
-  border:0;
-  border-radius:8px;
-  padding:12px;
-  font-weight:bold;
-  font-size:14px;
-  cursor:pointer;
-}
-.primary { background:var(--gold); color:#111; }
-.secondary { background:#333; color:white; }
-.danger { background:#542525; color:#fff; }
-.actions {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-top:15px;
-}
-.full { width:100%; margin-top:14px; }
-.products { display:grid; gap:10px; }
-.product {
-  border:1px solid #383838;
-  border-radius:10px;
-  padding:13px;
-  background:#151515;
-}
-.product-top {
-  display:flex;
-  justify-content:space-between;
-  gap:8px;
-}
-.product h3 { margin:0 0 7px; font-size:16px; }
-.product p { margin:5px 0; font-size:13px; color:#ccc; }
-.tag {
-  color:var(--gold);
-  font-size:11px;
-  border:1px solid #5a4b22;
-  padding:4px 7px;
-  border-radius:20px;
-  white-space:nowrap;
-  height:fit-content;
-}
-.low { color:var(--red)!important; }
-.good { color:var(--green)!important; }
-.product-actions {
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-  margin-top:12px;
-}
-.product-actions button { flex:1; min-width:75px; }
-.empty { text-align:center; color:var(--muted); padding:20px 0; }
-.search { margin-bottom:12px; }
-.note { font-size:12px; color:var(--muted); line-height:1.5; }
-footer { text-align:center; padding:20px; color:#888; font-size:11px; }
-@media(min-width:600px) {
-  .stats { grid-template-columns:repeat(4,minmax(0,1fr)); }
-  .products { grid-template-columns:repeat(2,minmax(0,1fr)); }
-}
+:root{--bg:#101010;--panel:#1c1c1c;--gold:#d4af37;--white:#f7f7f7;--muted:#aaa;--red:#ff6868;--green:#63d69a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,sans-serif}
+header{padding:20px 16px;background:#171717;border-bottom:1px solid #54451d}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{display:grid;place-items:center;width:48px;height:48px;border:2px solid var(--gold);border-radius:12px;color:var(--gold);font-size:22px;font-weight:bold}
+h1{font-size:19px;margin:0 0 5px}header p{margin:0;color:var(--gold);font-size:11px}
+main{max-width:900px;margin:auto;padding:15px}
+h2{font-size:17px;margin:0 0 14px}
+nav{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:18px}
+nav button{background:#292929;color:#ddd;padding:12px 4px;font-size:12px}
+nav button.active{background:var(--gold);color:#111}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:18px}
+.stat,.panel{background:var(--panel);border:1px solid #333;border-radius:12px;padding:14px}
+.stat small{color:var(--muted)}.stat strong{display:block;font-size:22px;margin-top:8px;overflow-wrap:anywhere}
+.gold{color:var(--gold)}
+label{display:block;font-size:13px;margin:12px 0 6px;color:#ddd}
+input,select{width:100%;padding:12px;border:1px solid #444;border-radius:8px;background:#111;color:#fff;font-size:16px}
+button{border:0;border-radius:8px;padding:12px;font-weight:bold;font-size:14px;cursor:pointer}
+.primary{background:var(--gold);color:#111}.secondary{background:#333;color:white}.danger{background:#542525;color:white}
+.full{width:100%;margin-top:12px}.panel{margin-bottom:16px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.products{display:grid;gap:10px}
+.product{border:1px solid #383838;border-radius:10px;padding:13px;background:#151515}
+.product h3{margin:0 0 8px;font-size:16px}.product p{margin:5px 0;font-size:13px;color:#ccc}
+.product-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.product-actions button{flex:1;min-width:75px}
+.note,.muted{font-size:12px;color:var(--muted);line-height:1.5}
+.empty{text-align:center;padding:18px;color:var(--muted)}
+.entry{border-bottom:1px solid #333;padding:12px 0;font-size:13px;line-height:1.6}
+.entry:last-child{border-bottom:0}
+.good{color:var(--green)}.bad{color:var(--red)}
+.totalbox{border:1px solid #54451d;border-radius:10px;padding:14px;margin-top:12px}
+.totalbox strong{color:var(--gold);font-size:22px}
+.page[hidden]{display:none!important}
+@media(min-width:600px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}.products{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
 <header>
-  <div class="brand">
-    <div class="logo">ID</div>
-    <div>
-      <h1>INHO DÚ CORTE</h1>
-      <p>GESTÃO DE ESTOQUE</p>
-    </div>
-  </div>
+ <div class="brand">
+  <div class="logo">ID</div>
+  <div><h1>INHO DÚ CORTE</h1><p>ESTOQUE • VENDAS • FINANCEIRO</p></div>
+ </div>
 </header>
-
 <main>
-  <h2>📊 Resumo do estoque</h2>
-  <section class="stats">
-    <div class="stat"><small>Produtos</small><strong id="total">0</strong></div>
-    <div class="stat"><small>Unidades</small><strong id="units">0</strong></div>
-    <div class="stat"><small>Estoque baixo</small><strong id="low" class="gold">0</strong></div>
-    <div class="stat"><small>Valor de custo</small><strong id="value" class="gold">R$ 0,00</strong></div>
-  </section>
+<nav>
+ <button class="active" data-page="dashboard">Painel</button>
+ <button data-page="stock">Estoque</button>
+ <button data-page="sales">Vendas</button>
+</nav>
 
-  <section class="panel" id="formPanel">
-    <h2 id="formTitle">➕ Cadastrar mercadoria</h2>
-    <form id="productForm">
-      <input type="hidden" id="editId">
-      <label for="name">Nome do produto *</label>
-      <input id="name" required maxlength="100" placeholder="Ex.: Pomada modeladora">
+<section class="page" id="dashboard">
+ <h2>📊 Resumo geral</h2>
+ <div class="stats">
+  <div class="stat"><small>Produtos</small><strong id="totalProducts">0</strong></div>
+  <div class="stat"><small>Unidades em estoque</small><strong id="totalUnits">0</strong></div>
+  <div class="stat"><small>Estoque baixo</small><strong id="lowStock" class="gold">0</strong></div>
+  <div class="stat"><small>Valor de custo do estoque</small><strong id="stockValue" class="gold">R$ 0,00</strong></div>
+ </div>
+ <div class="stats">
+  <div class="stat"><small>Faturamento total</small><strong id="revenue" class="gold">R$ 0,00</strong></div>
+  <div class="stat"><small>Custo vendido</small><strong id="soldCost">R$ 0,00</strong></div>
+  <div class="stat"><small>Lucro bruto estimado</small><strong id="profit" class="good">R$ 0,00</strong></div>
+  <div class="stat"><small>Vendas registradas</small><strong id="saleCount">0</strong></div>
+ </div>
+ <div class="panel">
+  <h2>Últimas vendas</h2>
+  <div id="recentSales"></div>
+  <button class="primary full" data-goto="sales">Registrar uma venda</button>
+ </div>
+ <div class="panel">
+  <h2>💾 Backup dos dados</h2>
+  <p class="note">Baixe cópias dos produtos, vendas e movimentações. Guarde o arquivo em local seguro.</p>
+  <button class="primary full" id="backup">Exportar backup completo</button>
+  <label for="restore">Restaurar um backup deste sistema</label>
+  <input type="file" id="restore" accept=".json,application/json">
+  <p class="note">Restaurar um backup substitui os dados atuais deste navegador.</p>
+ </div>
+</section>
 
-      <label for="category">Categoria</label>
-      <select id="category">
-        <option>Produtos para cabelo</option>
-        <option>Produtos para barba</option>
-        <option>Shampoo e cuidados</option>
-        <option>Acessórios</option>
-        <option>Bebidas e outros</option>
-        <option>Outros</option>
-      </select>
+<section class="page" id="stock" hidden>
+ <div class="panel">
+  <h2 id="productHeading">➕ Cadastrar mercadoria</h2>
+  <form id="productForm">
+   <input type="hidden" id="editId">
+   <label for="pname">Nome do produto *</label>
+   <input id="pname" required maxlength="100" placeholder="Ex.: Pomada modeladora">
+   <label for="category">Categoria</label>
+   <select id="category">
+    <option>Produtos para cabelo</option><option>Produtos para barba</option>
+    <option>Shampoo e cuidados</option><option>Acessórios</option>
+    <option>Bebidas e outros</option><option>Outros</option>
+   </select>
+   <div class="row">
+    <div><label for="qty">Quantidade *</label><input id="qty" type="number" min="0" step="1" required></div>
+    <div><label for="minimum">Alerta de estoque</label><input id="minimum" type="number" min="0" step="1" value="2" required></div>
+   </div>
+   <div class="row">
+    <div><label for="cost">Custo unitário (R$)</label><input id="cost" type="number" min="0" step="0.01" value="0" required></div>
+    <div><label for="price">Preço de venda (R$)</label><input id="price" type="number" min="0" step="0.01" value="0" required></div>
+   </div>
+   <button class="primary full" id="saveProduct">Salvar produto</button>
+   <button class="secondary full" id="cancelEdit" type="button" hidden>Cancelar edição</button>
+  </form>
+ </div>
+ <div class="panel">
+  <h2>📦 Produtos cadastrados</h2>
+  <input id="search" placeholder="Buscar mercadoria...">
+  <div class="products" id="productList"></div>
+ </div>
+ <div class="panel">
+  <h2>Movimentações de estoque</h2>
+  <div id="stockHistory"></div>
+ </div>
+</section>
 
-      <label for="qty">Quantidade disponível *</label>
-      <input id="qty" type="number" min="0" step="1" required placeholder="Ex.: 10">
-
-      <label for="minimum">Avisar quando chegar a</label>
-      <input id="minimum" type="number" min="0" step="1" value="2" required>
-
-      <label for="cost">Preço de compra por unidade (R$)</label>
-      <input id="cost" type="number" min="0" step="0.01" value="0" required>
-
-      <label for="price">Preço de venda por unidade (R$)</label>
-      <input id="price" type="number" min="0" step="0.01" value="0" required>
-
-      <button class="primary full" id="saveBtn" type="submit">Salvar produto</button>
-      <button class="secondary full" id="cancelBtn" type="button" hidden>Cancelar edição</button>
-    </form>
-  </section>
-
-  <section class="panel">
-    <h2>📦 Mercadorias cadastradas</h2>
-    <input class="search" id="search" placeholder="🔎 Buscar produto...">
-    <div id="productList" class="products"></div>
-  </section>
-
-  <section class="panel">
-    <h2>📋 Últimas movimentações</h2>
-    <div id="history"></div>
-    <button class="secondary full" id="exportHistory">Exportar histórico CSV</button>
-  </section>
-
-  <section class="panel">
-    <h2>💾 Cópia de segurança</h2>
-    <p class="note">Exporte seus dados para guardar uma cópia. Para recuperar seus produtos, importe um arquivo de backup criado por este site.</p>
-    <div class="actions">
-      <button class="primary" id="backup">Exportar backup</button>
-      <button class="secondary" id="importBtn">Importar backup</button>
-    </div>
-    <input id="backupFile" type="file" accept=".json,application/json" hidden>
-    <p class="note">Nesta primeira versão, os dados ficam salvos neste navegador e aparelho. Não limpe os dados do navegador sem antes exportar um backup.</p>
-  </section>
+<section class="page" id="sales" hidden>
+ <div class="panel">
+  <h2>🛒 Registrar venda</h2>
+  <form id="saleForm">
+   <label for="saleProduct">Produto *</label>
+   <select id="saleProduct" required><option value="">Selecione um produto</option></select>
+   <p id="available" class="note">Selecione uma mercadoria para ver o estoque disponível.</p>
+   <div class="row">
+    <div><label for="saleQty">Quantidade *</label><input id="saleQty" type="number" min="1" step="1" value="1" required></div>
+    <div><label for="salePrice">Preço unitário (R$) *</label><input id="salePrice" type="number" min="0.01" step="0.01" required></div>
+   </div>
+   <label for="payment">Forma de pagamento *</label>
+   <select id="payment" required>
+    <option value="Pix">Pix</option><option value="Dinheiro">Dinheiro</option>
+    <option value="Cartão de débito">Cartão de débito</option>
+    <option value="Cartão de crédito">Cartão de crédito</option>
+    <option value="Outros">Outros</option>
+   </select>
+   <label for="customer">Cliente (opcional)</label>
+   <input id="customer" maxlength="100" placeholder="Nome do cliente">
+   <label for="saleNotes">Observação (opcional)</label>
+   <input id="saleNotes" maxlength="200" placeholder="Ex.: venda no balcão">
+   <div class="totalbox">Total da venda<br><strong id="saleTotal">R$ 0,00</strong></div>
+   <button class="primary full" type="submit">Confirmar venda e baixar estoque</button>
+  </form>
+  <p class="note">Ao confirmar, o estoque é descontado e a venda fica registrada neste navegador. Confira os dados antes de confirmar.</p>
+ </div>
+ <div class="panel">
+  <h2>📋 Histórico de vendas</h2>
+  <input id="salesSearch" placeholder="Buscar por produto, cliente ou pagamento">
+  <div id="salesHistory"></div>
+  <button class="secondary full" id="exportSales">Exportar vendas CSV</button>
+ </div>
+</section>
 </main>
-
-<footer>Barbearia Inho Dú Corte • Controle de estoque</footer>
+<footer class="muted" style="text-align:center;padding:20px">Barbearia Inho Dú Corte</footer>
 
 <script>
 (function(){
 "use strict";
+const K="inho_du_corte_estoque_v1";
+const HK="inho_du_corte_historico_v1";
+const SK="inho_du_corte_vendas_v1";
+const $=id=>document.getElementById(id);
+const money=n=>Number(n||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+let products=[], movements=[], sales=[];
 
-const KEY = "inho_du_corte_estoque_v1";
-const HISTORY_KEY = "inho_du_corte_historico_v1";
-let products = [];
-let history = [];
-let storageOK = true;
-
-const $ = id => document.getElementById(id);
-const money = n => Number(n || 0).toLocaleString("pt-BR", {
-  style:"currency", currency:"BRL"
-});
-const escapeHTML = value => String(value).replace(/[&<>"']/g, c => ({
-  "&":"&amp;", "<":"&lt;", ">":"&gt;",
-  '"':"&quot;", "'":"&#39;"
-}[c]));
-
-function load(){
-  try {
-    products = JSON.parse(localStorage.getItem(KEY) || "[]");
-    history = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
-    if(!Array.isArray(products) || !Array.isArray(history)) throw Error();
-  } catch(e) {
-    products = [];
-    history = [];
-    storageOK = false;
-    alert("Não foi possível ler os dados salvos. Exporte ou recupere um backup se tiver um.");
-  }
+function read(key,fallback){
+ try {const v=JSON.parse(localStorage.getItem(key)||"null");return v===null?fallback:v;}
+ catch(e){return fallback;}
 }
-
 function persist(){
-  try {
-    localStorage.setItem(KEY, JSON.stringify(products));
-    localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0,300)));
-    storageOK = true;
-  } catch(e) {
-    storageOK = false;
-    alert("Não foi possível salvar. Exporte um backup e verifique o espaço disponível.");
-  }
+ try{
+  localStorage.setItem(K,JSON.stringify(products));
+  localStorage.setItem(HK,JSON.stringify(movements.slice(0,500)));
+  localStorage.setItem(SK,JSON.stringify(sales.slice(0,2000)));
+  return true;
+ }catch(e){alert("Não foi possível salvar os dados. Exporte um backup e confira o espaço disponível.");return false;}
 }
-
-function record(action, product, amount){
-  history.unshift({
-    date:new Date().toLocaleString("pt-BR"),
-    action,
-    name:product.name,
-    amount:Number(amount)
-  });
-  history = history.slice(0,300);
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function log(action,p,qty,extra=""){
+ movements.unshift({id:Date.now().toString(36)+Math.random().toString(36).slice(2),date:new Date().toISOString(),action,name:p.name,qty,extra});
+ movements=movements.slice(0,500);
 }
-
+function fmtDate(d){return new Date(d).toLocaleString("pt-BR");}
+function calcSales(){
+ return sales.reduce((a,s)=>({revenue:a.revenue+s.total,cost:a.cost+s.cost,profit:a.profit+s.total-s.cost}),{revenue:0,cost:0,profit:0});
+}
 function render(){
-  $("total").textContent = products.length;
-  $("units").textContent = products.reduce((s,p)=>s+p.qty,0);
-  $("low").textContent = products.filter(p=>p.qty<=p.minimum).length;
-  $("value").textContent = money(products.reduce((s,p)=>s+p.qty*p.cost,0));
+ $("totalProducts").textContent=products.length;
+ $("totalUnits").textContent=products.reduce((a,p)=>a+p.qty,0);
+ $("lowStock").textContent=products.filter(p=>p.qty<=p.minimum).length;
+ $("stockValue").textContent=money(products.reduce((a,p)=>a+p.qty*p.cost,0));
+ const c=calcSales();
+ $("revenue").textContent=money(c.revenue);
+ $("soldCost").textContent=money(c.cost);
+ $("profit").textContent=money(c.profit);
+ $("saleCount").textContent=sales.length;
 
-  const term = $("search").value.trim().toLocaleLowerCase("pt-BR");
-  const shown = products.filter(p =>
-    (p.name+" "+p.category).toLocaleLowerCase("pt-BR").includes(term)
-  );
+ const term=$("search").value.trim().toLocaleLowerCase("pt-BR");
+ const found=products.filter(p=>(p.name+" "+p.category).toLocaleLowerCase("pt-BR").includes(term));
+ $("productList").innerHTML=found.length?found.map(p=>`
+ <article class="product">
+ <h3>${esc(p.name)}</h3><p>${esc(p.category)}</p>
+ <p>Quantidade: <b class="${p.qty<=p.minimum?"bad":"good"}">${p.qty}</b> ${p.qty<=p.minimum?"• Estoque baixo":""}</p>
+ <p>Compra: ${money(p.cost)} | Venda: ${money(p.price)}</p>
+ <p>Valor em estoque: ${money(p.qty*p.cost)}</p>
+ <div class="product-actions">
+ <button class="primary" data-act="in" data-id="${esc(p.id)}">+ Entrada</button>
+ <button class="secondary" data-act="edit" data-id="${esc(p.id)}">Editar</button>
+ <button class="danger" data-act="del" data-id="${esc(p.id)}">Excluir</button>
+ </div></article>`).join(""):'<div class="empty">Nenhum produto cadastrado.</div>';
 
-  $("productList").innerHTML = shown.length ? shown.map(p => `
-    <article class="product">
-      <div class="product-top">
-        <div>
-          <h3>${escapeHTML(p.name)}</h3>
-          <p>${escapeHTML(p.category)}</p>
-        </div>
-        <span class="tag">${p.qty<=p.minimum ? "Estoque baixo" : "Disponível"}</span>
-      </div>
-      <p>Quantidade: <b class="${p.qty<=p.minimum?"low":"good"}">${p.qty}</b></p>
-      <p>Compra: ${money(p.cost)} • Venda: ${money(p.price)}</p>
-      <p>Valor em estoque: <b>${money(p.qty*p.cost)}</b></p>
-      <div class="product-actions">
-        <button class="primary" data-action="in" data-id="${p.id}">+ Entrada</button>
-        <button class="secondary" data-action="out" data-id="${p.id}">− Saída</button>
-        <button class="secondary" data-action="edit" data-id="${p.id}">Editar</button>
-        <button class="danger" data-action="delete" data-id="${p.id}">Excluir</button>
-      </div>
-    </article>
-  `).join("") : '<div class="empty">Nenhuma mercadoria cadastrada.</div>';
+ $("saleProduct").innerHTML='<option value="">Selecione um produto</option>'+products.map(p=>`<option value="${esc(p.id)}">${esc(p.name)} — estoque: ${p.qty}</option>`).join("");
+ updateSaleTotal();
 
-  $("history").innerHTML = history.length ? history.slice(0,15).map(h=>`
-    <p class="note">${escapeHTML(h.date)} — <b>${escapeHTML(h.action)}</b>: ${escapeHTML(h.name)} (${h.amount})</p>
-  `).join("") : '<p class="empty">Nenhuma movimentação registrada.</p>';
+ $("stockHistory").innerHTML=movements.length?movements.slice(0,30).map(m=>`<div class="entry">${esc(fmtDate(m.date))}<br><b>${esc(m.action)}</b>: ${esc(m.name)} (${m.qty}) ${esc(m.extra)}</div>`).join(""):'<div class="empty">Nenhuma movimentação registrada.</div>';
+ $("salesHistory").innerHTML=renderSales();
+ $("recentSales").innerHTML=sales.length?sales.slice(0,5).map(s=>`<div class="entry">${esc(fmtDate(s.date))} • ${esc(s.product)}<br>${s.qty} unidade(s) • ${esc(s.payment)} • <b class="gold">${money(s.total)}</b></div>`).join(""):'<div class="empty">Nenhuma venda registrada.</div>';
 }
-
-function resetForm(){
-  $("productForm").reset();
-  $("editId").value = "";
-  $("minimum").value = "2";
-  $("cost").value = "0";
-  $("price").value = "0";
-  $("formTitle").textContent = "➕ Cadastrar mercadoria";
-  $("saveBtn").textContent = "Salvar produto";
-  $("cancelBtn").hidden = true;
+function renderSales(){
+ const term=$("salesSearch").value.trim().toLocaleLowerCase("pt-BR");
+ const list=sales.filter(s=>(s.product+" "+s.customer+" "+s.payment).toLocaleLowerCase("pt-BR").includes(term));
+ return list.length?list.map(s=>`<div class="entry">
+ <b>${esc(s.product)}</b> — ${s.qty} unidade(s)<br>
+ ${esc(fmtDate(s.date))}<br>
+ Pagamento: ${esc(s.payment)}<br>
+ ${s.customer?"Cliente: "+esc(s.customer)+"<br>":""}
+ Total: <b class="gold">${money(s.total)}</b> • Lucro bruto estimado: <b class="good">${money(s.total-s.cost)}</b>
+ ${s.notes?"<br>Obs.: "+esc(s.notes):""}
+ <button class="danger full" data-cancel-sale="${esc(s.id)}">Cancelar venda e devolver ao estoque</button>
+ </div>`).join(""):'<div class="empty">Nenhuma venda encontrada.</div>';
 }
+function updateSaleTotal(){
+ const p=products.find(p=>p.id===$("saleProduct").value);
+ const q=Number($("saleQty").value);
+ const price=Number($("salePrice").value);
+ $("available").textContent=p?"Estoque disponível: "+p.qty+" unidade(s).":"Selecione uma mercadoria.";
+ $("saleTotal").textContent=money(q*price);
+}
+function resetProduct(){
+ $("productForm").reset();$("editId").value="";
+ $("minimum").value="2";$("cost").value="0";$("price").value="0";
+ $("productHeading").textContent="➕ Cadastrar mercadoria";
+ $("saveProduct").textContent="Salvar produto";$("cancelEdit").hidden=true;
+}
+function download(name,content,type){
+ const url=URL.createObjectURL(new Blob([content],{type}));
+ const a=document.createElement("a");a.href=url;a.download=name;a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+function csv(rows){return "\uFEFF"+rows.map(row=>row.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";")).join("\r\n");}
 
-$("productForm").addEventListener("submit", e=>{
-  e.preventDefault();
-
-  const name = $("name").value.trim();
-  const qty = Number($("qty").value);
-  const minimum = Number($("minimum").value);
-  const cost = Number($("cost").value);
-  const price = Number($("price").value);
-  const editId = $("editId").value;
-
-  if(!name || ![qty,minimum,cost,price].every(Number.isFinite) ||
-     !Number.isInteger(qty) || !Number.isInteger(minimum) ||
-     qty<0 || minimum<0 || cost<0 || price<0){
-    alert("Confira os campos. Quantidades devem ser números inteiros não negativos.");
-    return;
-  }
-
-  const category = $("category").value;
-  let p;
-
-  if(editId){
-    p = products.find(x=>x.id===editId);
-    if(!p) return;
-    const oldQty = p.qty;
-    Object.assign(p,{name,category,qty,minimum,cost,price});
-    if(oldQty!==qty) record("Ajuste de quantidade",p,qty-oldQty);
-  } else {
-    p = {id:Date.now().toString(36)+Math.random().toString(36).slice(2,8),
-      name,category,qty,minimum,cost,price};
-    products.push(p);
-    record("Cadastro",p,qty);
-  }
-
-  persist();
-  render();
-  resetForm();
-  alert(storageOK ? "Produto salvo!" : "Confira se os dados foram salvos.");
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{
+ document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("active",x===b));
+ document.querySelectorAll(".page").forEach(p=>p.hidden=p.id!==b.dataset.page);
+}));
+document.querySelectorAll("[data-goto]").forEach(b=>b.addEventListener("click",()=>{
+ document.querySelector('[data-page="'+b.dataset.goto+'"]').click();
+}));
+$("productForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const name=$("pname").value.trim(),qty=Number($("qty").value),minimum=Number($("minimum").value),cost=Number($("cost").value),price=Number($("price").value),edit=$("editId").value;
+ if(!name||![qty,minimum,cost,price].every(Number.isFinite)||!Number.isInteger(qty)||!Number.isInteger(minimum)||qty<0||minimum<0||cost<0||price<0){alert("Confira os campos e os valores informados.");return;}
+ let p;
+ if(edit){
+  p=products.find(x=>x.id===edit);if(!p)return;
+  if(p.qty!==qty)log("Ajuste manual de estoque",p,qty-p.qty);
+  Object.assign(p,{name,qty,minimum,cost,price,category:$("category").value});
+ }else{
+  p={id:Date.now().toString(36)+Math.random().toString(36).slice(2),name,qty,minimum,cost,price,category:$("category").value};
+  products.push(p);log("Cadastro inicial",p,qty);
+ }
+ if(persist()){render();resetProduct();alert("Produto salvo com sucesso!");}
 });
-
-$("cancelBtn").addEventListener("click",resetForm);
+$("cancelEdit").addEventListener("click",resetProduct);
 $("search").addEventListener("input",render);
-
-$("productList").addEventListener("click", e=>{
-  const btn = e.target.closest("button[data-action]");
-  if(!btn) return;
-  const p = products.find(x=>x.id===btn.dataset.id);
-  if(!p) return;
-
-  switch(btn.dataset.action){
-    case "edit":
-      $("editId").value = p.id;
-      $("name").value = p.name;
-      $("category").value = p.category;
-      $("qty").value = p.qty;
-      $("minimum").value = p.minimum;
-      $("cost").value = p.cost;
-      $("price").value = p.price;
-      $("formTitle").textContent = "✏️ Editar mercadoria";
-      $("saveBtn").textContent = "Salvar alterações";
-      $("cancelBtn").hidden = false;
-      $("formPanel").scrollIntoView({behavior:"smooth"});
-      break;
-
-    case "in":
-    case "out": {
-      const incoming = btn.dataset.action==="in";
-      const amount = Number(prompt(
-        (incoming?"Quantidade que entrou":"Quantidade que saiu")+" de "+p.name+":"
-      ));
-      if(!Number.isInteger(amount) || amount<=0) {
-        alert("Digite uma quantidade inteira maior que zero.");
-        return;
-      }
-      if(!incoming && amount>p.qty) {
-        alert("Estoque insuficiente.");
-        return;
-      }
-      p.qty += incoming ? amount : -amount;
-      record(incoming?"Entrada":"Saída",p,incoming?amount:-amount);
-      persist();
-      render();
-      break;
-    }
-
-    case "delete":
-      if(confirm("Excluir "+p.name+"? Essa ação não pode ser desfeita.")){
-        products = products.filter(x=>x.id!==p.id);
-        record("Exclusão",p,p.qty);
-        persist();
-        render();
-      }
-      break;
-  }
+$("productList").addEventListener("click",e=>{
+ const b=e.target.closest("button[data-act]");if(!b)return;
+ const p=products.find(x=>x.id===b.dataset.id);if(!p)return;
+ if(b.dataset.act==="edit"){
+  $("editId").value=p.id;$("pname").value=p.name;$("qty").value=p.qty;$("minimum").value=p.minimum;
+  $("cost").value=p.cost;$("price").value=p.price;$("category").value=p.category;
+  $("productHeading").textContent="Editar mercadoria";$("saveProduct").textContent="Salvar alterações";$("cancelEdit").hidden=false;
+  $("productForm").scrollIntoView({behavior:"smooth"});
+ }else if(b.dataset.act==="in"){
+  const n=Number(prompt("Quantas unidades entraram de "+p.name+"?"));
+  if(!Number.isInteger(n)||n<=0){alert("Informe uma quantidade inteira maior que zero.");return;}
+  p.qty+=n;log("Entrada de estoque",p,n);
+  if(persist())render();
+ }else if(b.dataset.act==="del"){
+  if(sales.some(s=>s.productId===p.id)){alert("Este produto tem vendas registradas. Cancele as vendas relacionadas antes de excluir.");return;}
+  if(confirm("Excluir "+p.name+"?")){products=products.filter(x=>x.id!==p.id);log("Exclusão de produto",p,p.qty);if(persist())render();}
+ }
+});
+$("saleProduct").addEventListener("change",()=>{
+ const p=products.find(p=>p.id===$("saleProduct").value);
+ if(p)$("salePrice").value=p.price;
+ updateSaleTotal();
+});
+$("saleQty").addEventListener("input",updateSaleTotal);
+$("salePrice").addEventListener("input",updateSaleTotal);
+$("saleForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const p=products.find(p=>p.id===$("saleProduct").value),qty=Number($("saleQty").value),price=Number($("salePrice").value);
+ if(!p){alert("Selecione um produto.");return;}
+ if(!Number.isInteger(qty)||qty<=0){alert("A quantidade deve ser um inteiro maior que zero.");return;}
+ if(qty>p.qty){alert("Estoque insuficiente. Disponível: "+p.qty+".");return;}
+ if(!Number.isFinite(price)||price<=0){alert("Informe um preço unitário maior que zero.");return;}
+ const total=Math.round(qty*price*100)/100;
+ const sale={id:Date.now().toString(36)+Math.random().toString(36).slice(2),date:new Date().toISOString(),productId:p.id,product:p.name,qty,unitPrice:price,total,cost:qty*p.cost,payment:$("payment").value,customer:$("customer").value.trim(),notes:$("saleNotes").value.trim()};
+ if(!confirm("Confirmar venda de "+qty+" unidade(s) de "+p.name+" por "+money(total)+" via "+sale.payment+"?"))return;
+ p.qty-=qty;sales.unshift(sale);log("Venda",p,-qty,"Total "+money(total));
+ if(persist()){
+  $("saleForm").reset();$("saleQty").value="1";render();
+  alert("Venda registrada! Estoque atualizado.");
+ }
+});
+$("salesSearch").addEventListener("input",()=>{$("salesHistory").innerHTML=renderSales();});
+$("salesHistory").addEventListener("click",e=>{
+ const b=e.target.closest("[data-cancel-sale]");if(!b)return;
+ const s=sales.find(x=>x.id===b.dataset.cancelSale);if(!s)return;
+ if(!confirm("Cancelar esta venda e devolver "+s.qty+" unidade(s) ao estoque?"))return;
+ const p=products.find(x=>x.id===s.productId);
+ if(!p){alert("O produto original não existe. Não foi possível devolver automaticamente.");return;}
+ p.qty+=s.qty;sales=sales.filter(x=>x.id!==s.id);log("Cancelamento de venda",p,s.qty,"Venda estornada");
+ if(persist())render();
+});
+$("backup").addEventListener("click",()=>download("backup-inho-du-corte.json",JSON.stringify({version:2,products,movements,sales},null,2),"application/json"));
+$("restore").addEventListener("change",async e=>{
+ const file=e.target.files[0];if(!file)return;
+ try{
+  const d=JSON.parse(await file.text());
+  if(d.version!==2||!Array.isArray(d.products)||!Array.isArray(d.movements)||!Array.isArray(d.sales))throw Error();
+  if(!d.products.every(p=>p&&typeof p.id==="string"&&typeof p.name==="string"&&Number.isInteger(p.qty)&&p.qty>=0&&Number.isInteger(p.minimum)&&p.minimum>=0&&Number.isFinite(p.cost)&&p.cost>=0&&Number.isFinite(p.price)&&p.price>=0))throw Error();
+  if(!d.sales.every(s=>s&&typeof s.id==="string"&&typeof s.product==="string"&&Number.isInteger(s.qty)&&s.qty>0&&Number.isFinite(s.total)&&s.total>=0&&Number.isFinite(s.cost)&&s.cost>=0))throw Error();
+  if(!confirm("Isso substituirá produtos, vendas e histórico atuais. Continuar?"))return;
+  const old=[products,movements,sales];
+  products=d.products;movements=d.movements;sales=d.sales;
+  if(persist()){render();alert("Backup restaurado.");}
+  else [products,movements,sales]=old;
+ }catch(err){alert("Backup inválido ou incompatível com esta versão.");}
+ finally{e.target.value="";}
+});
+$("exportSales").addEventListener("click",()=>{
+ const rows=[["Data","Produto","Quantidade","Preço unitário","Total","Custo","Lucro bruto","Pagamento","Cliente","Observação"],
+ ...sales.map(s=>[fmtDate(s.date),s.product,s.qty,s.unitPrice,s.total,s.cost,s.total-s.cost,s.payment,s.customer,s.notes])];
+ download("vendas-inho-du-corte.csv",csv(rows),"text/csv;charset=utf-8");
 });
 
-function download(filename, content, type){
-  const blob = new Blob([content],{type});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href=url;
-  a.download=filename;
-  a.click();
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
-}
-
-$("backup").addEventListener("click",()=>{
-  download("backup-inho-du-corte.json",
-    JSON.stringify({version:1,products,history},null,2),
-    "application/json");
-});
-
-$("importBtn").addEventListener("click",()=>$("backupFile").click());
-
-$("backupFile").addEventListener("change",async e=>{
-  const file=e.target.files[0];
-  if(!file) return;
-  try {
-    const data=JSON.parse(await file.text());
-    if(data.version!==1 || !Array.isArray(data.products) ||
-       !Array.isArray(data.history)) throw Error();
-    const valid=data.products.every(p=>
-      p && typeof p.id==="string" && typeof p.name==="string" &&
-      Number.isInteger(p.qty) && p.qty>=0 &&
-      Number.isInteger(p.minimum) && p.minimum>=0 &&
-      Number.isFinite(p.cost) && p.cost>=0 &&
-      Number.isFinite(p.price) && p.price>=0 &&
-      typeof p.category==="string"
-    );
-    if(!valid) throw Error();
-    if(!confirm("Importar backup e substituir os dados atuais?")) return;
-    products=data.products;
-    history=data.history;
-    persist();
-    render();
-    alert("Backup importado.");
-  } catch(err) {
-    alert("Arquivo inválido ou incompatível.");
-  } finally {
-    e.target.value="";
-  }
-});
-
-function csvCell(v){
-  return '"'+String(v??"").replace(/"/g,'""')+'"';
-}
-$("exportHistory").addEventListener("click",()=>{
-  const rows=[["Data","Movimentação","Produto","Quantidade"],
-    ...history.map(h=>[h.date,h.action,h.name,h.amount])];
-  download("historico-inho-du-corte.csv",
-    "\uFEFF"+rows.map(r=>r.map(csvCell).join(";")).join("\r\n"),
-    "text/csv;charset=utf-8");
-});
-
-load();
+// Compatibilidade com o estoque da versão anterior.
+products=read(K,[]);
+movements=read(HK,[]);
+sales=read(SK,[]);
+if(!Array.isArray(products))products=[];
+if(!Array.isArray(movements))movements=[];
+if(!Array.isArray(sales))sales=[];
 render();
 })();
 </script>
