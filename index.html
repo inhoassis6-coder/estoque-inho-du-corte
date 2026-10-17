@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -52,12 +53,9 @@ th,td{text-align:left;padding:10px 7px;border-bottom:1px solid var(--border)}
 th{color:var(--gold2)}
 .tablewrap{overflow-x:auto}
 .hero{border:1px solid #55451f;background:radial-gradient(ellipse at top right,#3b3018,#141416 76%);border-radius:16px;padding:18px;margin-bottom:14px}
-.hero h2{color:var(--gold2)}
-.hero p{font-size:13px;color:#c0bdaf;line-height:1.55}
 .quick-total{display:flex;justify-content:space-between;align-items:center;padding:14px;border-radius:12px;background:#0b0b0d;border:1px solid #49402a;margin-top:14px;gap:10px}
 .quick-total strong{font-size:24px;color:var(--gold2)}
 .qty-control{display:grid;grid-template-columns:43px 1fr 43px;gap:7px}
-.qty-control button{font-size:20px}
 .method-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:8px}
 .method-option{padding:12px 3px;font-size:12px}
 .method-option.selected{border-color:var(--gold);background:#302714;color:var(--gold2)}
@@ -90,12 +88,13 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
 <div class="stat"><small>Caixa Produtos</small><strong id="quickCashProd">R$ 0,00</strong></div>
 <div class="stat"><small>Dinheiro disponível</small><strong id="quickCash">R$ 0,00</strong></div>
 </div>
+<div class="panel">
 <h3>Assistente por texto</h3><p class="muted">Exemplo: João pegou duas águas.</p>
 <label for="assistantText">Descreva o consumo</label><textarea id="assistantText" placeholder="Ex.: João pegou duas águas"></textarea>
 <div class="actions"><button class="primary" id="processText">Registrar consumo</button><button id="clearText">Limpar texto</button></div>
-
-
-<h3>⚡ Venda rápida (Produto)</h3>
+</div>
+<div class="panel">
+<h3>⚡ Venda rápida de produto</h3>
 <label for="quickProduct">Produto</label><select id="quickProduct"></select>
 <div class="row">
 <div><label for="quickQty">Quantidade</label><div class="qty-control"><button id="qtyMinus" type="button">−</button><input id="quickQty" type="number" min="1" step="1" value="1"><button id="qtyPlus" type="button">+</button></div></div>
@@ -103,24 +102,16 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
 </div>
 <label for="quickMode">Situação</label><select id="quickMode"><option value="paid">Venda paga</option><option value="account">Anotar na conta</option></select>
 <div class="quick-total"><div><span class="muted">Total</span><br><strong id="quickTotal">R$ 0,00</strong></div><div class="muted" id="quickStock">Estoque: —</div></div>
-<button type="button" class="primary" id="quickSell" style="width:100%;margin-top:14px">✓ Confirmar venda de produto</button></div>
-
-
-<hr><h3>Lançamento de produto na conta</h3>
-<div class="panel">
-<label>Forma de pagamento</label>
-<div class="method-grid" id="paymentMethods">
-<button type="button" class="method-option selected" data-method="Dinheiro">💵 Dinheiro</button>
-<button type="button" class="method-option" data-method="Pix">▦ Pix</button>
-<button type="button" class="method-option" data-method="Cartão">▤ Cartão</button></div>
-<div class="panel">
+<button type="button" class="primary" id="quickSell" style="width:100%;margin-top:14px">✓ Confirmar venda de produto</button>
+<hr>
+<h3>Lançamento de produto na conta</h3>
 <label for="manualCustomer">Nome do cliente</label><input id="manualCustomer" placeholder="Nome do cliente">
 <label for="manualProduct">Produto</label><select id="manualProduct"></select>
 <label for="manualQty">Quantidade</label><input id="manualQty" type="number" min="1" step="1" value="1">
-<div class="actions"><button class="primary" id="manualAdd">Adicionar à conta</button></div>
+<div class="actions"><button class="primary" id="manualAdd">Adicionar à conta</button><button id="quickClear" type="button">Limpar campos</button></div>
 </div>
-<div class="actions"><button id="quickClear" type="button">Limpar campos</button></div>
 </section>
+
 <section id="inicio" class="page">
 <h2>Painel da barbearia</h2><p class="intro">Resumo da operação com separação de caixas.</p>
 <div class="grid">
@@ -128,6 +119,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
 <div class="stat"><small>Caixa Serviços</small><strong id="homeCashServ">R$ 0,00</strong></div>
 <div class="stat"><small>Caixa Produtos</small><strong id="homeCashProd">R$ 0,00</strong></div>
 <div class="stat"><small>Contas em aberto</small><strong id="homeOpen">0</strong></div>
+<div class="stat"><small>Produtos cadastrados</small><strong id="homeProducts">0</strong></div>
 </div>
 <div class="panel"><h3>Acesso rápido</h3><div class="actions"><button class="primary" data-go="assistente">Registrar venda</button><button data-go="estoque">Cadastrar produto</button><button data-go="contas">Contas e dívidas</button><button data-go="caixa">Ver dois caixas</button></div></div>
 <div class="panel"><h3>Estoque baixo</h3><div id="lowStock"></div></div>
@@ -135,12 +127,12 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
 </section>
 
 <section id="contas" class="page">
-<h2>Contas e dívidas dos clientes</h2><p class="intro">Registre serviços (cortes), produtos ou valores avulsos com controle de pagamentos pendentes.</p>
+<h2>Contas e dívidas dos clientes</h2><p class="intro">Registre serviços, produtos ou valores avulsos com controle de pagamentos pendentes.</p>
 <div class="panel">
-<h3>Adicionar dívida avulsa (Serviços ou Outros)</h3><p class="muted">Para corte, barba, química ou qualquer valor de serviço sem mexer no estoque.</p>
+<h3>Adicionar dívida avulsa</h3><p class="muted">Para corte, barba, química ou qualquer valor sem movimentar o estoque.</p>
 <label for="debtCustomer">Nome do cliente</label><input id="debtCustomer" placeholder="Ex.: João">
 <label for="debtDescription">Descrição / motivo</label><input id="debtDescription" placeholder="Ex.: Corte de cabelo + Barba">
-<label for="debtType">Tipo de lançamento</label><select id="debtType"><option value="service">Serviço (Vai para o Caixa de Serviços)</option><option value="product">Produto (Vai para o Caixa de Produtos)</option></select>
+<label for="debtType">Tipo de lançamento</label><select id="debtType"><option value="service">Serviço — Caixa de Serviços</option><option value="product">Produto — Caixa de Produtos</option></select>
 <div class="row"><div><label for="debtAmount">Valor devido (R$)</label><input id="debtAmount" type="number" min=".01" step=".01"></div><div><label for="debtDate">Data da dívida</label><input id="debtDate" type="date"></div></div>
 <div class="actions"><button class="primary" id="addDebt">Adicionar valor à conta</button></div>
 </div>
@@ -170,16 +162,16 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
 </section>
 
 <section id="caixa" class="page">
-<h2>Dois Caixas & Saldo Disponível</h2><p class="intro">Separação clara entre o dinheiro de **Serviços** (cortes) e **Produtos** (mercadorias).</p>
+<h2>Dois Caixas & Saldo Disponível</h2><p class="intro">Dinheiro de serviços (cortes) e produtos (mercadorias) separado.</p>
 <div class="grid">
 <div class="stat"><small>Caixa Serviços 💈</small><strong id="cashServBalance">R$ 0,00</strong></div>
 <div class="stat"><small>Caixa Produtos 📦</small><strong id="cashProdBalance">R$ 0,00</strong></div>
 <div class="stat"><small>Total Disponível Geral</small><strong id="cashBalance">R$ 0,00</strong></div>
 <div class="stat"><small>Despesas Totais</small><strong id="cashOut">R$ 0,00</strong></div>
 </div>
-<div class="panel"><h3>Ajustar saldo geral disponível</h3><p class="muted">Informe o dinheiro físico existente. O sistema registra a diferença como ajuste.</p><label for="cashTarget">Saldo atual (R$)</label><input id="cashTarget" type="number" min="0" step=".01"><div class="actions"><button class="primary" id="setCashTarget">Salvar saldo</button></div></div>
-<div class="panel"><h3>Movimentação manual nos caixas</h3><label for="cashMoveDesc">Descrição</label><input id="cashMoveDesc" placeholder="Ex.: Troco inicial, retirada pessoal"><div class="row"><div><label for="cashMoveCategory"> Caixa de destino</label><select id="cashMoveCategory"><option value="service">Serviços</option><option value="product">Produtos</option></select></div><div><label for="cashMoveType">Tipo</label><select id="cashMoveType"><option value="in">Entrada</option><option value="out">Retirada</option></select></div></div><label for="cashMoveAmount">Valor (R$)</label><input id="cashMoveAmount" type="number" min=".01" step=".01"><div class="actions"><button class="primary" id="saveCashMove">Registrar movimentação</button></div></div>
-<div class="panel"><h3>Registrar despesa</h3><label for="expenseDesc">Descrição</label><input id="expenseDesc" placeholder="Ex.: Compra de produtos / Água e luz"><div class="row"><div><label for="expenseAmount">Valor (R$)</label><input id="expenseAmount" type="number" min=".01" step=".01"></div><div><label for="expenseCategory">Categoria do Caixa</label><select id="expenseCategory"><option value="service">Serviços (Despesa Operacional)</option><option value="product">Produtos (Reposição de Estoque)</option></select></div></div><label for="expenseMethod">Forma de pagamento</label><select id="expenseMethod"><option>Dinheiro</option><option>Pix</option><option>Cartão</option><option>Outro</option></select><div class="actions"><button class="primary" id="saveExpense">Registrar despesa</button></div></div>
+<div class="panel"><h3>Ajustar saldo geral disponível</h3><p class="muted">Informe o dinheiro físico total existente. Escolha em qual caixa lançar a diferença para não misturar serviços e produtos.</p><label for="cashTarget">Saldo físico total (R$)</label><input id="cashTarget" type="number" min="0" step=".01"><label for="cashTargetCategory">Caixa que receberá o ajuste</label><select id="cashTargetCategory"><option value="service">Serviços</option><option value="product">Produtos</option></select><div class="actions"><button class="primary" id="setCashTarget">Salvar saldo</button></div></div>
+<div class="panel"><h3>Movimentação manual nos caixas</h3><label for="cashMoveDesc">Descrição</label><input id="cashMoveDesc" placeholder="Ex.: Troco inicial, retirada pessoal"><div class="row"><div><label for="cashMoveCategory">Caixa de destino</label><select id="cashMoveCategory"><option value="service">Serviços</option><option value="product">Produtos</option></select></div><div><label for="cashMoveType">Tipo</label><select id="cashMoveType"><option value="in">Entrada</option><option value="out">Retirada</option></select></div></div><label for="cashMoveAmount">Valor (R$)</label><input id="cashMoveAmount" type="number" min=".01" step=".01"><div class="actions"><button class="primary" id="saveCashMove">Registrar movimentação</button></div></div>
+<div class="panel"><h3>Registrar despesa</h3><label for="expenseDesc">Descrição</label><input id="expenseDesc" placeholder="Ex.: Compra de produtos / Água e luz"><div class="row"><div><label for="expenseAmount">Valor (R$)</label><input id="expenseAmount" type="number" min=".01" step=".01"></div><div><label for="expenseCategory">Categoria do caixa</label><select id="expenseCategory"><option value="service">Serviços — Despesa operacional</option><option value="product">Produtos — Reposição de estoque</option></select></div></div><label for="expenseMethod">Forma de pagamento</label><select id="expenseMethod"><option>Dinheiro</option><option>Pix</option><option>Cartão</option><option>Outro</option></select><div class="actions"><button class="primary" id="saveExpense">Registrar despesa</button></div></div>
 <h3>Movimentações</h3><div id="cashMovementList"></div><h3>Despesas registradas</h3><div id="expenseList"></div>
 </section>
 
@@ -205,7 +197,6 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
 <script>
 (function(){
 "use strict";
-
 const KEYS={
  stock:"inho_du_corte_estoque_v1",
  history:"inho_du_corte_historico_v1",
@@ -225,9 +216,7 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const arr=v=>Array.isArray(v)?v:[];
 const first=(o,keys,def)=>{for(const k of keys)if(o&&o[k]!==undefined&&o[k]!==null)return o[k];return def};
 
-function read(k,d){
- try{const x=localStorage.getItem(k);return x===null?d:JSON.parse(x)??d}catch(e){return d}
-}
+function read(k,d){try{const x=localStorage.getItem(k);return x===null?d:JSON.parse(x)??d}catch(e){return d}}
 function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
 function toast(s){
  const e=$("toast");e.textContent=s;e.style.display="block";
@@ -236,8 +225,7 @@ function toast(s){
 function norm(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim()}
 function download(filename,content,type){
  const blob=new Blob([content],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");
- a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
- setTimeout(()=>URL.revokeObjectURL(url),1000);
+ a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 function normalizeProduct(p){
  if(typeof p==="string")p={name:p};
@@ -255,7 +243,6 @@ function normalizeAccount(a){
  const items=arr(a.items||a.itens).map(normalizeItem);
  return {...a,id:String(first(a,["id"],uid())),customer:String(first(a,["customer","name","cliente"],"Cliente")),status:String(first(a,["status"],"open"))==="paid"?"paid":"open",createdAt:dateISO(first(a,["createdAt","date"],Date.now())),updatedAt:dateISO(first(a,["updatedAt"],Date.now())),items,paidAmount:num(first(a,["paidAmount"],0)),payment:String(first(a,["payment"],"")),payments:arr(a.payments)};
 }
-
 let products=arr(read(KEYS.stock,[])).map(normalizeProduct);
 let sales=arr(read(KEYS.sales,[]));
 let history=arr(read(KEYS.history,[]));
@@ -276,7 +263,7 @@ function persist(){
 function logEvent(type,details){
  history.push({id:uid(),type,details:String(details),date:new Date().toISOString()});
  if(history.length>5000)history=history.slice(-5000);
- save(KEYS.history,history);
+ try{save(KEYS.history,history)}catch(e){}
 }
 function navigate(id){
  document.querySelectorAll(".page").forEach(s=>s.classList.toggle("active",s.id===id));
@@ -291,13 +278,9 @@ function accountTotal(a){return Math.max(0,accountOriginalTotal(a)-num(a.paidAmo
 function openAccounts(){return accounts.filter(a=>a.status!=="paid")}
 function getAccount(name){return openAccounts().find(a=>norm(a.customer)===norm(name))||null}
 function openOrGetAccount(customer){
- const name=String(customer||"").trim();
- if(!name)throw Error("Informe o nome do cliente.");
+ const name=String(customer||"").trim();if(!name)throw Error("Informe o nome do cliente.");
  let a=getAccount(name);
- if(!a){
-  a=normalizeAccount({id:uid(),customer:name,status:"open",items:[],createdAt:new Date().toISOString()});
-  accounts.unshift(a);logEvent("conta_aberta","Conta aberta para "+name);
- }
+ if(!a){a=normalizeAccount({id:uid(),customer:name,status:"open",items:[],createdAt:new Date().toISOString()});accounts.unshift(a);logEvent("conta_aberta","Conta aberta para "+name)}
  return a;
 }
 function addToAccount(customer,productId,qty){
@@ -306,11 +289,11 @@ function addToAccount(customer,productId,qty){
  const p=products.find(x=>x.id===String(productId));
  if(!p)throw Error("Produto não encontrado.");
  if(p.stock<qty)throw Error("Estoque insuficiente. Disponível: "+p.stock);
- const a=openOrGetAccount(customer);
- p.stock-=qty;
+ const a=openOrGetAccount(customer);p.stock-=qty;
  a.items.push(normalizeItem({id:uid(),productId:p.id,productName:p.name,qty,unitPrice:p.price,unitCost:p.cost,total:qty*p.price,category:"product"}));
  a.updatedAt=new Date().toISOString();
- persist();logEvent("consumo",customer+" consumiu "+qty+" x "+p.name);
+ if(!persist())throw Error("Não foi possível salvar. Confira o espaço disponível no navegador.");
+ logEvent("consumo",customer+" consumiu "+qty+" x "+p.name);
  renderAll();toast(qty+" x "+p.name+" adicionado à conta (Caixa Produtos).");
 }
 function addManualDebt(customer,description,amount,date,category="service"){
@@ -326,10 +309,8 @@ function addManualDebt(customer,description,amount,date,category="service"){
  renderAll();toast("Valor adicionado à conta de "+customer+".");
 }
 function removeAccountItem(accountId,itemId){
- const a=accounts.find(x=>x.id===accountId);
- if(!a||a.status==="paid")return;
- const idx=a.items.findIndex(i=>i.id===itemId);
- if(idx<0)return;
+ const a=accounts.find(x=>x.id===accountId);if(!a||a.status==="paid")return;
+ const idx=a.items.findIndex(i=>i.id===itemId);if(idx<0)return;
  const item=a.items[idx],p=products.find(x=>x.id===item.productId);
  if(p&&item.productId)p.stock+=item.qty;
  a.items.splice(idx,1);a.updatedAt=new Date().toISOString();
@@ -338,19 +319,15 @@ function removeAccountItem(accountId,itemId){
  renderAll();toast("Item removido da conta.");
 }
 function deleteOpenAccount(id){
- const a=accounts.find(x=>x.id===id);
- if(!a||a.status==="paid")return;
+ const a=accounts.find(x=>x.id===id);if(!a||a.status==="paid")return;
  if(!confirm("Cancelar a conta de "+a.customer+"? Produtos consumidos serão devolvidos ao estoque."))return;
  a.items.forEach(i=>{const p=products.find(x=>x.id===i.productId);if(p&&i.productId)p.stock+=i.qty});
- accounts=accounts.filter(x=>x.id!==id);
- persist();logEvent("conta_cancelada","Conta cancelada: "+a.customer);
+ accounts=accounts.filter(x=>x.id!==id);persist();logEvent("conta_cancelada","Conta cancelada: "+a.customer);
  renderAll();toast("Conta cancelada.");
 }
 function payAccount(id){
- const a=accounts.find(x=>x.id===id);
- if(!a||a.status==="paid")return;
- const total=accountTotal(a);
- if(total<=0.005){toast("Essa conta não tem valor pendente.");return}
+ const a=accounts.find(x=>x.id===id);if(!a||a.status==="paid")return;
+ const total=accountTotal(a);if(total<=0.005){toast("Essa conta não tem valor pendente.");return}
  const method=prompt("Total pendente: "+money(total)+"\nDigite Dinheiro, Pix, Cartão ou Outro","Pix");
  if(method===null)return;
  const n=norm(method);
@@ -361,25 +338,17 @@ function payAccount(id){
  const amount=num(raw);
  if(amount<=0||amount>total+0.001){toast("Informe um valor válido, até o total da dívida.");return}
  if(!confirm("Confirmar recebimento de "+money(amount)+" de "+a.customer+" por "+payment+"?"))return;
- 
  const orig=accountOriginalTotal(a);
- let servRatio = 1;
- if(orig > 0){
-  const servSum = a.items.filter(i=>(i.category||"service")==="service").reduce((s,i)=>s+num(i.total),0);
-  servRatio = servSum / orig;
- }
- const servPaidPart = amount * servRatio;
- const prodPaidPart = amount - servPaidPart;
-
+ const servSum=a.items.filter(i=>(i.category||"service")==="service").reduce((s,i)=>s+num(i.total),0);
+ const servRatio=orig>0?servSum/orig:0;
+ const servPaidPart=amount*servRatio,prodPaidPart=amount-servPaidPart;
  const now=new Date().toISOString();
- a.paidAmount=num(a.paidAmount)+amount;
- a.updatedAt=now;a.payment=payment;
+ a.paidAmount=num(a.paidAmount)+amount;a.updatedAt=now;a.payment=payment;
  a.payments=arr(a.payments);a.payments.push({id:uid(),amount,payment,date:now,servPaid:servPaidPart,prodPaid:prodPaidPart});
  if(accountTotal(a)<=0.005){a.status="paid";a.paidAt=now}
  sales.push({id:uid(),accountId:a.id,customer:a.customer,items:[],total:amount,amount,payment,date:now,createdAt:now,type:"account_payment",status:"paid",servPart:servPaidPart,prodPart:prodPaidPart});
  persist();logEvent("pagamento","Recebido "+money(amount)+" de "+a.customer+" via "+payment);
- renderAll();
- toast(a.status==="paid"?"Dívida quitada!":"Pagamento parcial registrado. Saldo restante: "+money(accountTotal(a)));
+ renderAll();toast(a.status==="paid"?"Dívida quitada!":"Pagamento parcial registrado. Saldo restante: "+money(accountTotal(a)));
 }
 function renderAccounts(){
  const filter=norm($("accountFilter").value),status=$("accountStatus").value;
@@ -387,7 +356,7 @@ function renderAccounts(){
  $("accountList").innerHTML=list.length?list.map(a=>{
   const total=a.status==="paid"?0:accountTotal(a);
   return `<div class="panel"><div class="item"><div><strong>${esc(a.customer)}</strong><div class="muted">Criada em ${new Date(a.createdAt).toLocaleDateString("pt-BR")}</div><span class="pill ${a.status==="paid"?"green":"gold"}">${a.status==="paid"?"PAGA":"EM ABERTO"}</span></div><div class="right"><strong class="gold">${money(total)}</strong><p>Recebido: ${money(a.paidAmount)}</p></div></div>
-  ${a.items.map(i=>`<div class="item"><div>${esc(i.productName)}${i.manual?'<span class="pill">VALOR AVULSO</span>':""}<span class="pill">${(i.category||"service")==="product"?"📦 Produto":"💈 Serviço"}</span><p>${i.qty} ×${money(i.unitPrice)}</p></div><div class="right">${money(i.total)}${a.status!=="paid"?`<div><button class="danger" data-remove-item="${esc(a.id)}|${esc(i.id)}">Remover</button></div>`:""}</div></div>`).join("")}
+  ${a.items.map(i=>`<div class="item"><div>${esc(i.productName)}${i.manual?'<span class="pill">VALOR AVULSO</span>':""}<span class="pill">${(i.category||"service")==="product"?"📦 Produto":"💈 Serviço"}</span><p>${i.qty} × ${money(i.unitPrice)}</p></div><div class="right">${money(i.total)}${a.status!=="paid"?`<div><button class="danger" data-remove-item="${esc(a.id)}|${esc(i.id)}">Remover</button></div>`:""}</div></div>`).join("")}
   ${a.payments&&a.payments.length?`<details><summary class="muted">Histórico de pagamentos (${a.payments.length})</summary>${a.payments.map(p=>`<p class="muted">${new Date(p.date).toLocaleString("pt-BR")} · ${esc(p.payment)} · ${money(p.amount)} (Serviços: ${money(p.servPaid)} | Produtos: ${money(p.prodPaid)})</p>`).join("")}</details>`:""}
   ${a.status!=="paid"?`<div class="actions"><button class="primary" data-pay="${esc(a.id)}">Receber pagamento</button><button data-add-more="${esc(a.id)}">Adicionar produto</button><button class="danger" data-cancel-account="${esc(a.id)}">Cancelar conta</button></div>`:`<p class="muted">Conta quitada · Último pagamento: ${esc(a.payment||"Consulte histórico")}</p>`}
   </div>`;
@@ -433,14 +402,8 @@ $("quickProduct").addEventListener("change",updateQuickTotal);
 $("quickQty").addEventListener("input",updateQuickTotal);
 $("qtyMinus").addEventListener("click",()=>{$("quickQty").value=Math.max(1,Math.floor(num($("quickQty").value))-1);updateQuickTotal()});
 $("qtyPlus").addEventListener("click",()=>{$("quickQty").value=Math.max(1,Math.floor(num($("quickQty").value))+1);updateQuickTotal()});
-$("paymentMethods").addEventListener("click",e=>{
- const b=e.target.closest("[data-method]");if(!b)return;
- selectedPayment=b.dataset.method;
- document.querySelectorAll("[data-method]").forEach(x=>x.classList.toggle("selected",x===b));
-});
 $("quickClear").addEventListener("click",()=>{
- $("quickCustomer").value="";$("quickQty").value="1";$("quickMode").value="paid";selectedPayment="Dinheiro";
- document.querySelectorAll("[data-method]").forEach(x=>x.classList.toggle("selected",x.dataset.method==="Dinheiro"));
+ $("quickCustomer").value="";$("manualCustomer").value="";$("quickQty").value="1";$("manualQty").value="1";$("quickMode").value="paid";selectedPayment="Dinheiro";
  updateQuickTotal();
 });
 $("quickSell").addEventListener("click",()=>{
@@ -504,23 +467,17 @@ $("saveProduct").addEventListener("click",()=>{
  const id=$("productId").value;
  if(id){
   const p=products.find(x=>x.id===id);if(!p)return;
-  p.name=name;p.price=price;p.cost=cost;p.stock=stock;p.min=min;
-  if(currentPhoto)p.photo=currentPhoto;
+  p.name=name;p.price=price;p.cost=cost;p.stock=stock;p.min=min;if(currentPhoto)p.photo=currentPhoto;
   logEvent("produto_editado",name);
- }else{
-  products.push({id:uid(),name,price,cost,stock,min,photo:currentPhoto});
-  logEvent("produto_cadastrado",name);
- }
+ }else{products.push({id:uid(),name,price,cost,stock,min,photo:currentPhoto});logEvent("produto_cadastrado",name)}
  if(persist()){resetProductForm();renderAll();toast("Produto salvo.")}
 });
 $("cancelEdit").addEventListener("click",resetProductForm);
 function editProduct(id){
  const p=products.find(x=>x.id===id);if(!p)return;
  $("productId").value=p.id;$("productName").value=p.name;$("productPrice").value=p.price;$("productCost").value=p.cost;$("productStock").value=p.stock;$("productMin").value=p.min;
- currentPhoto=p.photo||"";
- $("photoPreview").innerHTML=currentPhoto?`<img class="product-photo" alt="Foto" src="${esc(currentPhoto)}">`:"";
- $("productFormTitle").textContent="Editar produto";$("cancelEdit").hidden=false;
- window.scrollTo({top:0,behavior:"smooth"});
+ currentPhoto=p.photo||"";$("photoPreview").innerHTML=currentPhoto?`<img class="product-photo" alt="Foto" src="${esc(currentPhoto)}">`:"";
+ $("productFormTitle").textContent="Editar produto";$("cancelEdit").hidden=false;window.scrollTo({top:0,behavior:"smooth"});
 }
 function deleteProduct(id){
  const p=products.find(x=>x.id===id);if(!p)return;
@@ -530,12 +487,9 @@ function deleteProduct(id){
 }
 function adjustStock(id){
  const p=products.find(x=>x.id===id);if(!p)return;
- const raw=prompt("Quantas unidades adicionar ao estoque de "+p.name+"?","1");
- if(raw===null)return;
- const n=Number(raw);
- if(!Number.isInteger(n)||n<1){toast("Digite um número inteiro maior que zero.");return}
- p.stock+=n;persist();logEvent("estoque_adicionado",n+" unidades de "+p.name);
- renderAll();toast("Estoque atualizado.");
+ const raw=prompt("Quantas unidades adicionar ao estoque de "+p.name+"?","1");if(raw===null)return;
+ const n=Number(raw);if(!Number.isInteger(n)||n<1){toast("Digite um número inteiro maior que zero.");return}
+ p.stock+=n;persist();logEvent("estoque_adicionado",n+" unidades de "+p.name);renderAll();toast("Estoque atualizado.");
 }
 function renderProducts(){
  const q=norm($("stockSearch").value),list=products.filter(p=>norm(p.name).includes(q));
@@ -561,62 +515,37 @@ function todaySales(){return paidSales().filter(s=>saleDate(s)===today()).reduce
 function totalExpenses(a="0000-01-01",b="9999-12-31"){return expenses.filter(e=>inRange(expenseDate(e),a,b)).reduce((s,e)=>s+expenseAmount(e),0)}
 
 function getServiceRevenue(){
- let total = 0;
+ let total=0;
  paidSales().forEach(s=>{
-  if(s.servPart !== undefined) total += num(s.servPart);
-  else if(s.type === "account_payment") {}
-  else {
-   const hasProd = arr(s.items).some(i=>(i.category||"service")==="product");
-   if(!hasProd) total += saleAmount(s);
+  if(s.servPart!==undefined)total+=num(s.servPart);
+  else if(s.type!=="account_payment"){
+   const hasProd=arr(s.items).some(i=>(i.category||"service")==="product");
+   if(!hasProd)total+=saleAmount(s);
   }
  });
- arr(config.cashMovements).forEach(m=>{
-  if((m.category||"service")==="service"){
-   total += (m.type==="out"?-num(m.amount):num(m.amount));
-  }
- });
+ arr(config.cashMovements).forEach(m=>{if((m.category||"service")==="service")total+=(m.type==="out"?-num(m.amount):num(m.amount))});
  return total;
 }
-
 function getProductRevenue(){
- let total = 0;
+ let total=0;
  paidSales().forEach(s=>{
-  if(s.prodPart !== undefined) total += num(s.prodPart);
-  else {
-   const prodSum = arr(s.items).filter(i=>(i.category||"service")==="product").reduce((sum,i)=>sum+num(i.total),0);
-   if(prodSum > 0) total += prodSum;
-   else if(s.type === "quick") total += saleAmount(s);
+  if(s.prodPart!==undefined)total+=num(s.prodPart);
+  else{
+   const prodSum=arr(s.items).filter(i=>(i.category||"service")==="product").reduce((sum,i)=>sum+num(i.total),0);
+   if(prodSum>0)total+=prodSum;else if(s.type==="quick")total+=saleAmount(s);
   }
  });
- arr(config.cashMovements).forEach(m=>{
-  if((m.category||"service")==="product"){
-   total += (m.type==="out"?-num(m.amount):num(m.amount));
-  }
- });
+ arr(config.cashMovements).forEach(m=>{if((m.category||"service")==="product")total+=(m.type==="out"?-num(m.amount):num(m.amount))});
  return total;
 }
-
-function serviceExpensesTotal(){
- return expenses.filter(e=>(e.category||"service")==="service").reduce((s,e)=>s+expenseAmount(e),0);
-}
-function productExpensesTotal(){
- return expenses.filter(e=>(e.category||"service")==="product").reduce((s,e)=>s+expenseAmount(e),0);
-}
-
-function serviceBalance(){
- return getServiceRevenue() - serviceExpensesTotal();
-}
-function productBalance(){
- const prodRev = getProductRevenue();
- const prodExp = productExpensesTotal();
- return prodRev - prodExp;
-}
-function cashBalance(){
- return serviceBalance() + productBalance() + num(config.cashOpeningBalance);
-}
+function serviceExpensesTotal(){return expenses.filter(e=>(e.category||"service")==="service").reduce((s,e)=>s+expenseAmount(e),0)}
+function productExpensesTotal(){return expenses.filter(e=>(e.category||"service")==="product").reduce((s,e)=>s+expenseAmount(e),0)}
+function serviceBalance(){return getServiceRevenue()-serviceExpensesTotal()}
+function productBalance(){return getProductRevenue()-productExpensesTotal()}
+function cashBalance(){return serviceBalance()+productBalance()+num(config.cashOpeningBalance)}
 
 function renderSales(){
- const a=$("salesStart").value\vert{}\vert{}today(),b=$("salesEnd").value||today();
+ const a=$("salesStart").value||today(),b=$("salesEnd").value||today();
  const list=paidSales().filter(s=>inRange(saleDate(s),a,b)).sort((x,y)=>new Date(y.date||y.createdAt)-new Date(x.date||x.createdAt));
  $("salesTotal").textContent=money(list.reduce((s,x)=>s+saleAmount(x),0));$("salesCount").textContent=list.length;
  $("salesList").innerHTML=list.length?list.map(s=>`<div class="item"><div><strong>${esc(s.customer||"Venda balcão")}</strong><p>${new Date(s.date||s.createdAt).toLocaleString("pt-BR")} · ${esc(salePayment(s))}</p></div><div class="right"><strong class="gold">${money(saleAmount(s))}</strong></div></div>`).join(""):'<div class="empty">Nenhuma venda nesse período.</div>';
@@ -624,38 +553,29 @@ function renderSales(){
 $("filterSales").addEventListener("click",renderSales);
 $("resetSalesFilter").addEventListener("click",()=>{$("salesStart").value=today();$("salesEnd").value=today();renderSales()});
 $("exportSales").addEventListener("click",()=>{
- const a=$("salesStart").value\vert{}\vert{}today(),b=$("salesEnd").value||today(),rows=[["Data","Cliente","Forma de pagamento","Valor"]];
+ const a=$("salesStart").value||today(),b=$("salesEnd").value||today(),rows=[["Data","Cliente","Forma de pagamento","Valor"]];
  paidSales().filter(s=>inRange(saleDate(s),a,b)).forEach(s=>rows.push([saleDate(s),s.customer||"Venda balcão",salePayment(s),saleAmount(s).toFixed(2)]));
  download("vendas-inho-du-corte.csv","\uFEFF"+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(";")).join("\n"),"text/csv;charset=utf-8");
 });
 
 function renderCash(){
  const servBal=serviceBalance(),prodBal=productBalance(),bal=cashBalance(),out=totalExpenses();
- $("cashServBalance").textContent=money(servBal);
- $("cashProdBalance").textContent=money(prodBal);
- $("cashBalance").textContent=money(bal);
- $("cashOut").textContent=money(out);
-
- $("homeCashServ").textContent=money(servBal);
- $("homeCashProd").textContent=money(prodBal);
- $("quickCashServ").textContent=money(servBal);
- $("quickCashProd").textContent=money(prodBal);
- $("quickCash").textContent=money(bal);
- $("quickTodaySales").textContent=money(todaySales());
+ $("cashServBalance").textContent=money(servBal);$("cashProdBalance").textContent=money(prodBal);$("cashBalance").textContent=money(bal);$("cashOut").textContent=money(out);
+ $("homeCashServ").textContent=money(servBal);$("homeCashProd").textContent=money(prodBal);
+ $("quickCashServ").textContent=money(servBal);$("quickCashProd").textContent=money(prodBal);$("quickCash").textContent=money(bal);$("quickTodaySales").textContent=money(todaySales());
  $("cashTarget").placeholder=bal.toFixed(2);
-
  const ms=arr(config.cashMovements).slice().sort((a,b)=>new Date(b.date)-new Date(a.date));
  $("cashMovementList").innerHTML=ms.length?ms.map(m=>`<div class="item"><div><strong>${esc(m.description||"Movimentação")}</strong><p>${new Date(m.date).toLocaleString("pt-BR")} · ${m.type==="out"?"Retirada":"Entrada"} · <span class="pill">${(m.category||"service")==="product"?"📦 Produtos":"💈 Serviços"}</span></p></div><div class="right"><strong class="${m.type==="out"?"red":"green"}">${m.type==="out"?"−":"+"}${money(m.amount)}</strong><div><button class="danger" data-delete-move="${esc(m.id)}">Excluir</button></div></div></div>`).join(""):'<div class="empty">Nenhuma movimentação.</div>';
  $("expenseList").innerHTML=expenses.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).map(e=>`<div class="item"><div><strong>${esc(e.description||"Despesa")}</strong><p>${expenseDate(e)} · ${esc(e.payment||"Outro")} · <span class="pill">${(e.category||"service")==="product"?"📦 Produtos":"💈 Serviços"}</span></p></div><div class="right"><strong class="red">${money(expenseAmount(e))}</strong><div><button class="danger" data-delete-expense="${esc(e.id)}">Excluir</button></div></div></div>`).join("")||'<div class="empty">Nenhuma despesa.</div>';
 }
 $("setCashTarget").addEventListener("click",()=>{
- const raw=$("cashTarget").value,target=num(raw);
+ const raw=$("cashTarget").value,target=num(raw),category=$("cashTargetCategory").value;
  if(raw.trim()===""||target<0){toast("Informe um saldo válido.");return}
  const delta=target-cashBalance();
  if(Math.abs(delta)<.005){toast("O saldo já corresponde ao valor informado.");return}
- config.cashMovements.push({id:uid(),type:delta>=0?"in":"out",amount:Math.abs(delta),description:"Ajuste manual do saldo",date:new Date().toISOString(),category:"service",adjustment:true});
- persist();logEvent("ajuste_caixa","Saldo ajustado para "+money(target));
- $("cashTarget").value="";renderAll();toast("Saldo ajustado.");
+ config.cashMovements.push({id:uid(),type:delta>=0?"in":"out",amount:Math.abs(delta),description:"Ajuste manual do saldo geral",date:new Date().toISOString(),category,adjustment:true});
+ persist();logEvent("ajuste_caixa","Ajuste geral de "+money(Math.abs(delta))+" lançado em "+category);
+ $("cashTarget").value="";renderAll();toast("Ajuste lançado no caixa selecionado.");
 });
 $("saveCashMove").addEventListener("click",()=>{
  const d=$("cashMoveDesc").value.trim(),a=num($("cashMoveAmount").value),t=$("cashMoveType").value,cat=$("cashMoveCategory").value;
@@ -693,7 +613,7 @@ function reportTable(rows,label){
  return '<div class="tablewrap"><table><thead><tr><th>'+label+'</th><th>Total</th></tr></thead><tbody>'+rows.map(([k,v])=>`<tr><td>${esc(k)}</td><td>${money(v)}</td></tr>`).join("")+'</tbody></table></div>';
 }
 function renderReport(){
- const a=$("reportStart").value\vert{}\vert{}today(),b=$("reportEnd").value||today();
+ const a=$("reportStart").value||today(),b=$("reportEnd").value||today();
  const ss=paidSales().filter(s=>inRange(saleDate(s),a,b)),ee=expenses.filter(e=>inRange(expenseDate(e),a,b));
  const t=ss.reduce((s,x)=>s+saleAmount(x),0),o=ee.reduce((s,x)=>s+expenseAmount(x),0);
  $("reportSales").textContent=money(t);$("reportExpenses").textContent=money(o);$("reportResult").textContent=money(t-o);
@@ -723,21 +643,17 @@ $("restoreBtn").addEventListener("click",()=>{
  const r=new FileReader();
  r.onload=()=>{
   try{
-   const d=JSON.parse(String(r.result));
-   if(!d||typeof d!=="object"||Array.isArray(d))throw Error("Backup inválido");
+   const d=JSON.parse(String(r.result));if(!d||typeof d!=="object"||Array.isArray(d))throw Error("Backup inválido");
    const pick=(k,a,def)=>first(d,[k,...a],def);
    const newProducts=arr(pick(KEYS.stock,["stock","products","estoque"],[])).map(normalizeProduct);
-   const newSales=arr(pick(KEYS.sales,["sales","vendas"],[]));
-   const newHistory=arr(pick(KEYS.history,["history","historico"],[]));
-   const newExpenses=arr(pick(KEYS.expenses,["expenses","despesas"],[]));
-   const newAccounts=arr(pick(KEYS.accounts,["accounts","contas"],[])).map(normalizeAccount);
-   let newConfig=pick(KEYS.config,["config"],{});
-   if(!newConfig||typeof newConfig!=="object"||Array.isArray(newConfig))newConfig={};
+   const newSales=arr(pick(KEYS.sales,["sales","vendas"],[])),newHistory=arr(pick(KEYS.history,["history","historico"],[]));
+   const newExpenses=arr(pick(KEYS.expenses,["expenses","despesas"],[])),newAccounts=arr(pick(KEYS.accounts,["accounts","contas"],[])).map(normalizeAccount);
+   let newConfig=pick(KEYS.config,["config"],{});if(!newConfig||typeof newConfig!=="object"||Array.isArray(newConfig))newConfig={};
    if(!Array.isArray(newConfig.cashMovements))newConfig.cashMovements=[];
    products=newProducts;sales=newSales;history=newHistory;expenses=newExpenses;accounts=newAccounts;config=newConfig;
-   if(!persist())throw Error("Not able to save restored data.");
+   if(!persist())throw Error("Não foi possível salvar o backup restaurado.");
    renderAll();toast("Backup restaurado.");
-  }catch(e){toast("Backup inválido, incompatível ou sem espaço para salvar. Os dados podem precisar de recuperação pelo backup anterior.")}
+  }catch(e){toast("Backup inválido, incompatível ou sem espaço para salvar.")}
  };
  r.readAsText(f);
 });
