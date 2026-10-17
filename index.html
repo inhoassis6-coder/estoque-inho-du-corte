@@ -362,7 +362,6 @@ function payAccount(id){
  if(amount<=0||amount>total+0.001){toast("Informe um valor válido, até o total da dívida.");return}
  if(!confirm("Confirmar recebimento de "+money(amount)+" de "+a.customer+" por "+payment+"?"))return;
  
- // Proporção para distribuir entre Caixa de Serviços e Caixa de Produtos proporcionalmente aos itens pendentes
  const orig=accountOriginalTotal(a);
  let servRatio = 1;
  if(orig > 0){
@@ -561,19 +560,16 @@ function inRange(d,a,b){return d>=a&&d<=b}
 function todaySales(){return paidSales().filter(s=>saleDate(s)===today()).reduce((t,s)=>t+saleAmount(s),0)}
 function totalExpenses(a="0000-01-01",b="9999-12-31"){return expenses.filter(e=>inRange(expenseDate(e),a,b)).reduce((s,e)=>s+expenseAmount(e),0)}
 
-// Cálculo dos Dois Caixas separado por categoria (Serviço vs Produto)
 function getServiceRevenue(){
  let total = 0;
  paidSales().forEach(s=>{
   if(s.servPart !== undefined) total += num(s.servPart);
-  else if(s.type === "account_payment") {} // pagamentos legados
+  else if(s.type === "account_payment") {}
   else {
-   // Vendas diretas antigas ou avulsas são consideradas serviço caso não tenham produtos
    const hasProd = arr(s.items).some(i=>(i.category||"service")==="product");
    if(!hasProd) total += saleAmount(s);
   }
  });
- // Adicionar entradas manuais em cashMovements para serviço
  arr(config.cashMovements).forEach(m=>{
   if((m.category||"service")==="service"){
    total += (m.type==="out"?-num(m.amount):num(m.amount));
@@ -604,7 +600,7 @@ function serviceExpensesTotal(){
  return expenses.filter(e=>(e.category||"service")==="service").reduce((s,e)=>s+expenseAmount(e),0);
 }
 function productExpensesTotal(){
- return expenses.filter(e=>(e.category||"service")==="service")===false || expenses.filter(e=>(e.category||"service")==="product").reduce((s,e)=>s+expenseAmount(e),0);
+ return expenses.filter(e=>(e.category||"service")==="product").reduce((s,e)=>s+expenseAmount(e),0);
 }
 
 function serviceBalance(){
@@ -612,7 +608,7 @@ function serviceBalance(){
 }
 function productBalance(){
  const prodRev = getProductRevenue();
- const prodExp = expenses.filter(e=>(e.category||"service")==="product").reduce((s,e)=>s+expenseAmount(e),0);
+ const prodExp = productExpensesTotal();
  return prodRev - prodExp;
 }
 function cashBalance(){
@@ -739,7 +735,7 @@ $("restoreBtn").addEventListener("click",()=>{
    if(!newConfig||typeof newConfig!=="object"||Array.isArray(newConfig))newConfig={};
    if(!Array.isArray(newConfig.cashMovements))newConfig.cashMovements=[];
    products=newProducts;sales=newSales;history=newHistory;expenses=newExpenses;accounts=newAccounts;config=newConfig;
-   if(!persist())throw Error("Não foi possível salvar os dados restaurados.");
+   if(!persist())throw Error("Not able to save restored data.");
    renderAll();toast("Backup restaurado.");
   }catch(e){toast("Backup inválido, incompatível ou sem espaço para salvar. Os dados podem precisar de recuperação pelo backup anterior.")}
  };
