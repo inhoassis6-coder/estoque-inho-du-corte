@@ -158,7 +158,7 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
 
 <section id="vendas" class="page">
 <h2>Histórico de vendas e recebimentos</h2>
-<p class="intro">Confira o dinheiro recebido e as dívidas ainda pendentes. Recebimentos feitos aqui atualizam os caixas e relatórios.</p>
+<p class="intro">Os valores abaixo são atualizados após cada pagamento registrado.</p>
 <div class="row"><div><label for="salesStart">Data inicial</label><input id="salesStart" type="date"></div><div><label for="salesEnd">Data final</label><input id="salesEnd" type="date"></div></div>
 <div class="actions"><button class="primary" id="filterSales">Filtrar</button><button id="resetSalesFilter">Hoje</button><button id="exportSales">Exportar CSV</button></div>
 <div class="grid">
@@ -169,11 +169,9 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
 </div>
 <div class="panel">
 <h3>💰 Pagamentos pendentes</h3>
-<p class="muted">As contas abaixo mostram o que cada cliente ainda deve. Você pode receber tudo ou apenas uma parte do valor.</p>
+<p class="muted">Receba o valor total ou parcial. Os caixas serão atualizados assim que o pagamento for confirmado.</p>
 <button class="primary" id="toggleSalesPending" type="button" style="width:100%">Ver pagamentos pendentes</button>
-<div id="salesPendingPanel" hidden style="margin-top:14px">
-<div id="salesPendingList"></div>
-</div>
+<div id="salesPendingPanel" hidden style="margin-top:14px"><div id="salesPendingList"></div></div>
 </div>
 <h3>Histórico de recebimentos</h3>
 <div id="salesList"></div>
@@ -233,7 +231,6 @@ const dateKey=v=>dateISO(v).slice(0,10);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const arr=v=>Array.isArray(v)?v:[];
 const first=(o,keys,def)=>{for(const k of keys)if(o&&o[k]!==undefined&&o[k]!==null)return o[k];return def};
-
 function read(k,d){try{const x=localStorage.getItem(k);return x===null?d:JSON.parse(x)??d}catch(e){return d}}
 function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
 function toast(s){
@@ -323,7 +320,8 @@ function addManualDebt(customer,description,amount,date,category="service"){
  const stamp=date?new Date(date+"T12:00:00").toISOString():new Date().toISOString();
  a.items.push(normalizeItem({id:uid(),productId:"",productName:description,description,qty:1,unitPrice:amount,total:amount,unitCost:0,manual:true,date:stamp,category}));
  a.updatedAt=new Date().toISOString();
- persist();logEvent("divida_avulsa",customer+" — "+description+" — "+money(amount));
+ if(!persist())throw Error("Não foi possível salvar a dívida.");
+ logEvent("divida_avulsa",customer+" — "+description+" — "+money(amount));
  renderAll();toast("Valor adicionado à conta de "+customer+".");
 }
 function removeAccountItem(accountId,itemId){
@@ -333,19 +331,27 @@ function removeAccountItem(accountId,itemId){
  if(p&&item.productId)p.stock+=item.qty;
  a.items.splice(idx,1);a.updatedAt=new Date().toISOString();
  if(accountTotal(a)<=0.005)a.status="paid";
- persist();logEvent("consumo_cancelado","Item removido da conta de "+a.customer);
+ if(!persist())return;
+ logEvent("consumo_cancelado","Item removido da conta de "+a.customer);
  renderAll();toast("Item removido da conta.");
 }
 function deleteOpenAccount(id){
  const a=accounts.find(x=>x.id===id);if(!a||a.status==="paid")return;
  if(!confirm("Cancelar a conta de "+a.customer+"? Produtos consumidos serão devolvidos ao estoque."))return;
  a.items.forEach(i=>{const p=products.find(x=>x.id===i.productId);if(p&&i.productId)p.stock+=i.qty});
- accounts=accounts.filter(x=>x.id!==id);persist();logEvent("conta_cancelada","Conta cancelada: "+a.customer);
+ accounts=accounts.filter(x=>x.id!==id);
+ if(!persist())return;
+ logEvent("conta_cancelada","Conta cancelada: "+a.customer);
  renderAll();toast("Conta cancelada.");
 }
+
+/* CORREÇÃO: cada pagamento é salvo uma única vez e os dois caixas são
+   atualizados imediatamente após a confirmação. */
 function payAccount(id){
- const a=accounts.find(x=>x.id===id);if(!a||a.status==="paid")return;
- const total=accountTotal(a);if(total<=0.005){toast("Essa conta não tem valor pendente.");return}
+ const a=accounts.find(x=>String(x.id)===String(id));
+ if(!a||a.status==="paid"){renderAll();return}
+ const total=accountTotal(a);
+ if(total<=0.005){a.status="paid";persist();renderAll();toast("Essa conta não tem valor pendente.");return}
  const method=prompt("Total pendente: "+money(total)+"\nDigite Dinheiro, Pix, Cartão ou Outro","Pix");
  if(method===null)return;
  const n=norm(method);
@@ -353,22 +359,66 @@ function payAccount(id){
  const payment=n==="cartao"?"Cartão":n==="pix"?"Pix":n==="dinheiro"?"Dinheiro":"Outro";
  const raw=prompt("Valor recebido agora (máximo "+money(total)+"):",total.toFixed(2));
  if(raw===null)return;
- const amount=num(raw);
+ const amount=Math.round(num(raw)*100)/100;
  if(amount<=0||amount>total+0.001){toast("Informe um valor válido, até o total da dívida.");return}
  if(!confirm("Confirmar recebimento de "+money(amount)+" de "+a.customer+" por "+payment+"?"))return;
+
  const orig=accountOriginalTotal(a);
- const servSum=a.items.filter(i=>(i.category||"service")==="service").reduce((s,i)=>s+num(i.total),0);
- const servRatio=orig>0?servSum/orig:0;
- const servPaidPart=amount*servRatio,prodPaidPart=amount-servPaidPart;
+ const servSum=arr(a.items).filter(i=>(i.category||"service")==="service").reduce((s,i)=>s+num(i.total),0);
+ const prodSum=arr(a.items).filter(i=>(i.category||"service")==="product").reduce((s,i)=>s+num(i.total),0);
+ const totalItems=servSum+prodSum;
+ const servPaidPart=totalItems>0?Math.round(amount*(servSum/totalItems)*100)/100:0;
+ const prodPaidPart=Math.round((amount-servPaidPart)*100)/100;
  const now=new Date().toISOString();
- a.paidAmount=num(a.paidAmount)+amount;a.updatedAt=now;a.payment=payment;
- a.payments=arr(a.payments);a.payments.push({id:uid(),amount,payment,date:now,servPaid:servPaidPart,prodPaid:prodPaidPart});
- if(accountTotal(a)<=0.005){a.status="paid";a.paidAt=now}
- sales.push({id:uid(),accountId:a.id,customer:a.customer,items:[],total:amount,amount,payment,date:now,createdAt:now,type:"account_payment",status:"paid",servPart:servPaidPart,prodPart:prodPaidPart});
- if(!persist()){toast("Não foi possível salvar o pagamento. Confira o armazenamento.");return}
+
+ const oldPaid=num(a.paidAmount);
+ a.paidAmount=Math.round((oldPaid+amount)*100)/100;
+ a.updatedAt=now;
+ a.payment=payment;
+ a.payments=arr(a.payments);
+ a.payments.push({id:uid(),amount,payment,date:now,servPaid:servPaidPart,prodPaid:prodPaidPart});
+
+ if(accountTotal(a)<=0.005){
+  a.paidAmount=orig;
+  a.status="paid";
+  a.paidAt=now;
+ }
+
+ sales.push({
+  id:uid(),accountId:a.id,customer:a.customer,items:[],
+  total:amount,amount,payment,date:now,createdAt:now,
+  type:"account_payment",status:"paid",
+  servPart:servPaidPart,prodPart:prodPaidPart
+ });
+
+ if(!persist()){
+  /* Recarrega o estado persistido se houver falha no armazenamento. */
+  sales.pop();
+  a.paidAmount=oldPaid;
+  a.payments.pop();
+  a.status="open";
+  delete a.paidAt;
+  toast("Falha ao salvar o pagamento. Nenhum valor foi confirmado; confira o armazenamento.");
+  renderAll();
+  return;
+ }
+
  logEvent("pagamento","Recebido "+money(amount)+" de "+a.customer+" via "+payment);
- renderAll();toast(a.status==="paid"?"Dívida quitada!":"Pagamento parcial registrado. Saldo restante: "+money(accountTotal(a)));
+
+ /* Atualização imediata de todas as telas e totais. */
+ renderAll();
+ $("salesPendingPanel").hidden=false;
+ $("toggleSalesPending").textContent="Ocultar pagamentos pendentes";
+ renderSales();
+ renderCash();
+ renderHome();
+ renderReport();
+
+ toast(a.status==="paid"
+  ?"Pagamento recebido! Dívida quitada. Caixas atualizados."
+  :"Pagamento parcial recebido! Falta receber "+money(accountTotal(a))+". Caixas atualizados.");
 }
+
 function renderAccounts(){
  const filter=norm($("accountFilter").value),status=$("accountStatus").value;
  const list=accounts.filter(a=>(status==="all"||(status==="open"?a.status!=="paid":a.status==="paid"))&&norm(a.customer).includes(filter));
@@ -376,7 +426,7 @@ function renderAccounts(){
   const total=a.status==="paid"?0:accountTotal(a);
   return `<div class="panel"><div class="item"><div><strong>${esc(a.customer)}</strong><div class="muted">Criada em ${new Date(a.createdAt).toLocaleDateString("pt-BR")}</div><span class="pill ${a.status==="paid"?"green":"gold"}">${a.status==="paid"?"PAGA":"EM ABERTO"}</span></div><div class="right"><strong class="gold">${money(total)}</strong><p>Recebido: ${money(a.paidAmount)}</p></div></div>
   ${a.items.map(i=>`<div class="item"><div>${esc(i.productName)}${i.manual?'<span class="pill">VALOR AVULSO</span>':""}<span class="pill">${(i.category||"service")==="product"?"📦 Produto":"💈 Serviço"}</span><p>${i.qty} × ${money(i.unitPrice)}</p></div><div class="right">${money(i.total)}${a.status!=="paid"?`<div><button class="danger" data-remove-item="${esc(a.id)}|${esc(i.id)}">Remover</button></div>`:""}</div></div>`).join("")}
-  ${a.payments&&a.payments.length?`<details><summary class="muted">Histórico de pagamentos (${a.payments.length})</summary>${a.payments.map(p=>`<p class="muted">${new Date(p.date).toLocaleString("pt-BR")} · ${esc(p.payment)} · ${money(p.amount)} (Serviços: ${money(p.servPaid)} | Produtos: ${money(p.prodPaid)})</p>`).join("")}</details>`:""}
+  ${a.payments.length?`<details><summary class="muted">Histórico de pagamentos (${a.payments.length})</summary>${a.payments.map(p=>`<p class="muted">${new Date(p.date).toLocaleString("pt-BR")} · ${esc(p.payment)} · ${money(p.amount)} (Serviços: ${money(p.servPaid)} | Produtos: ${money(p.prodPaid)})</p>`).join("")}</details>`:""}
   ${a.status!=="paid"?`<div class="actions"><button class="primary" data-pay="${esc(a.id)}">Receber pagamento</button><button data-add-more="${esc(a.id)}">Adicionar produto</button><button class="danger" data-cancel-account="${esc(a.id)}">Cancelar conta</button></div>`:`<p class="muted">Conta quitada · Último pagamento: ${esc(a.payment||"Consulte histórico")}</p>`}
   </div>`;
  }).join(""):'<div class="empty">Nenhuma conta encontrada.</div>';
@@ -393,7 +443,7 @@ $("addDebt").addEventListener("click",()=>{
  try{addManualDebt($("debtCustomer").value,$("debtDescription").value,$("debtAmount").value,$("debtDate").value,$("debtType").value);$("debtDescription").value="";$("debtAmount").value=""}catch(e){toast(e.message)}
 });
 $("openAccount").addEventListener("click",()=>{
- try{const n=$("newCustomer").value.trim();if(!n)throw Error("Digite o nome do cliente.");openOrGetAccount(n);persist();$("newCustomer").value="";renderAll();toast("Conta aberta.")}catch(e){toast(e.message)}
+ try{const n=$("newCustomer").value.trim();if(!n)throw Error("Digite o nome do cliente.");openOrGetAccount(n);if(!persist())return;$("newCustomer").value="";renderAll();toast("Conta aberta.")}catch(e){toast(e.message)}
 });
 $("accountFilter").addEventListener("input",renderAccounts);
 $("accountStatus").addEventListener("change",renderAccounts);
@@ -422,8 +472,7 @@ $("quickQty").addEventListener("input",updateQuickTotal);
 $("qtyMinus").addEventListener("click",()=>{$("quickQty").value=Math.max(1,Math.floor(num($("quickQty").value))-1);updateQuickTotal()});
 $("qtyPlus").addEventListener("click",()=>{$("quickQty").value=Math.max(1,Math.floor(num($("quickQty").value))+1);updateQuickTotal()});
 $("quickClear").addEventListener("click",()=>{
- $("quickCustomer").value="";$("manualCustomer").value="";$("quickQty").value="1";$("manualQty").value="1";$("quickMode").value="paid";selectedPayment="Dinheiro";
- updateQuickTotal();
+ $("quickCustomer").value="";$("manualCustomer").value="";$("quickQty").value="1";$("manualQty").value="1";$("quickMode").value="paid";selectedPayment="Dinheiro";updateQuickTotal();
 });
 $("quickSell").addEventListener("click",()=>{
  try{
@@ -437,7 +486,7 @@ $("quickSell").addEventListener("click",()=>{
    p.stock-=q;const total=p.price*q,now=new Date().toISOString();
    const item=normalizeItem({id:uid(),productId:p.id,productName:p.name,qty:q,unitPrice:p.price,unitCost:p.cost,total,category:"product"});
    sales.push({id:uid(),customer:customer||"Venda balcão",items:[item],total,amount:total,payment:selectedPayment,date:now,createdAt:now,type:"quick",status:"paid",servPart:0,prodPart:total});
-   if(!persist())throw Error("Não foi possível salvar a venda. Confira o armazenamento.");
+   if(!persist()){sales.pop();p.stock+=q;throw Error("Não foi possível salvar a venda. Confira o armazenamento.")}
    logEvent("venda_rapida",q+" x "+p.name+" — "+money(total)+" — "+selectedPayment);
    renderAll();toast("Venda de produto registrada (Caixa Produtos).");
   }
@@ -455,7 +504,6 @@ $("processText").addEventListener("click",()=>{
  if(!customer){toast("Informe o nome do cliente.");return}
  try{addToAccount(customer,p.id,qty);$("assistantText").value=""}catch(e){toast(e.message)}
 });
-
 $("clearText").addEventListener("click",()=>$("assistantText").value="");
 
 function resetProductForm(){
@@ -568,28 +616,23 @@ function cashBalance(){return serviceBalance()+productBalance()+num(config.cashO
 function renderSales(){
  const a=$("salesStart").value||today(),b=$("salesEnd").value||today();
  const list=paidSales().filter(s=>inRange(saleDate(s),a,b)).sort((x,y)=>new Date(y.date||y.createdAt)-new Date(x.date||x.createdAt));
- const received=list.reduce((s,x)=>s+saleAmount(x),0);
- $("salesTotal").textContent=money(received);
+ $("salesTotal").textContent=money(list.reduce((s,x)=>s+saleAmount(x),0));
  $("salesCount").textContent=list.length;
 
  const pending=openAccounts().slice().sort((x,y)=>new Date(y.updatedAt||y.createdAt)-new Date(x.updatedAt||x.createdAt));
- const pendingTotal=pending.reduce((s,x)=>s+accountTotal(x),0);
- $("salesPendingTotal").textContent=money(pendingTotal);
+ $("salesPendingTotal").textContent=money(pending.reduce((s,x)=>s+accountTotal(x),0));
  $("salesPendingCount").textContent=pending.length;
 
  $("salesPendingList").innerHTML=pending.length?pending.map(account=>{
-  const original=accountOriginalTotal(account);
-  const paid=num(account.paidAmount);
   const items=arr(account.items).map(i=>`<div>• ${esc(i.productName)} — ${i.qty} × ${money(i.unitPrice)} = ${money(i.total)} <span class="pill">${(i.category||"service")==="product"?"Produto":"Serviço"}</span></div>`).join("");
   return `<div class="pending-card">
    <strong>${esc(account.customer)}</strong>
    <div class="pending-details">
     Criada em: ${new Date(account.createdAt).toLocaleDateString("pt-BR")}<br>
-    Valor original: ${money(original)}<br>
-    Já recebido: <span class="green">${money(paid)}</span><br>
+    Valor original: ${money(accountOriginalTotal(account))}<br>
+    Já recebido: <span class="green">${money(account.paidAmount)}</span><br>
     <div style="margin-top:8px">${items||"Sem itens detalhados."}</div>
-   </div>
-   <hr>
+   </div><hr>
    <div class="pending-value">Falta receber: ${money(accountTotal(account))}</div>
    <div class="actions"><button class="primary" data-sales-pay="${esc(account.id)}">Receber pagamento</button></div>
   </div>`;
@@ -634,37 +677,42 @@ function renderCash(){
 $("setCashTarget").addEventListener("click",()=>{
  const raw=$("cashTarget").value,target=num(raw),category=$("cashTargetCategory").value;
  if(raw.trim()===""||target<0){toast("Informe um saldo válido.");return}
- const delta=target-cashBalance();
+ const delta=Math.round((target-cashBalance())*100)/100;
  if(Math.abs(delta)<.005){toast("O saldo já corresponde ao valor informado.");return}
  config.cashMovements.push({id:uid(),type:delta>=0?"in":"out",amount:Math.abs(delta),description:"Ajuste manual do saldo geral",date:new Date().toISOString(),category,adjustment:true});
- persist();logEvent("ajuste_caixa","Ajuste geral de "+money(Math.abs(delta))+" lançado em "+category);
+ if(!persist())return;
+ logEvent("ajuste_caixa","Ajuste geral de "+money(Math.abs(delta))+" lançado em "+category);
  $("cashTarget").value="";renderAll();toast("Ajuste lançado no caixa selecionado.");
 });
 $("saveCashMove").addEventListener("click",()=>{
  const d=$("cashMoveDesc").value.trim(),a=num($("cashMoveAmount").value),t=$("cashMoveType").value,cat=$("cashMoveCategory").value;
  if(!d||a<=0){toast("Informe descrição e valor válido.");return}
  config.cashMovements.push({id:uid(),description:d,amount:a,type:t,category:cat,date:new Date().toISOString()});
- persist();logEvent("movimentacao_caixa",d+" — "+money(a));
+ if(!persist())return;
+ logEvent("movimentacao_caixa",d+" — "+money(a));
  $("cashMoveDesc").value="";$("cashMoveAmount").value="";renderAll();toast("Movimentação registrada.");
 });
 $("cashMovementList").addEventListener("click",e=>{
  const b=e.target.closest("[data-delete-move]");if(!b)return;
  if(!confirm("Excluir movimentação?"))return;
  config.cashMovements=config.cashMovements.filter(m=>String(m.id)!==b.dataset.deleteMove);
- persist();renderAll();toast("Movimentação excluída.");
+ if(!persist())return;
+ renderAll();toast("Movimentação excluída.");
 });
 $("saveExpense").addEventListener("click",()=>{
  const d=$("expenseDesc").value.trim(),a=num($("expenseAmount").value),cat=$("expenseCategory").value;
  if(!d||a<=0){toast("Informe descrição e valor válido.");return}
  expenses.push({id:uid(),description:d,amount:a,payment:$("expenseMethod").value,category:cat,date:new Date().toISOString()});
- persist();logEvent("despesa",d+" — "+money(a));
+ if(!persist()){expenses.pop();return}
+ logEvent("despesa",d+" — "+money(a));
  $("expenseDesc").value="";$("expenseAmount").value="";renderAll();toast("Despesa registrada.");
 });
 $("expenseList").addEventListener("click",e=>{
  const b=e.target.closest("[data-delete-expense]");if(!b)return;
  if(!confirm("Excluir despesa?"))return;
  expenses=expenses.filter(x=>String(x.id)!==b.dataset.deleteExpense);
- persist();renderAll();toast("Despesa excluída.");
+ if(!persist())return;
+ renderAll();toast("Despesa excluída.");
 });
 
 function groupTotals(items,keyFn,valueFn){
@@ -721,6 +769,23 @@ $("restoreBtn").addEventListener("click",()=>{
  r.readAsText(f);
 });
 $("refreshAll").addEventListener("click",()=>{renderAll();toast("Telas atualizadas.")});
+
+/* Atualiza a tela se os dados forem alterados em outra aba do mesmo navegador. */
+window.addEventListener("storage",e=>{
+ if(!Object.values(KEYS).includes(e.key))return;
+ products=arr(read(KEYS.stock,[])).map(normalizeProduct);
+ sales=arr(read(KEYS.sales,[]));
+ history=arr(read(KEYS.history,[]));
+ expenses=arr(read(KEYS.expenses,[]));
+ accounts=arr(read(KEYS.accounts,[])).map(normalizeAccount);
+ config=read(KEYS.config,{});
+ if(!config||typeof config!=="object"||Array.isArray(config))config={};
+ if(!Array.isArray(config.cashMovements))config.cashMovements=[];
+ renderAll();
+});
+document.addEventListener("visibilitychange",()=>{
+ if(!document.hidden)renderAll();
+});
 
 function initialize(){
  $("salesStart").value=today();$("salesEnd").value=today();
