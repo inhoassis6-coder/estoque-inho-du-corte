@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -62,6 +61,10 @@ th{color:var(--gold2)}
 hr{border:0;border-top:1px solid var(--border);margin:16px 0}
 footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
 #toast{position:fixed;bottom:16px;left:12px;right:12px;max-width:500px;margin:auto;background:#222225;border:1px solid var(--gold);padding:14px;border-radius:12px;display:none;z-index:100;box-shadow:0 8px 40px #0009;font-size:14px}
+.pending-card{border:1px solid #514322;border-radius:12px;padding:13px;margin:10px 0;background:#111113}
+.pending-card .pending-value{font-size:19px;font-weight:bold;color:var(--gold2)}
+.pending-card .pending-details{font-size:12px;color:var(--muted);line-height:1.6;margin-top:8px}
+.pending-card .actions{margin-top:10px}
 @media(min-width:600px){main{padding:24px}.grid{grid-template-columns:repeat(4,minmax(0,1fr))}.row{grid-template-columns:repeat(2,minmax(0,1fr))}.brand{font-size:24px}.panel{padding:19px}}
 @media(max-width:420px){header{padding:12px}.brand{font-size:16px}.brandmark{width:38px;height:38px}main{padding:10px}.item .actions button{padding:7px;font-size:11px}}
 </style>
@@ -154,10 +157,25 @@ footer{text-align:center;color:var(--muted);font-size:11px;padding:24px}
 </section>
 
 <section id="vendas" class="page">
-<h2>Histórico de vendas</h2>
+<h2>Histórico de vendas e recebimentos</h2>
+<p class="intro">Confira o dinheiro recebido e as dívidas ainda pendentes. Recebimentos feitos aqui atualizam os caixas e relatórios.</p>
 <div class="row"><div><label for="salesStart">Data inicial</label><input id="salesStart" type="date"></div><div><label for="salesEnd">Data final</label><input id="salesEnd" type="date"></div></div>
 <div class="actions"><button class="primary" id="filterSales">Filtrar</button><button id="resetSalesFilter">Hoje</button><button id="exportSales">Exportar CSV</button></div>
-<div class="grid"><div class="stat"><small>Total vendido</small><strong id="salesTotal">R$ 0,00</strong></div><div class="stat"><small>Registros</small><strong id="salesCount">0</strong></div></div>
+<div class="grid">
+<div class="stat"><small>Total recebido no período</small><strong id="salesTotal">R$ 0,00</strong></div>
+<div class="stat"><small>Registros recebidos</small><strong id="salesCount">0</strong></div>
+<div class="stat"><small>Total pendente de clientes</small><strong id="salesPendingTotal">R$ 0,00</strong></div>
+<div class="stat"><small>Contas pendentes</small><strong id="salesPendingCount">0</strong></div>
+</div>
+<div class="panel">
+<h3>💰 Pagamentos pendentes</h3>
+<p class="muted">As contas abaixo mostram o que cada cliente ainda deve. Você pode receber tudo ou apenas uma parte do valor.</p>
+<button class="primary" id="toggleSalesPending" type="button" style="width:100%">Ver pagamentos pendentes</button>
+<div id="salesPendingPanel" hidden style="margin-top:14px">
+<div id="salesPendingList"></div>
+</div>
+</div>
+<h3>Histórico de recebimentos</h3>
 <div id="salesList"></div>
 </section>
 
@@ -275,7 +293,7 @@ document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=
 
 function accountOriginalTotal(a){return arr(a.items).reduce((s,i)=>s+num(i.total),0)}
 function accountTotal(a){return Math.max(0,accountOriginalTotal(a)-num(a.paidAmount))}
-function openAccounts(){return accounts.filter(a=>a.status!=="paid")}
+function openAccounts(){return accounts.filter(a=>a.status!=="paid"&&accountTotal(a)>0.005)}
 function getAccount(name){return openAccounts().find(a=>norm(a.customer)===norm(name))||null}
 function openOrGetAccount(customer){
  const name=String(customer||"").trim();if(!name)throw Error("Informe o nome do cliente.");
@@ -347,7 +365,8 @@ function payAccount(id){
  a.payments=arr(a.payments);a.payments.push({id:uid(),amount,payment,date:now,servPaid:servPaidPart,prodPaid:prodPaidPart});
  if(accountTotal(a)<=0.005){a.status="paid";a.paidAt=now}
  sales.push({id:uid(),accountId:a.id,customer:a.customer,items:[],total:amount,amount,payment,date:now,createdAt:now,type:"account_payment",status:"paid",servPart:servPaidPart,prodPart:prodPaidPart});
- persist();logEvent("pagamento","Recebido "+money(amount)+" de "+a.customer+" via "+payment);
+ if(!persist()){toast("Não foi possível salvar o pagamento. Confira o armazenamento.");return}
+ logEvent("pagamento","Recebido "+money(amount)+" de "+a.customer+" via "+payment);
  renderAll();toast(a.status==="paid"?"Dívida quitada!":"Pagamento parcial registrado. Saldo restante: "+money(accountTotal(a)));
 }
 function renderAccounts(){
@@ -418,7 +437,8 @@ $("quickSell").addEventListener("click",()=>{
    p.stock-=q;const total=p.price*q,now=new Date().toISOString();
    const item=normalizeItem({id:uid(),productId:p.id,productName:p.name,qty:q,unitPrice:p.price,unitCost:p.cost,total,category:"product"});
    sales.push({id:uid(),customer:customer||"Venda balcão",items:[item],total,amount:total,payment:selectedPayment,date:now,createdAt:now,type:"quick",status:"paid",servPart:0,prodPart:total});
-   persist();logEvent("venda_rapida",q+" x "+p.name+" — "+money(total)+" — "+selectedPayment);
+   if(!persist())throw Error("Não foi possível salvar a venda. Confira o armazenamento.");
+   logEvent("venda_rapida",q+" x "+p.name+" — "+money(total)+" — "+selectedPayment);
    renderAll();toast("Venda de produto registrada (Caixa Produtos).");
   }
   $("quickCustomer").value="";$("quickQty").value="1";updateQuickTotal();
@@ -435,6 +455,7 @@ $("processText").addEventListener("click",()=>{
  if(!customer){toast("Informe o nome do cliente.");return}
  try{addToAccount(customer,p.id,qty);$("assistantText").value=""}catch(e){toast(e.message)}
 });
+
 $("clearText").addEventListener("click",()=>$("assistantText").value="");
 
 function resetProductForm(){
@@ -547,9 +568,51 @@ function cashBalance(){return serviceBalance()+productBalance()+num(config.cashO
 function renderSales(){
  const a=$("salesStart").value||today(),b=$("salesEnd").value||today();
  const list=paidSales().filter(s=>inRange(saleDate(s),a,b)).sort((x,y)=>new Date(y.date||y.createdAt)-new Date(x.date||x.createdAt));
- $("salesTotal").textContent=money(list.reduce((s,x)=>s+saleAmount(x),0));$("salesCount").textContent=list.length;
- $("salesList").innerHTML=list.length?list.map(s=>`<div class="item"><div><strong>${esc(s.customer||"Venda balcão")}</strong><p>${new Date(s.date||s.createdAt).toLocaleString("pt-BR")} · ${esc(salePayment(s))}</p></div><div class="right"><strong class="gold">${money(saleAmount(s))}</strong></div></div>`).join(""):'<div class="empty">Nenhuma venda nesse período.</div>';
+ const received=list.reduce((s,x)=>s+saleAmount(x),0);
+ $("salesTotal").textContent=money(received);
+ $("salesCount").textContent=list.length;
+
+ const pending=openAccounts().slice().sort((x,y)=>new Date(y.updatedAt||y.createdAt)-new Date(x.updatedAt||x.createdAt));
+ const pendingTotal=pending.reduce((s,x)=>s+accountTotal(x),0);
+ $("salesPendingTotal").textContent=money(pendingTotal);
+ $("salesPendingCount").textContent=pending.length;
+
+ $("salesPendingList").innerHTML=pending.length?pending.map(account=>{
+  const original=accountOriginalTotal(account);
+  const paid=num(account.paidAmount);
+  const items=arr(account.items).map(i=>`<div>• ${esc(i.productName)} — ${i.qty} × ${money(i.unitPrice)} = ${money(i.total)} <span class="pill">${(i.category||"service")==="product"?"Produto":"Serviço"}</span></div>`).join("");
+  return `<div class="pending-card">
+   <strong>${esc(account.customer)}</strong>
+   <div class="pending-details">
+    Criada em: ${new Date(account.createdAt).toLocaleDateString("pt-BR")}<br>
+    Valor original: ${money(original)}<br>
+    Já recebido: <span class="green">${money(paid)}</span><br>
+    <div style="margin-top:8px">${items||"Sem itens detalhados."}</div>
+   </div>
+   <hr>
+   <div class="pending-value">Falta receber: ${money(accountTotal(account))}</div>
+   <div class="actions"><button class="primary" data-sales-pay="${esc(account.id)}">Receber pagamento</button></div>
+  </div>`;
+ }).join(""):'<div class="empty">🎉 Nenhum pagamento pendente! Todas as contas estão quitadas.</div>';
+
+ $("salesList").innerHTML=list.length?list.map(s=>{
+  const when=new Date(s.date||s.createdAt).toLocaleString("pt-BR");
+  const items=arr(s.items).map(i=>`${esc(i.productName)} × ${num(i.qty)} (${money(i.total)})`).join(", ");
+  const description=s.type==="account_payment"?"Pagamento de dívida":items||"Recebimento";
+  return `<div class="item"><div><strong>${esc(s.customer||"Venda balcão")}</strong><p>${when} · ${esc(salePayment(s))}</p><p>${description}</p><span class="pill">${s.type==="account_payment"?"Pagamento de conta":"Venda"}</span></div><div class="right"><strong class="gold">${money(saleAmount(s))}</strong></div></div>`;
+ }).join(""):'<div class="empty">Nenhuma venda ou recebimento nesse período.</div>';
 }
+$("toggleSalesPending").addEventListener("click",()=>{
+ const panel=$("salesPendingPanel");
+ panel.hidden=!panel.hidden;
+ $("toggleSalesPending").textContent=panel.hidden?"Ver pagamentos pendentes":"Ocultar pagamentos pendentes";
+ if(!panel.hidden)renderSales();
+});
+$("salesPendingList").addEventListener("click",e=>{
+ const b=e.target.closest("[data-sales-pay]");
+ if(!b)return;
+ payAccount(b.dataset.salesPay);
+});
 $("filterSales").addEventListener("click",renderSales);
 $("resetSalesFilter").addEventListener("click",()=>{$("salesStart").value=today();$("salesEnd").value=today();renderSales()});
 $("exportSales").addEventListener("click",()=>{
@@ -668,4 +731,4 @@ try{initialize()}catch(e){console.error(e);toast("Erro ao iniciar. Faça backup 
 })();
 </script>
 </body>
-</html>
+ </html>
