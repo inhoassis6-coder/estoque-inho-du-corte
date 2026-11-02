@@ -283,6 +283,16 @@ footer{color:#85858d;letter-spacing:.06em;}
 #assistente details[open]>summary::after{content:"⌃"}
 #assistente details>summary{margin-bottom:10px}
 
+
+/* Acordeões consistentes em todas as áreas */
+details>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;list-style:none;cursor:pointer}
+details>summary::-webkit-details-marker{display:none}
+details>summary:after{content:"⌄";flex:0 0 auto;color:var(--gold2);font-size:20px;font-weight:900;line-height:1;transition:transform .18s ease}
+details[open]>summary:after{transform:rotate(180deg)}
+.panel-collapse-toggle{display:inline-flex;align-items:center;justify-content:center;margin-left:auto;min-width:36px;min-height:36px;padding:4px 9px;border:1px solid #8b702e;border-radius:10px;background:#d4af3718;color:var(--gold2);font-size:19px;font-weight:900;line-height:1;box-shadow:none}
+.panel-collapse-header{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.panel-collapse-body[hidden]{display:none!important}
+
 </style>
 <style>
 /* Ajuste solicitado: quatro produtos lado a lado também em telas estreitas. */
@@ -503,6 +513,86 @@ footer{color:#85858d;letter-spacing:.06em;}
 }
 @media(max-width:370px){.daily-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))}#navigation button{font-size:9px}}
 </style>
+
+<style id="inho-setas-padrao">
+/* PADRÃO ÚNICO DE SETAS — substitui estilos antigos e duplicados */
+details > summary,
+#assistente details > summary,
+#productList .stock-category > summary,
+#estoque .stock-summary-panel > summary,
+.daily-secondary > summary,
+.more-category > summary {
+  list-style:none !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:10px !important;
+}
+details > summary::-webkit-details-marker,
+#assistente details > summary::-webkit-details-marker,
+#productList .stock-category > summary::-webkit-details-marker { display:none !important; }
+/* Oculta setas que já estavam escritas dentro do título; a seta padrão fica no ::after. */
+summary .accordion-chevron { display:none !important; }
+details > summary::after,
+#assistente details > summary::after,
+#productList .stock-category > summary::after,
+#estoque .stock-summary-panel > summary::after,
+.daily-secondary > summary::after,
+.more-category > summary::after {
+  content:"⌄" !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  flex:0 0 30px !important;
+  width:30px !important;
+  height:30px !important;
+  margin-left:auto !important;
+  border:1px solid #806b34 !important;
+  border-radius:9px !important;
+  background:#d4af3718 !important;
+  color:#f6e4a6 !important;
+  font-size:19px !important;
+  font-weight:800 !important;
+  line-height:1 !important;
+  transform:none !important;
+  transition:transform .18s ease !important;
+}
+details[open] > summary::after,
+#assistente details[open] > summary::after,
+#productList .stock-category[open] > summary::after,
+.daily-secondary[open] > summary::after,
+.more-category[open] > summary::after { content:"⌄" !important; transform:rotate(180deg) !important; }
+/* Botões que recolhem painéis usam o mesmo ícone, sem setas escritas duplicadas. */
+button.panel-collapse-toggle,
+#quickSaleCollapse {
+  min-width:38px !important;
+  width:38px !important;
+  min-height:38px !important;
+  height:38px !important;
+  padding:0 !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border:1px solid #806b34 !important;
+  border-radius:9px !important;
+  background:#d4af3718 !important;
+  color:#f6e4a6 !important;
+  font-size:0 !important;
+  line-height:1 !important;
+  white-space:nowrap !important;
+}
+button.panel-collapse-toggle::after,
+#quickSaleCollapse::after {
+  content:"⌄" !important;
+  display:block !important;
+  font-size:21px !important;
+  font-weight:900 !important;
+  line-height:1 !important;
+}
+button.panel-collapse-toggle[aria-expanded="true"]::after,
+#quickSaleCollapse[aria-expanded="true"]::after { content:"⌃" !important; }
+</style>
+
 </head>
 <body>
 <header>
@@ -535,7 +625,8 @@ footer{color:#85858d;letter-spacing:.06em;}
     <label for="manualQty">Quantidade</label><input id="manualQty" type="number" min="1" step="1" value="1">
    </div>
    <div id="manualServiceFields" hidden>
-    <label for="manualServiceName">Qual foi o serviço?</label><input id="manualServiceName" placeholder="Ex.: Corte, barba, sobrancelha">
+    <label for="manualServiceSelect">Serviço cadastrado (opcional)</label><select id="manualServiceSelect"><option value="">Não escolher serviço — cobrança avulsa</option></select>
+     <label for="manualServiceName">Descrição do que está cobrando</label><input id="manualServiceName" placeholder="Ex.: Corte, barba, sobrancelha">
     <label for="manualServiceAmount">Valor do serviço (R$)</label><input id="manualServiceAmount" type="number" min="0.01" step="0.01" placeholder="Ex.: 30,00">
    </div>
    <div class="actions"><button class="primary" id="manualAdd">Adicionar à conta</button><button id="quickClear" type="button">Limpar campos</button></div>
@@ -546,7 +637,7 @@ footer{color:#85858d;letter-spacing:.06em;}
   <div class="quick-sale-total"><div><span>VALOR FINAL</span><strong id="quickTotal">R$ 0,00</strong><small id="quickDiscountLabel">Desconto: R$ 0,00</small></div><span class="quick-sale-bag">R$</span></div>
   <label for="quickKind">Tipo de item</label><select id="quickKind"><option value="product">📦 Produto do estoque</option><option value="service">💈 Serviço</option></select>
   <div id="quickProductFields"><label for="quickProduct">Produto</label><select id="quickProduct"></select></div>
-  <div id="quickServiceFields" hidden><label for="quickServiceName">Nome do serviço</label><input id="quickServiceName" placeholder="Ex.: Corte, barba, sobrancelha"><label for="quickServicePrice">Valor do serviço (R$)</label><input id="quickServicePrice" type="number" min="0.01" step="0.01" placeholder="Ex.: 30,00"></div>
+  <div id="quickServiceFields" hidden><label for="quickServiceSelect">Serviço cadastrado (opcional)</label><select id="quickServiceSelect"><option value="">Não escolher serviço — cobrança avulsa</option></select><label for="quickServiceName">Descrição do que está cobrando</label><input id="quickServiceName" placeholder="Ex.: Corte, barba, sobrancelha"><label for="quickServicePrice">Valor do serviço (R$)</label><input id="quickServicePrice" type="number" min="0.01" step="0.01" placeholder="Ex.: 30,00"></div>
   <div class="row quick-sale-fields">
    <div><label for="quickQty">Quantidade</label><div class="qty-control"><button id="qtyMinus" type="button" aria-label="Diminuir quantidade">−</button><input id="quickQty" type="number" min="1" step="1" value="1"><button id="qtyPlus" type="button" aria-label="Aumentar quantidade">+</button></div></div>
    <div><label for="quickCustomer">Cliente (opcional)</label><input id="quickCustomer" placeholder="Venda balcão"></div>
@@ -735,6 +826,9 @@ footer{color:#85858d;letter-spacing:.06em;}
 <!-- MAIS: as telas secundárias continuam completas e acessíveis -->
 <section id="mais" class="page">
  <h2>Mais</h2><p class="intro">Encontre cada função pelo assunto, sem opções repetidas.</p>
+ <div class="panel"><h3>💈 Serviços da barbearia</h3>
+  <button class="menu-card" data-go="servicos"><span class="menu-icon">✂️</span><span><strong>Cadastro de serviços e valores</strong><small>Cadastre os serviços para selecionar nas vendas.</small></span></button>
+ </div>
  <div class="panel"><h3>👥 Clientes e cobranças</h3>
   <button class="menu-card" data-go="contas"><span class="menu-icon">🧾</span><span><strong>Contas dos clientes</strong><small>Criar contas de clientes, anotar o que devem e registrar pagamentos.</small></span></button>
  </div>
@@ -749,6 +843,16 @@ footer{color:#85858d;letter-spacing:.06em;}
   <button class="menu-card" data-go="dados"><span class="menu-icon">💾</span><span><strong>Backup e dados</strong><small>Salvar ou restaurar uma cópia e conferir integridade.</small></span></button>
   
  </div>
+</section>
+
+<section id="servicos" class="page">
+ <h2>Serviços da barbearia</h2><p class="intro">Cadastre os serviços e seus preços. Você poderá selecionar mais de um serviço na mesma venda.</p>
+ <div class="panel"><h3>➕ Cadastrar serviço</h3>
+  <label for="serviceNameInput">Nome do serviço</label><input id="serviceNameInput" placeholder="Ex.: Corte masculino">
+  <label for="servicePriceInput">Valor (R$)</label><input id="servicePriceInput" type="number" min="0.01" step="0.01" placeholder="Ex.: 30,00">
+  <div class="actions"><button class="primary" type="button" id="saveServiceBtn">Salvar serviço</button><button type="button" id="clearServiceBtn">Limpar</button></div>
+ </div>
+ <div class="panel"><h3>📋 Serviços cadastrados</h3><div id="serviceList"></div></div>
 </section>
 
 <section id="contas" class="page">
@@ -941,7 +1045,7 @@ function normalizeAccount(a){
 }
 let products=arr(readCompat(KEYS.stock,["stock_v1","estoque_v1","estoque","products_v1"],[])).map(normalizeProduct);
 let sales=arr(readCompat(KEYS.sales,["vendas_v1","sales_v1","vendas","inho_du_corte_vendas_v1"],[])),history=arr(readCompat(KEYS.history,["historico_v1","history_v1","historico","inho_du_corte_historico_v1"],[])),expenses=arr(readCompat(KEYS.expenses,["despesas_v1","expenses_v1","despesas","inho_du_corte_despesas_v1"],[])),accounts=arr(readCompat(KEYS.accounts,["contas_v1","accounts_v1","contas","inho_du_corte_contas_v1"],[])).map(normalizeAccount);
-let config=readCompat(KEYS.config,["config_v1","configuracao_v1","config","inho_du_corte_config_v1"],{});if(!config||typeof config!=="object"||Array.isArray(config))config={};if(!Array.isArray(config.cashMovements))config.cashMovements=[];if(!Array.isArray(config.customerProfiles))config.customerProfiles=[];if(!Array.isArray(config.removedCustomers))config.removedCustomers=[];
+let config=readCompat(KEYS.config,["config_v1","configuracao_v1","config","inho_du_corte_config_v1"],{});if(!config||typeof config!=="object"||Array.isArray(config))config={};if(!Array.isArray(config.cashMovements))config.cashMovements=[];if(!Array.isArray(config.customerProfiles))config.customerProfiles=[];if(!Array.isArray(config.removedCustomers))config.removedCustomers=[];if(!Array.isArray(config.services))config.services=[];config.services=config.services.map(x=>({id:String(x.id||uid()),name:String(x.name||"").trim(),price:num(x.price)})).filter(x=>x.name);
 let members=arr(readCompat(EXTRA_KEYS.members,["mensalistas_v1","members_v1"],[])),purchases=arr(readCompat(EXTRA_KEYS.purchases,["compras_v1","purchases_v1"],[])),payables=arr(readCompat(EXTRA_KEYS.payables,["contas_pagar_v1","payables_v1"],[])),goals=readCompat(EXTRA_KEYS.goals,["metas_v1","goals_v1"],{service:0,product:0}),purchaseDrafts=arr(readCompat(EXTRA_KEYS.purchaseDrafts,["rascunhos_compras_v1","purchase_drafts_v1"],[]));if(!goals||typeof goals!=="object")goals={service:0,product:0};
 let purchaseDraft=[];
 // Compatibilidade: compras antigas já lançavam todo o estoque ao confirmar; marcar como recebidas evita duplicar entradas.
@@ -1399,6 +1503,33 @@ $("manualAdd").addEventListener("click",()=>{try{
   addToAccount($("manualCustomer").value,$("manualProduct").value,$("manualQty").value);$("manualQty").value="1";
  }
  }catch(e){toast(e.message)}});
+function serviceCatalog(){return Array.isArray(config.services)?config.services:[]}
+function renderServiceOptions(){
+ const options='<option value="">Não escolher serviço — cobrança avulsa</option>'+serviceCatalog().map(x=>`<option value="${esc(x.id)}">${esc(x.name)} — ${money(x.price)}</option>`).join("");
+ ["quickServiceSelect","manualServiceSelect"].forEach(id=>{const el=$(id);if(!el)return;const chosen=el.value;el.innerHTML=options;if(serviceCatalog().some(x=>x.id===chosen))el.value=chosen;});
+}
+function renderServices(){
+ const list=$("serviceList");if(!list)return;
+ list.innerHTML=serviceCatalog().length?serviceCatalog().map(x=>`<div class="item"><div><strong>${esc(x.name)}</strong><p class="muted">${money(x.price)}</p></div><div class="actions"><button type="button" data-edit-service="${esc(x.id)}">Editar</button><button type="button" class="danger" data-delete-service="${esc(x.id)}">Excluir</button></div></div>`).join(""):'<div class="empty">Nenhum serviço cadastrado ainda.</div>';
+ renderServiceOptions();
+}
+function saveService(){
+ const name=$("serviceNameInput").value.trim(),price=num($("servicePriceInput").value);
+ if(!name||price<=0){toast("Informe o nome e um valor maior que zero.");return}
+ const existing=serviceCatalog().find(x=>norm(x.name)===norm(name));
+ if(existing){existing.price=price;}else{config.services.push({id:uid(),name,price});}
+ if(!persist()){toast("Não foi possível salvar o serviço.");return}
+ $("serviceNameInput").value="";$("servicePriceInput").value="";renderServices();toast("Serviço salvo.");
+}
+$("saveServiceBtn").addEventListener("click",saveService);
+$("clearServiceBtn").addEventListener("click",()=>{$("serviceNameInput").value="";$("servicePriceInput").value="";});
+$("serviceList").addEventListener("click",e=>{
+ const edit=e.target.closest("[data-edit-service]"),del=e.target.closest("[data-delete-service]");
+ if(edit){const x=serviceCatalog().find(v=>v.id===edit.dataset.editService);if(!x)return;const name=prompt("Nome do serviço:",x.name);if(name===null)return;const clean=name.trim();if(!clean){toast("O nome não pode ficar vazio.");return}const raw=prompt("Valor do serviço (R$):",String(x.price).replace(".",","));if(raw===null)return;const price=num(raw);if(price<=0){toast("Informe um valor maior que zero.");return}x.name=clean;x.price=price;if(!persist()){toast("Não foi possível atualizar o serviço.");return}renderServices();toast("Serviço atualizado.");}
+ if(del){const x=serviceCatalog().find(v=>v.id===del.dataset.deleteService);if(!x||!confirm("Excluir "+x.name+" do cadastro? As vendas antigas serão preservadas."))return;config.services=config.services.filter(v=>v.id!==x.id);if(!persist()){toast("Não foi possível excluir o serviço.");return}renderServices();toast("Serviço excluído.");}
+});
+$("quickServiceSelect").addEventListener("change",()=>{const x=serviceCatalog().find(v=>v.id===$("quickServiceSelect").value);if(x){$("quickServiceName").value=x.name;$("quickServicePrice").value=x.price.toFixed(2);}else{$("quickServiceName").value="";$("quickServicePrice").value="";}updateQuickTotal();});
+$("manualServiceSelect").addEventListener("change",()=>{const x=serviceCatalog().find(v=>v.id===$("manualServiceSelect").value);if(x){$("manualServiceName").value=x.name;$("manualServiceAmount").value=x.price.toFixed(2);}else{$("manualServiceName").value="";$("manualServiceAmount").value="";}});
 function selectedQuickProduct(){return products.find(p=>p.id===$("quickProduct").value)||null}
 function quickSaleBase(){
  const kind=$("quickKind").value,q=Math.floor(num($("quickQty").value));
@@ -1429,12 +1560,12 @@ $("quickAddItem").addEventListener("click",()=>{
  const d=quickSaleBase(),q=Math.floor(num($("quickQty").value));if(q<1||!Number.isInteger(q)||!d.name||d.unitPrice<=0){toast("Selecione um produto ou informe um serviço e valor válido.");return}
  const inCart=d.product?quickCart.filter(i=>i.productId===d.product.id).reduce((sum,i)=>sum+num(i.qty),0):0;if(d.kind==="product"&&(!d.product||q>d.product.stock-inCart)){toast("A quantidade adicionada ultrapassa o estoque disponível.");return}
  const itemTotal=Math.round(q*d.unitPrice*100)/100;quickCart.push({id:uid(),productId:d.product?.id||"",name:d.name,qty:q,unitPrice:d.unitPrice,total:itemTotal,unitCost:d.product?num(d.product.cost):0,category:d.kind});
- $("quickQty").value="1";if(d.kind==="service"){$("quickServiceName").value="";$ ("quickServicePrice").value="";}updateQuickTotal();toast("Item adicionado à venda.");
+ $("quickQty").value="1";if(d.kind==="service"){$("quickServiceName").value="";$("quickServicePrice").value="";$("quickServiceSelect").value="";}updateQuickTotal();toast("Item adicionado à venda.");
 });
 $("quickCartList").addEventListener("click",e=>{const b=e.target.closest("[data-remove-cart-item]");if(!b)return;quickCart.splice(Number(b.dataset.removeCartItem),1);updateQuickTotal()});
-$("quickSaleReset").addEventListener("click",()=>{quickCart=[];$("quickCustomer").value="";$("quickQty").value="1";$("quickDiscount").value="0.00";$("quickServiceName").value="";$("quickServicePrice").value="";$("quickKind").value="product";$("quickMode").value="paid";$("quickPayment").value="Dinheiro";selectedPayment="Dinheiro";updateQuickKind();updateQuickTotal()});
+$("quickSaleReset").addEventListener("click",()=>{quickCart=[];$("quickCustomer").value="";$("quickQty").value="1";$("quickDiscount").value="0.00";$("quickServiceName").value="";$("quickServicePrice").value="";$("quickServiceSelect").value="";$("quickKind").value="product";$("quickMode").value="paid";$("quickPayment").value="Dinheiro";selectedPayment="Dinheiro";updateQuickKind();updateQuickTotal()});
 updateManualKind();updateQuickKind();
-$("quickClear").addEventListener("click",()=>{$("manualCustomer").value="";if($("manualCustomerSelect"))$("manualCustomerSelect").value="";$("manualQty").value="1";$("manualServiceName").value="";$("manualServiceAmount").value="";$("manualKind").value="product";updateManualKind()});
+$("quickClear").addEventListener("click",()=>{$("manualCustomer").value="";if($("manualCustomerSelect"))$("manualCustomerSelect").value="";$("manualQty").value="1";$("manualServiceName").value="";$("manualServiceAmount").value="";$("manualServiceSelect").value="";$("manualKind").value="product";updateManualKind()});
 $("quickSell").addEventListener("click",()=>{
  try{
   const d=quickSaleBase(),customer=$("quickCustomer").value.trim(),mode=$("quickMode").value,payment=$("quickPayment").value;
@@ -1743,7 +1874,12 @@ function renderCash(){
  if($("productGrossProfitMetric"))$("productGrossProfitMetric").textContent=money(productGrossProfit);
  if($("productReplacementMetric"))$("productReplacementMetric").textContent=money(productCostSold);
  if($("productStockCostMetric"))$("productStockCostMetric").textContent=money(productStockCost);
- $("quickCashServ").textContent=money(servBal);$("quickCashProd").textContent=money(prodBal);$("quickCash").textContent=money(bal);$("quickTodaySales").textContent=money(todaySales());$("cashTarget").placeholder=bal.toFixed(2);
+ // Indicadores compactos antigos podem não existir nesta versão da tela; atualize-os somente quando presentes.
+ if($("quickCashServ"))$("quickCashServ").textContent=money(servBal);
+ if($("quickCashProd"))$("quickCashProd").textContent=money(prodBal);
+ if($("quickCash"))$("quickCash").textContent=money(bal);
+ if($("quickTodaySales"))$("quickTodaySales").textContent=money(todaySales());
+ if($("cashTarget"))$("cashTarget").placeholder=bal.toFixed(2);
  const ms=arr(config.cashMovements).slice().sort((a,b)=>new Date(b.date)-new Date(a.date));
  $("cashMovementList").innerHTML=ms.length?ms.map(m=>`<div class="item"><div><strong>${esc(m.description||"Movimentação")}</strong><p>${new Date(m.date).toLocaleString("pt-BR")} · ${m.type==="out"?"Retirada":"Entrada"} · <span class="pill">${(m.category||"service")==="product"?"📦 Produtos":"💈 Serviços"}</span></p></div><div class="right"><strong class="${m.type==="out"?"red":"green"}">${m.type==="out"?"−":"+"}${money(m.amount)}</strong><div><button class="danger" data-delete-move="${esc(m.id)}">Excluir</button></div></div></div>`).join(""):'<div class="empty">Nenhuma movimentação.</div>';
  $("expenseList").innerHTML=expenses.slice().sort((a,b)=>new Date(b.date)-new Date(a.date)).map(e=>`<div class="item"><div><strong>${esc(e.description||"Despesa")}</strong><p>${expenseDate(e)} · ${esc(e.payment||"Outro")} · <span class="pill">${(e.category||"service")==="product"?"📦 Produtos":"💈 Serviços"}</span></p></div><div class="right"><strong class="red">${money(expenseAmount(e))}</strong><div><button class="danger" data-delete-expense="${esc(e.id)}">Excluir</button></div></div></div>`).join("")||'<div class="empty">Nenhuma despesa.</div>';
@@ -1982,22 +2118,35 @@ function setupQuickSaleCollapser(){
  panel.appendChild(body);btn.dataset.collapseTarget=body.id;btn.dataset.collapseLabel="Venda Rápida";
 }
 function setupPanelCollapsers(){
- document.querySelectorAll(".panel").forEach((panel,index)=>{
-  if(panel.classList.contains("home-debts-panel")||panel.querySelector("#homeAccounts")||panel.dataset.collapseReady==="1")return;
+ document.querySelectorAll(".page .panel").forEach((panel,index)=>{
+  if(panel.classList.contains("quick-sale-panel")||panel.closest("#mais")||panel.dataset.collapseReady==="1")return;
+  // Não cria acordeões dentro de um painel já recolhível se ele não for um bloco independente.
+  const heading=panel.querySelector(":scope > h3, :scope > h2, :scope > .home-panel-heading, :scope > .stock-toolbar-heading, :scope > .panel-title");
   const first=panel.firstElementChild;
   if(!first)return;
-  const hasHeading=first.matches("h3,h2,.home-panel-heading")||first.querySelector(":scope > h3, :scope > h2");
-  if(!hasHeading)return;
-  // Do not add a second accordion to panels already using native details.
-  if(panel.closest("details")||panel.matches("details"))return;
   panel.dataset.collapseReady="1";
-  const body=document.createElement("div");body.className="panel-collapse-body";
-  while(first.nextSibling){body.appendChild(first.nextSibling)}
-  panel.appendChild(body);
+  let titleNode=heading;
+  if(!titleNode){
+   const label=panel.querySelector(":scope > label");
+   const title=document.createElement("strong");title.className="panel-auto-title";
+   title.textContent=(label?.textContent||"Opções").trim().replace(/:$/,'');
+   title.style.cssText="display:block;color:var(--gold2);font-weight:800;font-size:13px;margin:2px 0";
+   titleNode=title;
+  }
+  const body=document.createElement("div");body.className="panel-collapse-body";body.id="collapsePanelBody"+index+"-"+Math.random().toString(36).slice(2,7);
+  if(titleNode===first){while(titleNode.nextSibling)body.appendChild(titleNode.nextSibling)}
+  else if(titleNode.parentElement===panel){
+   // Mantém o cabeçalho na frente e recolhe todo o restante.
+   for(const child of Array.from(panel.children)){if(child!==titleNode)body.appendChild(child)}
+  }else{
+   for(const child of Array.from(panel.children))body.appendChild(child);
+  }
   const header=document.createElement("div");header.className="panel-collapse-header";
-  panel.insertBefore(header,first);header.appendChild(first);
-  const btn=document.createElement("button");btn.type="button";btn.className="panel-collapse-toggle";btn.setAttribute("aria-expanded","true");btn.setAttribute("aria-label","Minimizar seção");btn.textContent="⌃ Minimizar";
-  body.id="collapsePanelBody"+index;btn.dataset.collapseTarget=body.id;btn.dataset.collapseLabel=(first.innerText||"seção").trim().slice(0,60);header.appendChild(btn);
+  panel.prepend(header);
+  header.appendChild(titleNode);
+  const btn=document.createElement("button");btn.type="button";btn.className="panel-collapse-toggle";btn.setAttribute("aria-expanded","true");btn.setAttribute("aria-label","Minimizar seção");btn.textContent="⌃";btn.title="Minimizar seção";
+  btn.dataset.collapseTarget=body.id;btn.dataset.collapseLabel=(titleNode.innerText||titleNode.textContent||"seção").trim().slice(0,60);
+  header.appendChild(btn);panel.appendChild(body);
  });
 }
 function setupHomeSectionCollapsers(){
@@ -2014,19 +2163,19 @@ function setupHomeSectionCollapsers(){
 }
 document.addEventListener("click",function(event){
  const btn=event.target.closest("button.panel-collapse-toggle");if(!btn)return;
- const targetId=btn.dataset.collapseTarget;
- if(!targetId)return;
- const body=document.getElementById(targetId);if(!body)return;
+ const body=document.getElementById(btn.dataset.collapseTarget||"");if(!body)return;
  event.preventDefault();event.stopPropagation();
  const opening=btn.getAttribute("aria-expanded")!=="false";
  body.hidden=opening;
  const label=btn.dataset.collapseLabel||"seção";
- btn.textContent=opening?"⌄ Expandir":"⌃ Minimizar";
+ btn.textContent=opening?"⌄":"⌃";btn.title=(opening?"Expandir ":"Minimizar ")+label;
  btn.setAttribute("aria-expanded",String(!opening));
  btn.setAttribute("aria-label",(opening?"Expandir ":"Minimizar ")+label);
 },true);
 function initialize(){
- $("salesStart").value=today();$("salesEnd").value=today();$("reportStart").value=today();$("reportEnd").value=today();$("debtDate").value=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16);renderAll();setupHomeSectionCollapsers();setupPanelCollapsers();setupQuickSaleCollapser();
+ $("salesStart").value=today();$("salesEnd").value=today();$("reportStart").value=today();$("reportEnd").value=today();$("debtDate").value=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,16);renderAll();renderServices();setupHomeSectionCollapsers();setupQuickSaleCollapser();setupPanelCollapsers();
+ // Painéis criados depois por filtros, vendas, contas e compras também recebem sua setinha.
+ if(!window.__inhoPanelObserver){window.__inhoPanelObserver=new MutationObserver(()=>setupPanelCollapsers());window.__inhoPanelObserver.observe(document.querySelector("main")||document.body,{childList:true,subtree:true});}
 }
 try{initialize()}catch(e){console.error(e);toast("Erro ao iniciar. Faça backup e confira o código.")}
 })();
